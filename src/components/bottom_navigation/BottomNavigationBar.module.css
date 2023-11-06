@@ -1,0 +1,22 @@
+
+.bottomNavBar {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+}
+
+.action {
+    border-radius: 5rem;
+    max-width: 1.5rem;
+    color: whitesmoke;
+}
+
+.action:focus {
+    color: #ed4036;
+}
+
+.icon {
+    font-size: 3rem;
+}

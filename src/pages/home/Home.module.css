@@ -1,0 +1,17 @@
+body {
+    overflow: hidden;
+}
+
+
+.runeTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 10rem;
+    height: 10rem;
+}
+
+.background {
+    left: 0;
+}
