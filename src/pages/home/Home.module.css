@@ -1,7 +1,5 @@
 body {
-    overflow: hidden;
 }
-
 
 .runeTitle {
     display: flex;
@@ -13,5 +11,10 @@ body {
 }
 
 .background {
+    margin-top: 5rem;
     left: 0;
+}
+
+.grid {
+    background-color: whitesmoke;
 }
