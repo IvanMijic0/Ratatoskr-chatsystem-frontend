@@ -36,7 +36,7 @@ body {
     width: 40rem;
     margin-top: 10rem;
     background-color: rgb(63, 84, 97);
-    border: 1px solid rgb(94, 124, 141);;
+    border: 1px solid rgb(63, 84, 97);;
 }
 
 .form {
@@ -53,20 +53,6 @@ body {
     justify-content: center;
     height: 100vh;
     /*background-color: whitesmoke;*/
-}
-
-.text-field {
-    .MuiInputLabel-root {
-        color: whitesmoke;
-    }
-
-    .MuiInputBase-input {
-        color: whitesmoke;
-    }
-
-    .MuiInput-underline:before {
-        border-bottom: 2px solid whitesmoke;
-    }
 }
 
 .form-label-container {

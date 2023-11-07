@@ -1,11 +1,11 @@
 import Grid from '@mui/material/Grid';
 import { Box, Paper, Typography } from "@mui/material";
+import { LockOpen, PersonAdd } from "@mui/icons-material";
 
 import runeTitle from "../../assets/runes.svg";
 import classes from './Home.module.css';
 import CustomTextField from "../../components/ui/CustomTextField.tsx";
 import CustomButton from "../../components/ui/CustomButton.tsx";
-import { LockOpen, PersonAdd } from "@mui/icons-material";
 
 const Home = () => {
 	return <Box className={ classes['grid-content'] }>
