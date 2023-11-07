@@ -1,8 +1,9 @@
 import { LockOpen, PersonAdd } from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
+
 import CustomTextField from "../ui/CustomTextField.tsx";
 import CustomButton from "../ui/CustomButton.tsx";
 import classes from "./LoginForm.module.css";
-import { Box, Typography } from "@mui/material";
 
 const LoginForm = () => {
 	return <>
@@ -42,7 +43,7 @@ const LoginForm = () => {
 					<PersonAdd className={ classes['bottom-action-logo'] }/>
 				</CustomButton>
 			</Box>
-		</Box>;
+		</Box>
 	</>;
 };
 
