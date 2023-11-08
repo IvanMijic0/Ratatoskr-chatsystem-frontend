@@ -6,31 +6,40 @@ import RegisterFormInputs from "./register_form_inputs/RegisterFormInputs.tsx";
 import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
+import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
 
 interface FormProps {
 	isLogin: FormStatus;
 }
 
 const Form: React.FC<FormProps> = ( { isLogin } ) => {
-	const usernameValidation = useInput(value => value.match(
-		/^[A-Za-z0-9]{3,20}$/
-	));
+	const loginUsernameValidation = useInput(usernameValidation);
+	const registerUsernameValidation = useInput(usernameValidation);
 
-	const emailValidation = useInput(value => value.match(
-		/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/));
+	const loginEmailValidation = useInput(emailValidation);
+	const registerEmailValidation = useInput(emailValidation);
 
-	const passwordValidation = useInput(value => value.match(
-		/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-	));
+	const loginPasswordValidation = useInput(passwordValidation);
+	const registerPasswordValidation = useInput(passwordValidation);
 
-	let formIsValid: boolean = false;
+	const registerConfirmPasswordValidation = useInput(
+		value => value.match(registerPasswordValidation.value)
+	);
 
-	if ( emailValidation.isValid && passwordValidation.isValid ) {
-		formIsValid = true;
+	let loginFormIsValid: boolean = false;
+	let registerFormIsValid: boolean = false;
+
+	if ( loginUsernameValidation.isValid && loginEmailValidation.isValid && loginPasswordValidation.isValid ) {
+		loginFormIsValid = true;
+	}
+
+	if ( registerUsernameValidation.isValid && registerEmailValidation.isValid && registerPasswordValidation.isValid ) {
+		registerFormIsValid = true;
 	}
 
 	const formSubmissionHandler = () => {
-		if ( !emailValidation.isValid && !passwordValidation.isValid ) {
+		if ( ( !loginUsernameValidation.isValid && !loginEmailValidation.isValid && !loginPasswordValidation.isValid ) ||
+			( !registerUsernameValidation.isValid && !registerEmailValidation.isValid && !registerPasswordValidation.isValid ) ) {
 			return;
 		}
 	};
@@ -43,21 +52,40 @@ const Form: React.FC<FormProps> = ( { isLogin } ) => {
 			{
 				isLogin === FormStatus.LOGIN
 					? <LoginFormInputs
-						formIsValid={ formIsValid }
-						emailChangeHandler={ emailValidation.valueChangeHandler }
-						emailBlurHandler={ emailValidation.inputBlurHandler }
-						enteredEmail={ emailValidation.value }
-						emailHasError={ emailValidation.hasError }
-						passwordChangeHandler={ passwordValidation.valueChangeHandler }
-						passwordBlurHandler={ passwordValidation.inputBlurHandler }
-						enteredPassword={ passwordValidation.value }
-						passwordHasError={ passwordValidation.hasError }
-						usernameChangeHandler={ usernameValidation.valueChangeHandler }
-						usernameBlurHandler={ usernameValidation.inputBlurHandler }
-						enteredUsername={ usernameValidation.value }
-						usernameHasError={ usernameValidation.hasError }
+						formIsValid={ loginFormIsValid }
+						emailChangeHandler={ loginEmailValidation.valueChangeHandler }
+						emailBlurHandler={ loginEmailValidation.inputBlurHandler }
+						enteredEmail={ loginEmailValidation.value }
+						emailHasError={ loginEmailValidation.hasError }
+						passwordChangeHandler={ loginPasswordValidation.valueChangeHandler }
+						passwordBlurHandler={ loginPasswordValidation.inputBlurHandler }
+						enteredPassword={ loginPasswordValidation.value }
+						passwordHasError={ loginPasswordValidation.hasError }
+						usernameChangeHandler={ loginUsernameValidation.valueChangeHandler }
+						usernameBlurHandler={ loginUsernameValidation.inputBlurHandler }
+						enteredUsername={ loginUsernameValidation.value }
+						usernameHasError={ loginUsernameValidation.hasError }
 					/>
-					: <RegisterFormInputs formIsValid={ formIsValid }/> }
+					: <RegisterFormInputs
+						formIsValid={ registerFormIsValid }
+						usernameChangeHandler={ registerUsernameValidation.valueChangeHandler }
+						usernameBlurHandler={ registerUsernameValidation.inputBlurHandler }
+						enteredUsername={ registerUsernameValidation.value }
+						usernameHasError={ registerUsernameValidation.hasError }
+						emailChangeHandler={ registerEmailValidation.valueChangeHandler }
+						emailBlurHandler={ registerEmailValidation.inputBlurHandler }
+						enteredEmail={ registerEmailValidation.value }
+						emailHasError={ registerEmailValidation.hasError }
+						passwordChangeHandler={ registerPasswordValidation.valueChangeHandler }
+						passwordBlurHandler={ registerPasswordValidation.inputBlurHandler }
+						enteredPassword={ registerPasswordValidation.value }
+						passwordHasError={ registerPasswordValidation.hasError }
+						confirmPasswordChangeHandler={ registerConfirmPasswordValidation.valueChangeHandler }
+						confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
+						enteredConfirmPassword={ registerConfirmPasswordValidation.value }
+						confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
+					/>
+			}
 		</Box>
 	</>;
 };

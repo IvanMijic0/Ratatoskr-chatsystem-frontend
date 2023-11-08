@@ -18,7 +18,7 @@ const CustomButton: React.FC<CustomButtonProps> = ( props ) => {
 				"&:active": {
 					backgroundColor: "#202d35",
 				},
-				fontSize: "1.1rem"
+				fontSize: "1.3rem"
 			} }
 		>
 			{ props.children }

@@ -2,58 +2,65 @@ import CustomButton from "../../../ui/CustomButton.tsx";
 import CustomTextField from "../../../ui/CustomTextField.tsx";
 import classes from "./RegisterFormInputs.module.css";
 import React from "react";
+import IRegisterFormProps from "./IRegisterFormProps.ts";
+import {
+	emailTextField,
+	errorEmailTextField,
+	errorPasswordTextField,
+	errorUsernameTextField,
+	passwordTextField,
+	usernameTextField
+} from "../shared/sharedFormInputs.tsx";
 
-interface RegisterFormProps {
-	formIsValid: boolean;
-}
+const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 
-const RegisterFormInputs: React.FC<RegisterFormProps> = ( { formIsValid } ) => {
-	return <>
-		<CustomTextField
-			label="Username"
-			required
-			id="username"
-			name="username"
-			autoComplete="username"
-			margin="normal"
-			autoFocus
-		/>
-		<CustomTextField
-			label="Email Address"
-			required
-			id="email"
-			name="email"
-			autoComplete="email"
-			margin="normal"
-		/>
+	const confirmPasswordTextField = (
 		<CustomTextField
 			margin="normal"
 			required
 			name="password"
-			label="Password"
-			type="password"
-			id="password"
-			autoComplete="new-password"
-		/>
-		<CustomTextField
-			required
-			name="confirmPassword"
 			label="Confirm Password"
 			type="password"
-			id="confirmPassword"
-			autoComplete="new-password"
+			id="password"
+			autoComplete="current-password"
+			onChange={ props.confirmPasswordChangeHandler }
+			onBlur={ props.confirmPasswordBlurHandler }
+			value={ props.enteredConfirmPassword }
+		/>
+	);
+
+	const errorConfirmPasswordTextField = (
+		<CustomTextField
+			error
+			autoComplete="current-password"
+			id="filled-error-helper-text"
+			label="Error"
+			type="password"
+			helperText="8 characters, 1 number and 1 letter"
+			onChange={ props.confirmPasswordChangeHandler }
+			onBlur={ props.confirmPasswordBlurHandler }
+			value={ props.enteredConfirmPassword }
 			margin="normal"
 		/>
-		<CustomButton
-			className={ classes['register-button'] }
-			type="submit"
-			variant="contained"
-			centerRipple
-			disabled={ !formIsValid }
-		>
-			Register
-		</CustomButton>
-	</>;
+	);
+
+	return (
+		<>
+			{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
+			{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
+			{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
+			{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
+			<CustomButton
+				className={ classes['register-button'] }
+				type="submit"
+				variant="contained"
+				centerRipple
+				disabled={ !props.formIsValid }
+			>
+				Register
+			</CustomButton>
+		</>
+	);
 };
 
 export default RegisterFormInputs;
