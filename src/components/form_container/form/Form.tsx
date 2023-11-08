@@ -7,6 +7,7 @@ import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
 import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
+import { useNavigate } from "react-router-dom";
 
 interface FormProps {
 	isLogin: FormStatus;
@@ -21,6 +22,8 @@ const Form: React.FC<FormProps> = ( { isLogin } ) => {
 
 	const loginPasswordValidation = useInput(passwordValidation);
 	const registerPasswordValidation = useInput(passwordValidation);
+
+	const navigate = useNavigate();
 
 	const registerConfirmPasswordValidation = useInput(
 		value => value.match(registerPasswordValidation.value)
@@ -40,10 +43,23 @@ const Form: React.FC<FormProps> = ( { isLogin } ) => {
 	const formSubmissionHandler = ( event: { preventDefault: () => void; } ) => {
 		event.preventDefault();
 
-		if ( ( !loginUsernameValidation.isValid && !loginEmailValidation.isValid && !loginPasswordValidation.isValid ) ||
-			( !registerUsernameValidation.isValid && !registerEmailValidation.isValid && !registerPasswordValidation.isValid ) ) {
-			return;
+		const isLoginNotValid
+			= !loginUsernameValidation.isValid
+			&& !loginEmailValidation.isValid
+			&& !loginPasswordValidation.isValid;
+
+		const isRegisterNotValid
+			= !registerUsernameValidation.isValid
+			&& !registerEmailValidation.isValid
+			&& !registerPasswordValidation.isValid;
+
+		if ( isLogin === FormStatus.LOGIN ) {
+			if ( isLoginNotValid ) return;
+		} else if ( isLogin === FormStatus.REGISTER ) {
+			if ( isRegisterNotValid ) return;
 		}
+
+		navigate("/main");
 	};
 
 	return <>

@@ -5,7 +5,6 @@ export const usernameTextField = ( props: { usernameChangeHandler: React.ChangeE
 	<CustomTextField
 		label="Username"
 		required
-		id="username"
 		name="username"
 		autoComplete="username"
 		margin="normal"
@@ -19,7 +18,6 @@ export const usernameTextField = ( props: { usernameChangeHandler: React.ChangeE
 export const errorUsernameTextField = ( props: { usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredUsername: unknown; } ) => (
 	<CustomTextField
 		error
-		id="filled-error-helper-text"
 		label="Error"
 		helperText="Please enter a valid username."
 		autoComplete="username"
@@ -36,7 +34,6 @@ export const emailTextField = ( props: { emailChangeHandler: React.ChangeEventHa
 		label="Email Address"
 		margin="normal"
 		required
-		id="email"
 		name="email"
 		autoComplete="email"
 		onChange={ props.emailChangeHandler }
@@ -48,7 +45,6 @@ export const emailTextField = ( props: { emailChangeHandler: React.ChangeEventHa
 export const errorEmailTextField = ( props: { emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredEmail: unknown; } ) => (
 	<CustomTextField
 		error
-		id="filled-error-helper-text"
 		label="Error"
 		helperText="Please enter a valid email."
 		autoComplete="email"
@@ -66,7 +62,6 @@ export const passwordTextField = ( props: { passwordChangeHandler: React.ChangeE
 		name="password"
 		label="Password"
 		type="password"
-		id="password"
 		autoComplete="current-password"
 		onChange={ props.passwordChangeHandler }
 		onBlur={ props.passwordBlurHandler }
@@ -78,7 +73,6 @@ export const errorPasswordTextField = ( props: { passwordChangeHandler: React.Ch
 	<CustomTextField
 		error
 		autoComplete="current-password"
-		id="filled-error-helper-text"
 		label="Error"
 		type="password"
 		helperText="8 characters, 1 number and 1 letter"

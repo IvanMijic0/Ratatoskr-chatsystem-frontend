@@ -21,7 +21,6 @@ const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 			name="password"
 			label="Confirm Password"
 			type="password"
-			id="password"
 			autoComplete="current-password"
 			onChange={ props.confirmPasswordChangeHandler }
 			onBlur={ props.confirmPasswordBlurHandler }
@@ -33,7 +32,6 @@ const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 		<CustomTextField
 			error
 			autoComplete="current-password"
-			id="filled-error-helper-text"
 			label="Error"
 			type="password"
 			helperText="8 characters, 1 number and 1 letter"
