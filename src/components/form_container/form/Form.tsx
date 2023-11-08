@@ -37,7 +37,9 @@ const Form: React.FC<FormProps> = ( { isLogin } ) => {
 		registerFormIsValid = true;
 	}
 
-	const formSubmissionHandler = () => {
+	const formSubmissionHandler = ( event: { preventDefault: () => void; } ) => {
+		event.preventDefault();
+
 		if ( ( !loginUsernameValidation.isValid && !loginEmailValidation.isValid && !loginPasswordValidation.isValid ) ||
 			( !registerUsernameValidation.isValid && !registerEmailValidation.isValid && !registerPasswordValidation.isValid ) ) {
 			return;
