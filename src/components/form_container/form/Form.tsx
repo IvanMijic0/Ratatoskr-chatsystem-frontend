@@ -8,12 +8,9 @@ import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
 import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
 import { useNavigate } from "react-router-dom";
+import IFormProps from "./IFormProps.ts";
 
-interface FormProps {
-	isLogin: FormStatus;
-}
-
-const Form: React.FC<FormProps> = ( { isLogin } ) => {
+const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 	const loginUsernameValidation = useInput(usernameValidation);
 	const registerUsernameValidation = useInput(usernameValidation);
 
@@ -67,43 +64,41 @@ const Form: React.FC<FormProps> = ( { isLogin } ) => {
 			{ isLogin === FormStatus.LOGIN ? "Login" : "Register" }
 		</Typography>
 		<Box className={ classes.form } component="form" sx={ { mt: 4 } } onSubmit={ formSubmissionHandler }>
-			{
-				isLogin === FormStatus.LOGIN
-					? <LoginFormInputs
-						formIsValid={ loginFormIsValid }
-						emailChangeHandler={ loginEmailValidation.valueChangeHandler }
-						emailBlurHandler={ loginEmailValidation.inputBlurHandler }
-						enteredEmail={ loginEmailValidation.value }
-						emailHasError={ loginEmailValidation.hasError }
-						passwordChangeHandler={ loginPasswordValidation.valueChangeHandler }
-						passwordBlurHandler={ loginPasswordValidation.inputBlurHandler }
-						enteredPassword={ loginPasswordValidation.value }
-						passwordHasError={ loginPasswordValidation.hasError }
-						usernameChangeHandler={ loginUsernameValidation.valueChangeHandler }
-						usernameBlurHandler={ loginUsernameValidation.inputBlurHandler }
-						enteredUsername={ loginUsernameValidation.value }
-						usernameHasError={ loginUsernameValidation.hasError }
-					/>
-					: <RegisterFormInputs
-						formIsValid={ registerFormIsValid }
-						usernameChangeHandler={ registerUsernameValidation.valueChangeHandler }
-						usernameBlurHandler={ registerUsernameValidation.inputBlurHandler }
-						enteredUsername={ registerUsernameValidation.value }
-						usernameHasError={ registerUsernameValidation.hasError }
-						emailChangeHandler={ registerEmailValidation.valueChangeHandler }
-						emailBlurHandler={ registerEmailValidation.inputBlurHandler }
-						enteredEmail={ registerEmailValidation.value }
-						emailHasError={ registerEmailValidation.hasError }
-						passwordChangeHandler={ registerPasswordValidation.valueChangeHandler }
-						passwordBlurHandler={ registerPasswordValidation.inputBlurHandler }
-						enteredPassword={ registerPasswordValidation.value }
-						passwordHasError={ registerPasswordValidation.hasError }
-						confirmPasswordChangeHandler={ registerConfirmPasswordValidation.valueChangeHandler }
-						confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
-						enteredConfirmPassword={ registerConfirmPasswordValidation.value }
-						confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
-					/>
-			}
+			{ isLogin === FormStatus.LOGIN
+				? <LoginFormInputs
+					formIsValid={ loginFormIsValid }
+					emailChangeHandler={ loginEmailValidation.valueChangeHandler }
+					emailBlurHandler={ loginEmailValidation.inputBlurHandler }
+					enteredEmail={ loginEmailValidation.value }
+					emailHasError={ loginEmailValidation.hasError }
+					passwordChangeHandler={ loginPasswordValidation.valueChangeHandler }
+					passwordBlurHandler={ loginPasswordValidation.inputBlurHandler }
+					enteredPassword={ loginPasswordValidation.value }
+					passwordHasError={ loginPasswordValidation.hasError }
+					usernameChangeHandler={ loginUsernameValidation.valueChangeHandler }
+					usernameBlurHandler={ loginUsernameValidation.inputBlurHandler }
+					enteredUsername={ loginUsernameValidation.value }
+					usernameHasError={ loginUsernameValidation.hasError }
+				/>
+				: <RegisterFormInputs
+					formIsValid={ registerFormIsValid }
+					usernameChangeHandler={ registerUsernameValidation.valueChangeHandler }
+					usernameBlurHandler={ registerUsernameValidation.inputBlurHandler }
+					enteredUsername={ registerUsernameValidation.value }
+					usernameHasError={ registerUsernameValidation.hasError }
+					emailChangeHandler={ registerEmailValidation.valueChangeHandler }
+					emailBlurHandler={ registerEmailValidation.inputBlurHandler }
+					enteredEmail={ registerEmailValidation.value }
+					emailHasError={ registerEmailValidation.hasError }
+					passwordChangeHandler={ registerPasswordValidation.valueChangeHandler }
+					passwordBlurHandler={ registerPasswordValidation.inputBlurHandler }
+					enteredPassword={ registerPasswordValidation.value }
+					passwordHasError={ registerPasswordValidation.hasError }
+					confirmPasswordChangeHandler={ registerConfirmPasswordValidation.valueChangeHandler }
+					confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
+					enteredConfirmPassword={ registerConfirmPasswordValidation.value }
+					confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
+				/> }
 		</Box>
 	</>;
 };

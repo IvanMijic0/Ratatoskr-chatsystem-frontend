@@ -7,7 +7,6 @@ import Home from "./pages/home/Home.tsx";
 import Main from "./pages/main/Main.tsx";
 
 function App() {
-
 	return <BrowserRouter>
 		<Routes>
 			<Route path="/home" element={ <Home/> } index={ true }/>
