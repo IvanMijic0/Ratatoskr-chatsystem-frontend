@@ -3,9 +3,9 @@
     position: relative;
     flex-direction: column;
     align-items: center;
-    height: 65rem;
+    height: 94vh;
     width: 40rem;
-    margin-top: 5vh;
+    margin-top: 3vh;
     background-color: rgb(63, 84, 97);
     border: 1px solid rgb(63, 84, 97);;
 }

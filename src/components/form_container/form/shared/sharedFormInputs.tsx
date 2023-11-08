@@ -18,7 +18,7 @@ export const usernameTextField = ( props: { usernameChangeHandler: React.ChangeE
 export const errorUsernameTextField = ( props: { usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredUsername: unknown; } ) => (
 	<CustomTextField
 		error
-		label="Error"
+		label="Error: Username"
 		helperText="Please enter a valid username."
 		autoComplete="username"
 		autoFocus
@@ -45,7 +45,7 @@ export const emailTextField = ( props: { emailChangeHandler: React.ChangeEventHa
 export const errorEmailTextField = ( props: { emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredEmail: unknown; } ) => (
 	<CustomTextField
 		error
-		label="Error"
+		label="Error: Email Address"
 		helperText="Please enter a valid email."
 		autoComplete="email"
 		onChange={ props.emailChangeHandler }
@@ -73,7 +73,7 @@ export const errorPasswordTextField = ( props: { passwordChangeHandler: React.Ch
 	<CustomTextField
 		error
 		autoComplete="current-password"
-		label="Error"
+		label="Error: Password"
 		type="password"
 		helperText="8 characters, 1 number and 1 letter"
 		onChange={ props.passwordChangeHandler }
