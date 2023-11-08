@@ -8,8 +8,6 @@ const CustomButton: React.FC<CustomButtonProps> = ( props ) => {
 		<Button
 			{ ...props }
 			sx={ {
-				mt: 8,
-				mb: 3,
 				width: "10rem",
 				height: "3rem",
 				backgroundColor: "#557385",
