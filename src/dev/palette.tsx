@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Category, Component, Palette, Variant, } from "@react-buddy/ide-toolbox";
 import MUIPalette from "@react-buddy/palette-mui";
 

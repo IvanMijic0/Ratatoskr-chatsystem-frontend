@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import IFormProps from "./IFormProps.ts";
 
 import LoginFormInputs from "./login_form_inputs/LoginFormInputs.tsx";
 import RegisterFormInputs from "./register_form_inputs/RegisterFormInputs.tsx";
@@ -7,10 +9,11 @@ import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
 import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
-import { useNavigate } from "react-router-dom";
-import IFormProps from "./IFormProps.ts";
+import { login } from "../../../store/action/auth-action.ts";
+
 
 const Form: React.FC<IFormProps> = ( { isLogin } ) => {
+
 	const loginUsernameValidation = useInput(usernameValidation);
 	const registerUsernameValidation = useInput(usernameValidation);
 
@@ -37,7 +40,9 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 		registerFormIsValid = true;
 	}
 
-	const formSubmissionHandler = ( event: { preventDefault: () => void; } ) => {
+	const formSubmissionHandler = async ( event: {
+		preventDefault: () => void;
+	} ) => {
 		event.preventDefault();
 
 		const isLoginNotValid
@@ -56,7 +61,17 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 			if ( isRegisterNotValid ) return;
 		}
 
-		navigate("/main");
+		try {
+			await login({
+				username: loginUsernameValidation.value,
+				email: loginEmailValidation.value,
+				password: loginPasswordValidation.value
+			});
+
+			// navigate("/main");
+		} catch (err) {
+			console.error('Login error:', err);
+		}
 	};
 
 	return <>

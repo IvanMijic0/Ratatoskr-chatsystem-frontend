@@ -1,19 +1,9 @@
-import Grid from '@mui/material/Grid';
-import { Box } from "@mui/material";
-
-import classes from './Home.module.css';
-import FormContainer from "../../components/form_container/FormContainer.tsx";
+import { Typography } from "@mui/material";
 
 const Home = () => {
-	return <Box className={ classes['grid-content'] }>
-		<Grid container direction="row">
-			<Grid item lg={ 6 } sm={ 3 } zeroMinWidth>
-			</Grid>
-			<Grid className={ classes.grid } item lg={ 6 } sm={ 9 } zeroMinWidth>
-				<FormContainer/>
-			</Grid>
-		</Grid>
-	</Box>;
+	return <Typography variant="h2">
+		Data:
+	</Typography>;
 };
 
 export default Home;
