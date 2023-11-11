@@ -11,6 +11,8 @@ import {
 	passwordTextField,
 	usernameTextField
 } from "../shared/sharedFormInputs.tsx";
+import { Box, Typography } from "@mui/material";
+import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 
 const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 
@@ -40,23 +42,30 @@ const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 		/>
 	);
 
-	return (
-		<>
-			{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
-			{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
-			{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
-			{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
-			<CustomButton
-				className={ classes['register-button'] }
-				type="submit"
-				variant="contained"
-				centerRipple
-				disabled={ !props.formIsValid }
-			>
-				Register
-			</CustomButton>
-		</>
-	);
+	return <>
+		{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
+		{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
+		{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
+		{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
+		{ props.isEmailVerificationTokenSent
+			? <Typography className={ classes['email-verification'] } variant="h6">Email Verification Token Sent. Please
+				check your email.</Typography>
+			:
+			<CustomTooltip title="Fill out register form.">
+				<Box className={ classes.tooltip }>
+					<CustomButton
+						className={ classes['register-button'] }
+						type="submit"
+						variant="contained"
+						centerRipple
+						disabled={ !props.formIsValid }
+					>
+						Register
+					</CustomButton>
+				</Box>
+			</CustomTooltip>
+		}
+	</>;
 };
 
 export default RegisterFormInputs;

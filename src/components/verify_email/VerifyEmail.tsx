@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import axiosInstance from "../../configuration/axios-instance.ts";
 import { Box, Paper, Typography } from '@mui/material';
 import classes from './VerifyEmail.module.css';
 import CustomButton from "../ui/CustomButton.tsx";
+import { axiosInstanceWithoutCredentials } from "../../configuration/axios-instance.ts";
 
 function VerifyEmail() {
 	const navigate = useNavigate();
@@ -12,14 +12,12 @@ function VerifyEmail() {
 	const queryParams = new URLSearchParams(location.search);
 	const code = queryParams.get('code') || '';
 
-	const [verificationStatus, setVerificationStatus] = useState('');
+	const [verificationStatus, setVerificationStatus] = useState('Email verified successfully!');
 	const [isRedirect, setIsRedirect] = useState(false);
 
 	useEffect(() => {
 		const verifyEmail = async () => {
-			const response = await axiosInstance.get(`verifyEmailToken?code=${ code }`);
-
-			console.log(response.data);
+			const response = await axiosInstanceWithoutCredentials.get(`/auth/verifyEmailToken?code=${ code }`);
 
 			if ( response.data === 'Successful verification!' ) {
 				setVerificationStatus('Email verified successfully!');
@@ -38,7 +36,7 @@ function VerifyEmail() {
 				console.error('Error verifying email:', error);
 				setVerificationStatus('Error verifying email.');
 			});
-	}, [code, navigate]);
+	}, [code]);
 
 	const loginButtonHandler = () => {
 		navigate("/guest");

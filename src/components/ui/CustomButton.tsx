@@ -1,12 +1,23 @@
-import { Button, ButtonProps } from "@mui/material";
 import React from "react";
+import { Button, ButtonProps } from "@mui/material";
+import CustomTooltip from "./CustomTooltip.tsx";
 
-type CustomButtonProps = ButtonProps;
+interface CustomButtonProps extends ButtonProps {
+	showTooltip?: boolean;
+	tooltipTitle?: string;
+	tooltipPlacement?: "bottom" | "left" | "right" | "top" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top-end" | "top-start" | undefined;
+}
 
-const CustomButton: React.FC<CustomButtonProps> = ( props ) => {
-	return (
+const CustomButton: React.FC<CustomButtonProps> = ( {
+														children,
+														showTooltip = false,
+														tooltipTitle = "Default Tooltip Title",
+														tooltipPlacement = 'top',
+														...otherProps
+													} ) => {
+	const buttonComponent = (
 		<Button
-			{ ...props }
+			{ ...otherProps }
 			sx={ {
 				width: "10rem",
 				height: "3rem",
@@ -18,12 +29,23 @@ const CustomButton: React.FC<CustomButtonProps> = ( props ) => {
 				"&:active": {
 					backgroundColor: "#202d35",
 				},
-				fontSize: "1.3rem"
+				fontSize: "1.3rem",
 			} }
 		>
-			{ props.children }
+			{ children }
 		</Button>
 	);
+
+	if ( showTooltip ) {
+		return (
+			<CustomTooltip title={ tooltipTitle } arrow placement={ tooltipPlacement }>
+				{ buttonComponent }
+			</CustomTooltip>
+		);
+	}
+
+	return buttonComponent;
 };
 
 export default CustomButton;
+

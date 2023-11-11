@@ -10,6 +10,8 @@ import {
 	passwordTextField,
 	usernameTextField
 } from "../shared/sharedFormInputs.tsx";
+import { Box } from "@mui/material";
+import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 
 const LoginFormInputs: React.FC<ILoginFormProps> = ( props ) => {
 	return (
@@ -17,15 +19,19 @@ const LoginFormInputs: React.FC<ILoginFormProps> = ( props ) => {
 			{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
 			{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
 			{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
-			<CustomButton
-				className={ classes['login-button'] }
-				type="submit"
-				variant="contained"
-				centerRipple
-				disabled={ !props.formIsValid }
-			>
-				Login
-			</CustomButton>
+			<CustomTooltip title="Fill out Login form.">
+				<Box className={ classes.tooltip }>
+					<CustomButton
+						className={ classes['login-button'] }
+						type="submit"
+						variant="contained"
+						centerRipple
+						disabled={ !props.formIsValid }
+					>
+						Login
+					</CustomButton>
+				</Box>
+			</CustomTooltip>
 		</>
 	);
 };

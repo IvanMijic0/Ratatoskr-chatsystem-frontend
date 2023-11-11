@@ -24,10 +24,20 @@ const FormContainer = () => {
 		</Box>
 		<Form isLogin={ formStatus }/>
 		<Box className={ classes['bottom-actions-container'] }>
-			<CustomButton className={ classes['bottom-action-button'] } onClick={ loginButtonHandler }>
+			<CustomButton
+				className={ classes['bottom-action-button'] }
+				showTooltip
+				tooltipTitle="Login"
+				onClick={ loginButtonHandler }
+			>
 				<LockOpen className={ classes['bottom-action-logo'] }/>
 			</CustomButton>
-			<CustomButton className={ classes['bottom-action-button'] } onClick={ registerButtonHandler }>
+			<CustomButton
+				className={ classes['bottom-action-button'] }
+				showTooltip
+				tooltipTitle="Register"
+				onClick={ registerButtonHandler }
+			>
 				<PersonAdd className={ classes['bottom-action-logo'] }/>
 			</CustomButton>
 		</Box>

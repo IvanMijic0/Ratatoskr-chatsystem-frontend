@@ -1,3 +1,7 @@
 .login-button {
     margin-top: 2rem;
 }
+
+.tooltip:hover {
+    cursor: pointer;
+}

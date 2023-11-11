@@ -1,44 +1,45 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Guest from "./pages/guest/Guest.tsx";
+import { createBrowserRouter, Navigate, RouteObject, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
 import Home from "./pages/home/Home.tsx";
-import axiosInstance from "./configuration/axios-instance.ts";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
+import homeLoader from "./pages/home/homeLoader.ts";
+import Guest from "./pages/guest/Guest.tsx";
+import { validateTokenAsync } from "./store/action/auth-action.ts";
+import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks.ts";
+import { selectIsAuthenticated } from "./store/slice/auth-slice.ts";
 
-function App() {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+const App = () => {
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		axiosInstance.post('/validateToken')
-			.then(() => setIsAuthenticated(true)).catch(() => setIsAuthenticated(false));
-	}, []);
+		dispatch(validateTokenAsync());
+	}, [dispatch, isAuthenticated]);
 
-	return <BrowserRouter>
-		<Routes>
-			<Route
-				path="/guest"
-				element={ isAuthenticated ? <Navigate to="/home"/> : <Guest/> }
-				index={ true }
-			/>
-			<Route
-				path="/home"
-				element={ isAuthenticated ? <Home/> : <Navigate to="/guest"/> }
-			/>
-			<Route
-				path="/verify-email-token"
-				element={ <VerifyEmail/> }
-			/>
-			<Route
-				path=""
-				element={ isAuthenticated ? <Navigate to="/home"/> : <Navigate to="/guest"/> }
-			/>
-		</Routes>
+	const routerConfig: RouteObject[] = [
+		{
+			path: '/guest',
+			element: isAuthenticated ? <Navigate to="/home"/> : <Guest/>,
+			index: true,
+		},
+		{
+			path: '/home',
+			element: isAuthenticated ? <Home/> : <Navigate to="/guest"/>,
+			loader: homeLoader
+		},
+		{
+			path: '/verify-email-token',
+			element: <VerifyEmail/>,
+		},
+		{
+			path: '',
+			element: <Navigate to="/guest"/>,
+		},
+	];
 
-	</BrowserRouter>;
-}
+	const router = createBrowserRouter(routerConfig);
+
+	return <RouterProvider router={ router }/>;
+};
 
 export default App;

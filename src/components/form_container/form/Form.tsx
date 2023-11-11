@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IFormProps from "./IFormProps.ts";
 
@@ -9,10 +9,18 @@ import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
 import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
-import { login } from "../../../store/action/auth-action.ts";
+import {
+	axiosInstanceWithCredentials,
+	axiosInstanceWithoutCredentials
+} from "../../../configuration/axios-instance.ts";
+import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
+import { validateTokenAsync } from "../../../store/action/auth-action.ts";
 
 
 const Form: React.FC<IFormProps> = ( { isLogin } ) => {
+	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
+	const dispatch = useAppDispatch();
+
 
 	const loginUsernameValidation = useInput(usernameValidation);
 	const registerUsernameValidation = useInput(usernameValidation);
@@ -40,6 +48,43 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 		registerFormIsValid = true;
 	}
 
+	const loginHandler = async () => {
+		try {
+			await axiosInstanceWithCredentials.post(`/auth/login`, {
+				username: loginUsernameValidation.value,
+				email: loginEmailValidation.value,
+				password: loginPasswordValidation.value
+			});
+			dispatch(validateTokenAsync());
+
+			navigate("/home");
+			return Promise.resolve();
+		} catch (error: any) {
+			console.error('Authentication error:', error);
+			const errorMessage = error.response?.data?.statusText || 'Authentication failed.';
+			return Promise.reject(errorMessage);
+
+		}
+	};
+
+	const registerHandler = async () => {
+		try {
+			await axiosInstanceWithoutCredentials.post(`auth/register`, {
+				username: registerUsernameValidation.value,
+				email: registerEmailValidation.value,
+				password: registerPasswordValidation.value
+			});
+
+			setIsEmailVerificationSent(true);
+			return Promise.resolve();
+		} catch (error: any) {
+			console.error('Registration error:', error);
+			const errorMessage = error.response?.data?.statusText || 'Registration failed.';
+			return Promise.reject(errorMessage);
+
+		}
+	};
+
 	const formSubmissionHandler = async ( event: {
 		preventDefault: () => void;
 	} ) => {
@@ -57,20 +102,10 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 
 		if ( isLogin === FormStatus.LOGIN ) {
 			if ( isLoginNotValid ) return;
+			await loginHandler();
 		} else if ( isLogin === FormStatus.REGISTER ) {
 			if ( isRegisterNotValid ) return;
-		}
-
-		try {
-			await login({
-				username: loginUsernameValidation.value,
-				email: loginEmailValidation.value,
-				password: loginPasswordValidation.value
-			});
-
-			// navigate("/main");
-		} catch (err) {
-			console.error('Login error:', err);
+			await registerHandler();
 		}
 	};
 
@@ -96,6 +131,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					usernameHasError={ loginUsernameValidation.hasError }
 				/>
 				: <RegisterFormInputs
+					isEmailVerificationTokenSent={ isEmailVerificationSent }
 					formIsValid={ registerFormIsValid }
 					usernameChangeHandler={ registerUsernameValidation.valueChangeHandler }
 					usernameBlurHandler={ registerUsernameValidation.inputBlurHandler }
@@ -113,7 +149,8 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
 					enteredConfirmPassword={ registerConfirmPasswordValidation.value }
 					confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
-				/> }
+				/>
+			}
 		</Box>
 	</>;
 };

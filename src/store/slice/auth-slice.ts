@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import IAuthState from "./IAuthState.ts";
+import { RootState } from "../index.ts";
 
 
 const initialState: IAuthState = {
-	token: null,
 	isAuthenticated: false,
 };
 
@@ -11,16 +11,12 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		setToken: ( state, action ) => {
-			state.token = action.payload;
-			state.isAuthenticated = !!action.payload;
+		setIsAuthenticated: ( state, action: PayloadAction<boolean> ) => {
+			state.isAuthenticated = action.payload;
 		},
-		clearToken: state => {
-			state.token = null;
-			state.isAuthenticated = false;
-		}
-	}
+	},
 });
 
-export const { setToken, clearToken } = authSlice.actions;
+export const selectIsAuthenticated = ( state: RootState ) => state.auth.isAuthenticated;
+export const { setIsAuthenticated } = authSlice.actions;
 export default authSlice.reducer;

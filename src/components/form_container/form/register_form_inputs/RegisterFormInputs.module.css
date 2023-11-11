@@ -1,3 +1,11 @@
 .register-button {
     margin-top: 2rem;
 }
+
+.tooltip:hover {
+    cursor: pointer;
+}
+
+.email-verification {
+    color: whitesmoke;
+}

@@ -18,6 +18,7 @@ interface IRegisterFormProps {
 	confirmPasswordBlurHandler: FocusEventHandler<HTMLInputElement> | undefined,
 	enteredConfirmPassword: string | number | readonly string[] | undefined,
 	confirmPasswordHasError: boolean
+	isEmailVerificationTokenSent: boolean
 }
 
 export default IRegisterFormProps;
