@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import classes from './VerifyEmail.module.css';
 import CustomButton from "../ui/CustomButton.tsx";
 import { axiosInstanceWithoutCredentials } from "../../configuration/axios-instance.ts";
+import TransitionBackground from "../ui/transition/TransitionBackground.tsx";
 
 function VerifyEmail() {
 	const navigate = useNavigate();
@@ -42,14 +43,14 @@ function VerifyEmail() {
 		navigate("/guest");
 	};
 
-	return <Box className={ classes.background }>
+	return <TransitionBackground>
 		<Paper className={ classes['text-container'] }>
 			<Typography className={ classes.text } variant="h4">Ratatoskr mailing service</Typography>
 			<Typography className={ classes.text } variant="h5">{ verificationStatus }</Typography>
 			{ isRedirect &&
               <CustomButton className={ classes.button } onClick={ loginButtonHandler }>Login</CustomButton> }
 		</Paper>
-	</Box>;
+	</TransitionBackground>;
 }
 
 export default VerifyEmail;

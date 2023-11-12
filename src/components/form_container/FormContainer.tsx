@@ -5,11 +5,12 @@ import { useState } from "react";
 import Form from "./form/Form.tsx";
 import runeTitle from "../../assets/runes.svg";
 import classes from "./FormContainer.module.css";
-import CustomButton from "../ui/CustomButton.tsx";
 import FormStatus from "./form/FormStatus.ts";
+import CustomCircularButton from "../ui/CustomCircularButton.tsx";
 
 const FormContainer = () => {
 	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.LOGIN);
+
 	const loginButtonHandler = () => {
 		setFormStatus(FormStatus.LOGIN);
 	};
@@ -24,22 +25,22 @@ const FormContainer = () => {
 		</Box>
 		<Form isLogin={ formStatus }/>
 		<Box className={ classes['bottom-actions-container'] }>
-			<CustomButton
+			<CustomCircularButton
 				className={ classes['bottom-action-button'] }
 				showTooltip
 				tooltipTitle="Login"
 				onClick={ loginButtonHandler }
 			>
 				<LockOpen className={ classes['bottom-action-logo'] }/>
-			</CustomButton>
-			<CustomButton
+			</CustomCircularButton>
+			<CustomCircularButton
 				className={ classes['bottom-action-button'] }
 				showTooltip
 				tooltipTitle="Register"
 				onClick={ registerButtonHandler }
 			>
 				<PersonAdd className={ classes['bottom-action-logo'] }/>
-			</CustomButton>
+			</CustomCircularButton>
 		</Box>
 	</Paper>;
 };

@@ -8,7 +8,12 @@ import RegisterFormInputs from "./register_form_inputs/RegisterFormInputs.tsx";
 import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
-import { emailValidation, passwordValidation, usernameValidation } from "./shared/validationRegex.ts";
+import {
+	emailValidation,
+	passwordValidation,
+	usernameOrEmailValidation,
+	usernameValidation
+} from "./shared/validationRegex.ts";
 import {
 	axiosInstanceWithCredentials,
 	axiosInstanceWithoutCredentials
@@ -16,22 +21,17 @@ import {
 import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
 import { validateTokenAsync } from "../../../store/action/auth-action.ts";
 
-
 const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
-
-	const loginUsernameValidation = useInput(usernameValidation);
 	const registerUsernameValidation = useInput(usernameValidation);
+	const loginEmailValidation = useInput(usernameOrEmailValidation);
 
-	const loginEmailValidation = useInput(emailValidation);
 	const registerEmailValidation = useInput(emailValidation);
-
 	const loginPasswordValidation = useInput(passwordValidation);
 	const registerPasswordValidation = useInput(passwordValidation);
-
-	const navigate = useNavigate();
 
 	const registerConfirmPasswordValidation = useInput(
 		value => value.match(registerPasswordValidation.value)
@@ -40,19 +40,21 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 	let loginFormIsValid: boolean = false;
 	let registerFormIsValid: boolean = false;
 
-	if ( loginUsernameValidation.isValid && loginEmailValidation.isValid && loginPasswordValidation.isValid ) {
+	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) {
 		loginFormIsValid = true;
 	}
 
-	if ( registerUsernameValidation.isValid && registerEmailValidation.isValid && registerPasswordValidation.isValid ) {
+	if ( registerUsernameValidation.isValid &&
+		registerEmailValidation.isValid &&
+		registerPasswordValidation.isValid &&
+		registerConfirmPasswordValidation.isValid ) {
 		registerFormIsValid = true;
 	}
 
 	const loginHandler = async () => {
 		try {
 			await axiosInstanceWithCredentials.post(`/auth/login`, {
-				username: loginUsernameValidation.value,
-				email: loginEmailValidation.value,
+				usernameOrEmail: loginEmailValidation.value,
 				password: loginPasswordValidation.value
 			});
 			dispatch(validateTokenAsync());
@@ -91,14 +93,14 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 		event.preventDefault();
 
 		const isLoginNotValid
-			= !loginUsernameValidation.isValid
-			&& !loginEmailValidation.isValid
+			= !loginEmailValidation.isValid
 			&& !loginPasswordValidation.isValid;
 
 		const isRegisterNotValid
 			= !registerUsernameValidation.isValid
 			&& !registerEmailValidation.isValid
-			&& !registerPasswordValidation.isValid;
+			&& !registerPasswordValidation.isValid
+			&& !registerConfirmPasswordValidation.isValid;
 
 		if ( isLogin === FormStatus.LOGIN ) {
 			if ( isLoginNotValid ) return;
@@ -125,10 +127,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					passwordBlurHandler={ loginPasswordValidation.inputBlurHandler }
 					enteredPassword={ loginPasswordValidation.value }
 					passwordHasError={ loginPasswordValidation.hasError }
-					usernameChangeHandler={ loginUsernameValidation.valueChangeHandler }
-					usernameBlurHandler={ loginUsernameValidation.inputBlurHandler }
-					enteredUsername={ loginUsernameValidation.value }
-					usernameHasError={ loginUsernameValidation.hasError }
+					helperText="Please enter valid username or email."
 				/>
 				: <RegisterFormInputs
 					isEmailVerificationTokenSent={ isEmailVerificationSent }
@@ -149,6 +148,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
 					enteredConfirmPassword={ registerConfirmPasswordValidation.value }
 					confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
+					helperText="Please enter valid email."
 				/>
 			}
 		</Box>

@@ -1,7 +1,11 @@
 import CustomTextField from "../../../ui/CustomTextField.tsx";
 import React from "react";
 
-export const usernameTextField = ( props: { usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredUsername: unknown; } ) => (
+export const usernameTextField = ( props: {
+	usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	enteredUsername: unknown;
+} ) => (
 	<CustomTextField
 		label="Username"
 		required
@@ -15,7 +19,11 @@ export const usernameTextField = ( props: { usernameChangeHandler: React.ChangeE
 	/>
 );
 
-export const errorUsernameTextField = ( props: { usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredUsername: unknown; } ) => (
+export const errorUsernameTextField = ( props: {
+	usernameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	usernameBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	enteredUsername: unknown;
+} ) => (
 	<CustomTextField
 		error
 		label="Error: Username"
@@ -29,9 +37,13 @@ export const errorUsernameTextField = ( props: { usernameChangeHandler: React.Ch
 	/>
 );
 
-export const emailTextField = ( props: { emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredEmail: unknown; } ) => (
+export const emailTextField = ( props: {
+	emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	enteredEmail: unknown;
+} ) => (
 	<CustomTextField
-		label="Email Address"
+		label="Email or Username"
 		margin="normal"
 		required
 		name="email"
@@ -42,11 +54,16 @@ export const emailTextField = ( props: { emailChangeHandler: React.ChangeEventHa
 	/>
 );
 
-export const errorEmailTextField = ( props: { emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredEmail: unknown; } ) => (
+export const errorEmailTextField = ( props: {
+	emailChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	emailBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	helperText: string;
+	enteredEmail: unknown;
+} ) => (
 	<CustomTextField
 		error
-		label="Error: Email Address"
-		helperText="Please enter a valid email."
+		label="Error: Email or Username"
+		helperText={ props.helperText }
 		autoComplete="email"
 		onChange={ props.emailChangeHandler }
 		onBlur={ props.emailBlurHandler }
@@ -55,7 +72,11 @@ export const errorEmailTextField = ( props: { emailChangeHandler: React.ChangeEv
 	/>
 );
 
-export const passwordTextField = ( props: { passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; passwordBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredPassword: unknown; } ) => (
+export const passwordTextField = ( props: {
+	passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	passwordBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	enteredPassword: unknown;
+} ) => (
 	<CustomTextField
 		margin="normal"
 		required
@@ -69,13 +90,17 @@ export const passwordTextField = ( props: { passwordChangeHandler: React.ChangeE
 	/>
 );
 
-export const errorPasswordTextField = ( props: { passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; passwordBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined; enteredPassword: unknown; } ) => (
+export const errorPasswordTextField = ( props: {
+	passwordChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	passwordBlurHandler: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined;
+	enteredPassword: unknown;
+} ) => (
 	<CustomTextField
 		error
 		autoComplete="current-password"
 		label="Error: Password"
 		type="password"
-		helperText="8 characters, 1 number and 1 letter"
+		helperText="valid: 8 characters, 1 number and 1 letter"
 		onChange={ props.passwordChangeHandler }
 		onBlur={ props.passwordBlurHandler }
 		value={ props.enteredPassword }

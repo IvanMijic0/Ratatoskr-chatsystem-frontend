@@ -26,8 +26,9 @@ axiosInstanceWithCredentials.interceptors.response.use(
 					return axiosInstanceWithCredentials(error.config);
 				} else {
 					console.log('User is not authenticated. Redirect to login page.');
-					window.location.href = '/login';
 				}
+			} else if ( status === 403 ) {
+				console.log("You are forbidden from accessing this.");
 			}
 		}
 
@@ -35,13 +36,26 @@ axiosInstanceWithCredentials.interceptors.response.use(
 	}
 );
 
-
 const axiosInstanceWithoutCredentials = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
 	withCredentials: false,
 });
 
+const axiosInstanceGoogle = axios.create({
+	baseURL: 'https://www.googleapis.com/',
+	headers: {
+		Accept: 'application/json',
+	},
+});
+
 export { axiosInstanceWithCredentials, axiosInstanceWithoutCredentials };
 
+export const fetchGoogleUserInfo = ( accessToken: string | undefined ) => {
+	return axiosInstanceGoogle.get(`/oauth2/v1/userinfo?access_token=${ accessToken }`, {
+		headers: {
+			Authorization: `Bearer ${ accessToken }`,
+		}
+	},);
+};
 
 

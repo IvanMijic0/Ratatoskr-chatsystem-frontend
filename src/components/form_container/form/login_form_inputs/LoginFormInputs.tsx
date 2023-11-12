@@ -6,34 +6,33 @@ import {
 	emailTextField,
 	errorEmailTextField,
 	errorPasswordTextField,
-	errorUsernameTextField,
-	passwordTextField,
-	usernameTextField
+	passwordTextField
 } from "../shared/sharedFormInputs.tsx";
 import { Box } from "@mui/material";
 import CustomTooltip from "../../../ui/CustomTooltip.tsx";
+import GoogleLoginButton from "../google_button/GoogleLoginButton.tsx";
 
 const LoginFormInputs: React.FC<ILoginFormProps> = ( props ) => {
-	return (
-		<>
-			{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
-			{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
-			{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
-			<CustomTooltip title="Fill out Login form.">
-				<Box className={ classes.tooltip }>
-					<CustomButton
-						className={ classes['login-button'] }
-						type="submit"
-						variant="contained"
-						centerRipple
-						disabled={ !props.formIsValid }
-					>
-						Login
-					</CustomButton>
-				</Box>
-			</CustomTooltip>
-		</>
-	);
+	return <>
+		{ !props.emailHasError ? emailTextField(props) : errorEmailTextField(props) }
+		{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
+		<CustomTooltip title={ !props.formIsValid ? "Please fill out Login form." : "" }>
+			<Box className={ classes.tooltip }>
+				<CustomButton
+					className={ classes['login-button'] }
+					type="submit"
+					variant="contained"
+					centerRipple
+					disabled={ !props.formIsValid }
+				>
+					Login
+				</CustomButton>
+			</Box>
+		</CustomTooltip>
+		<Box className={ classes['google-button'] }>
+			<GoogleLoginButton/>
+		</Box>
+	</>;
 };
 
 export default LoginFormInputs;

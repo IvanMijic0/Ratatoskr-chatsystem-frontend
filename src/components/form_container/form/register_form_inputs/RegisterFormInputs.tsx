@@ -1,7 +1,9 @@
+import { Box, Typography } from "@mui/material";
+import CustomTooltip from "../../../ui/CustomTooltip.tsx";
+import React from "react";
+
 import CustomButton from "../../../ui/CustomButton.tsx";
 import CustomTextField from "../../../ui/CustomTextField.tsx";
-import classes from "./RegisterFormInputs.module.css";
-import React from "react";
 import IRegisterFormProps from "./IRegisterFormProps.ts";
 import {
 	emailTextField,
@@ -11,36 +13,31 @@ import {
 	passwordTextField,
 	usernameTextField
 } from "../shared/sharedFormInputs.tsx";
-import { Box, Typography } from "@mui/material";
-import CustomTooltip from "../../../ui/CustomTooltip.tsx";
+import classes from "./RegisterFormInputs.module.css";
 
 const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 
-	const confirmPasswordTextField = (
-		<CustomTextField
-			margin="normal"
-			required
-			name="password"
-			label="Confirm Password"
-			type="password"
-			onChange={ props.confirmPasswordChangeHandler }
-			onBlur={ props.confirmPasswordBlurHandler }
-			value={ props.enteredConfirmPassword }
-		/>
-	);
+	const confirmPasswordTextField = <CustomTextField
+		margin="normal"
+		required
+		name="password"
+		label="Confirm Password"
+		type="password"
+		onChange={ props.confirmPasswordChangeHandler }
+		onBlur={ props.confirmPasswordBlurHandler }
+		value={ props.enteredConfirmPassword }
+	/>;
 
-	const errorConfirmPasswordTextField = (
-		<CustomTextField
-			error
-			label="Error: Confirm Password"
-			type="password"
-			helperText="Does not match password."
-			onChange={ props.confirmPasswordChangeHandler }
-			onBlur={ props.confirmPasswordBlurHandler }
-			value={ props.enteredConfirmPassword }
-			margin="normal"
-		/>
-	);
+	const errorConfirmPasswordTextField = <CustomTextField
+		error
+		label="Error: Confirm Password"
+		type="password"
+		helperText="Does not match password."
+		onChange={ props.confirmPasswordChangeHandler }
+		onBlur={ props.confirmPasswordBlurHandler }
+		value={ props.enteredConfirmPassword }
+		margin="normal"
+	/>;
 
 	return <>
 		{ !props.usernameHasError ? usernameTextField(props) : errorUsernameTextField(props) }
@@ -51,7 +48,7 @@ const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 			? <Typography className={ classes['email-verification'] } variant="h6">Email Verification Token Sent. Please
 				check your email.</Typography>
 			:
-			<CustomTooltip title="Fill out register form.">
+			<CustomTooltip title={ !props.formIsValid ? "Please fill out register form." : "" }>
 				<Box className={ classes.tooltip }>
 					<CustomButton
 						className={ classes['register-button'] }
