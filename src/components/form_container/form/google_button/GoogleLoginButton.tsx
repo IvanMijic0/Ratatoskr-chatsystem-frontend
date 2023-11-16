@@ -41,7 +41,6 @@ const GoogleLoginButton = () => {
 		onError: ( error ) => console.log('Login failed: ' + error),
 	});
 
-
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {

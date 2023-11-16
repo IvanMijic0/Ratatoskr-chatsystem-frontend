@@ -1,23 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-import authReducer from './slice/auth-slice';
+import thunk from 'redux-thunk';
+import { persistStore } from "redux-persist";
+import persistedReducer from "./persistConfig.ts"; // Import redux-thunk
 
 const store = configureStore({
 	reducer: {
-		auth: authReducer,
+		auth: persistedReducer,
 	},
-	middleware: getDefaultMiddleware => {
-		return getDefaultMiddleware({
-			serializableCheck: false
-		});
-	}
+	middleware: ( getDefaultMiddleware ) => getDefaultMiddleware().concat(thunk),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 
-// TODO figure out why persistance did not work
+const persistor = persistStore(store);
 
-export { store };
+// export { store };
 
-// export { store, persistor };
+export { store, persistor };
