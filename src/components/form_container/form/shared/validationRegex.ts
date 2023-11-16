@@ -5,7 +5,7 @@ export const emailValidation = ( value: any ) => value.match(
 );
 
 export const usernameOrEmailValidation = ( value: any ) => value.match(
-	/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$|^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+	/^[a-zA-Z0-9_.]{1,30}$|^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
 export const passwordValidation = ( value: any ) => value.match(
 	/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/

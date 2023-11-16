@@ -7,7 +7,7 @@ import classes from "./FormDialog.module.css";
 import { errorPasswordTextField, passwordTextField } from "../shared/sharedFormInputs.tsx";
 import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 import IFormDialogProps from "./IFormDialog.ts";
-import { axiosInstanceWithCredentials } from "../../../../configuration/axios-instance.ts";
+import axios from "axios";
 
 const FormDialog: React.FC<IFormDialogProps> = ( props ) => {
 	const [isRegistered, setIsRegistered] = useState(false);
@@ -40,7 +40,7 @@ const FormDialog: React.FC<IFormDialogProps> = ( props ) => {
 	};
 
 	const registerWithGoogleHandler = async () => {
-		const googleRegisterResponse = await axiosInstanceWithCredentials.post(`/auth/registerWithGoogle`, {
+		const googleRegisterResponse = await axios.post(`http://localhost:8080/api/v1/auth/registerWithGoogle`, {
 			email: props.userData?.email,
 			firstName: props.userData?.given_name,
 			lastName: props.userData?.family_name,

@@ -1,12 +1,13 @@
 import axios from 'axios';
-import store from "../store";
+import { store } from "../store";
 
-const axiosInstanceWithCredentials = axios.create({
+const instance = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
-	withCredentials: true,
 });
 
-axiosInstanceWithCredentials.interceptors.response.use(
+instance.defaults.headers.common['Authorization'] = `Bearer ${ localStorage.getItem('jwt') || null }`;
+
+instance.interceptors.response.use(
 	( response ) => response,
 	async ( error ) => {
 		const { response } = error;
@@ -18,12 +19,12 @@ axiosInstanceWithCredentials.interceptors.response.use(
 
 				if ( isAuthenticated ) {
 					try {
-						await axiosInstanceWithCredentials.get('auth/refreshToken');
+						await instance.get('/auth/refreshToken');
 					} catch (error) {
 						throw Error('Could not Refresh token.');
 					}
 
-					return axiosInstanceWithCredentials(error.config);
+					return instance(error.config);
 				} else {
 					console.log('User is not authenticated. Redirect to login page.');
 				}
@@ -36,10 +37,7 @@ axiosInstanceWithCredentials.interceptors.response.use(
 	}
 );
 
-const axiosInstanceWithoutCredentials = axios.create({
-	baseURL: 'http://localhost:8080/api/v1',
-	withCredentials: false,
-});
+export default instance;
 
 const axiosInstanceGoogle = axios.create({
 	baseURL: 'https://www.googleapis.com/',
@@ -47,8 +45,6 @@ const axiosInstanceGoogle = axios.create({
 		Accept: 'application/json',
 	},
 });
-
-export { axiosInstanceWithCredentials, axiosInstanceWithoutCredentials };
 
 export const fetchGoogleUserInfo = ( accessToken: string | undefined ) => {
 	return axiosInstanceGoogle.get(`/oauth2/v1/userinfo?access_token=${ accessToken }`, {

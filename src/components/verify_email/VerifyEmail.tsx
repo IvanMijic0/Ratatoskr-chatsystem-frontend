@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Paper, Typography } from '@mui/material';
 import classes from './VerifyEmail.module.css';
 import CustomButton from "../ui/CustomButton.tsx";
-import { axiosInstanceWithoutCredentials } from "../../configuration/axios-instance.ts";
 import TransitionBackground from "../ui/transition/TransitionBackground.tsx";
+import axios from "axios";
 
 function VerifyEmail() {
 	const navigate = useNavigate();
@@ -18,7 +18,7 @@ function VerifyEmail() {
 
 	useEffect(() => {
 		const verifyEmail = async () => {
-			const response = await axiosInstanceWithoutCredentials.get(`/auth/verifyEmailToken?code=${ code }`);
+			const response = await axios.get(`/auth/verifyEmailToken?code=${ code }`);
 
 			if ( response.data === 'Successful verification!' ) {
 				setVerificationStatus('Email verified successfully!');

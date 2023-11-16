@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import IFormProps from "./IFormProps.ts";
 
 import LoginFormInputs from "./login_form_inputs/LoginFormInputs.tsx";
@@ -14,17 +13,13 @@ import {
 	usernameOrEmailValidation,
 	usernameValidation
 } from "./shared/validationRegex.ts";
-import {
-	axiosInstanceWithCredentials,
-	axiosInstanceWithoutCredentials
-} from "../../../configuration/axios-instance.ts";
 import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
-import { validateTokenAsync } from "../../../store/action/auth-action.ts";
+import { setAuthData } from "../../../store/action/auth-action.ts";
+import axios from "axios";
 
 const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	const registerUsernameValidation = useInput(usernameValidation);
 	const loginEmailValidation = useInput(usernameOrEmailValidation);
@@ -53,13 +48,11 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 
 	const loginHandler = async () => {
 		try {
-			await axiosInstanceWithCredentials.post(`/auth/login`, {
+			dispatch(setAuthData({
 				usernameOrEmail: loginEmailValidation.value,
 				password: loginPasswordValidation.value
-			});
-			dispatch(validateTokenAsync());
+			}, undefined));
 
-			navigate("/home");
 			return Promise.resolve();
 		} catch (error: any) {
 			console.error('Authentication error:', error);
@@ -71,7 +64,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 
 	const registerHandler = async () => {
 		try {
-			await axiosInstanceWithoutCredentials.post(`auth/register`, {
+			await axios.post(`auth/register`, {
 				username: registerUsernameValidation.value,
 				email: registerEmailValidation.value,
 				password: registerPasswordValidation.value

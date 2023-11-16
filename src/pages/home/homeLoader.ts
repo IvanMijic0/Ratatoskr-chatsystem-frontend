@@ -1,9 +1,10 @@
 import { LoaderFunction } from "react-router-dom";
-import { axiosInstanceWithCredentials } from "../../configuration/axios-instance.ts";
+import axiosInstance from "../../configuration/axios-instance.ts";
 
 const homeLoader: LoaderFunction | undefined = async () => {
 	try {
-		const response = await axiosInstanceWithCredentials.get(`/user/specific`);
+		const response = await axiosInstance.get(`/user/specific`);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log("Error fetching user data: ", error);

@@ -4,15 +4,16 @@ import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { axiosInstanceWithCredentials, fetchGoogleUserInfo } from "../../../../configuration/axios-instance.ts";
+import { fetchGoogleUserInfo } from "../../../../configuration/axios-instance.ts";
 import CustomButton from "../../../ui/CustomButton.tsx";
 import { useAppDispatch } from "../../../../hooks/redux-hooks.ts";
 import classes from "./GoogleLoginButton.module.css";
-import { validateTokenAsync } from "../../../../store/action/auth-action.ts";
+import { setAuthData, validateTokenAsync } from "../../../../store/action/auth-action.ts";
 import FormDialog from "../form_dialog/FormDialog.tsx";
 import useInput from "../../../../hooks/useInput.tsx";
 import { passwordValidation } from "../shared/validationRegex.ts";
 import IGoogleUserData from "./IGoogleUserData.ts";
+import axios from 'axios';
 
 
 const GoogleLoginButton = () => {
@@ -54,22 +55,23 @@ const GoogleLoginButton = () => {
 
 				setUser(googleUserData);
 
-				const userExistsResponse = await axiosInstanceWithCredentials.post('/user/checkIfExists', {
+				const userExistsResponse = await axios.post('http://localhost:8080/api/v1/user/checkIfExists', {
 					email: googleUserData.email
 				});
 
 				// I could probably add a better check
 				if ( userExistsResponse.status === 200 ) {
-					await axiosInstanceWithCredentials.post(`/auth/loginWithGoogle`, {
-						email: googleUserData.email,
-						firstName: googleUserData.given_name,
-						lastName: googleUserData.family_name,
-						googleId: googleUserData.id,
-						avatarImageUrl: googleUserData.picture,
-					});
-
+					dispatch(setAuthData(
+						undefined,
+						{
+							email: googleUserData.email,
+							firstName: googleUserData.given_name,
+							lastName: googleUserData.family_name,
+							googleId: googleUserData.id,
+							avatarImageUrl: googleUserData.picture,
+						}
+					));
 					dispatch(validateTokenAsync());
-					navigate("/home");
 				}
 
 				console.log('Google user info:', googleUserData);
