@@ -7,7 +7,7 @@ const store = configureStore({
 	reducer: {
 		auth: persistedReducer,
 	},
-	middleware: ( getDefaultMiddleware ) => getDefaultMiddleware().concat(thunk),
+	middleware: [thunk],
 });
 
 export type RootState = ReturnType<typeof store.getState>;

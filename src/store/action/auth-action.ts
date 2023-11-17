@@ -41,9 +41,6 @@ export const setAuthData = (
 				loginData != undefined ? loginData : googleLoginData
 			);
 
-			localStorage.setItem('jwt', token);
-			localStorage.setItem('jwtRefresh', refreshToken);
-
 			dispatch(setTokens({ token, refreshToken }));
 
 			triggerReload();

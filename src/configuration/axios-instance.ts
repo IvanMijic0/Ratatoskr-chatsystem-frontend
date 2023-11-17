@@ -5,7 +5,23 @@ const instance = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
 });
 
-instance.defaults.headers.common['Authorization'] = `Bearer ${ localStorage.getItem('jwt') || null }`;
+// instance.defaults.headers.common['Authorization'] = `Bearer ${ store.getState().auth.token || null }`;
+
+instance.interceptors.request.use(
+	( config ) => {
+		const token = store.getState().auth.token;
+		if ( token ) {
+			config.headers['Authorization'] = `Bearer ${ token }`;
+		} else {
+			delete config.headers['Authorization'];
+		}
+		return config;
+	},
+	( error ) => {
+		return Promise.reject(error);
+	}
+);
+
 
 instance.interceptors.response.use(
 	( response ) => response,

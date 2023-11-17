@@ -15,12 +15,10 @@ const authSlice = createSlice({
 		setIsAuthenticated: ( state, action: PayloadAction<boolean> ) => {
 			state.isAuthenticated = action.payload;
 		},
-		setTokens: (
-			state,
-			action: PayloadAction<{ token: string | null; refreshToken: string | null }>
-		) => {
-			state.token = action.payload.token;
-			state.refreshToken = action.payload.refreshToken;
+		setTokens: ( state, action: PayloadAction<{ token: string | null; refreshToken: string | null }> ) => {
+			console.log('Setting tokens:', action.payload);
+			state.token = action.payload.token || null;
+			state.refreshToken = action.payload.refreshToken || null;
 		},
 	},
 });
