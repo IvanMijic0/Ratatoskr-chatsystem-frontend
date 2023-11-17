@@ -5,11 +5,11 @@ import { validateTokenAsync } from "./store/action/auth-action.ts";
 import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks.ts";
 import { selectIsAuthenticated } from "./store/slice/auth-slice.ts";
 
-import Home from "./pages/home/Home.tsx";
+import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
-import homeLoader from "./pages/home/homeLoader.ts";
 import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
+import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -22,13 +22,13 @@ const App = () => {
 	const routerConfig: RouteObject[] = [
 		{
 			path: '/guest',
-			element: isAuthenticated ? <Navigate to="/home"/> : <Guest/>,
+			element: isAuthenticated ? <Navigate to="/dashboard"/> : <Guest/>,
 			index: true,
 		},
 		{
-			path: '/home',
-			element: isAuthenticated ? <Home/> : <Navigate to="/guest"/>,
-			loader: homeLoader,
+			path: '/dashboard',
+			element: isAuthenticated ? <Dashboard/> : <Navigate to="/guest"/>,
+			loader: dashboardLoader,
 			errorElement: <GlobalError/>
 		},
 		{

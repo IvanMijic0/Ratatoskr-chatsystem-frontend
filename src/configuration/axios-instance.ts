@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { store } from "../store";
+import { setTokens } from "../store/slice/auth-slice.ts";
 
 const instance = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
 });
 
+// This seems to not work as I expect with redux persist. Works fine with just localStorage tho...
 // instance.defaults.headers.common['Authorization'] = `Bearer ${ store.getState().auth.token || null }`;
 
 instance.interceptors.request.use(
@@ -22,7 +24,6 @@ instance.interceptors.request.use(
 	}
 );
 
-
 instance.interceptors.response.use(
 	( response ) => response,
 	async ( error ) => {
@@ -35,7 +36,8 @@ instance.interceptors.response.use(
 
 				if ( isAuthenticated ) {
 					try {
-						await instance.get('/auth/refreshToken');
+						const { data: { token, refreshToken } } = await instance.get('/auth/refreshToken');
+						store.dispatch(setTokens({ token, refreshToken }));
 					} catch (error) {
 						throw Error('Could not Refresh token.');
 					}

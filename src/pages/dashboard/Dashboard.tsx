@@ -2,7 +2,7 @@ import { CircularProgress, Paper, Typography } from "@mui/material";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import ILoaderData from "./ILoaderData.ts";
 
-const Home = () => {
+const Dashboard = () => {
 	const { username, email, role }: ILoaderData = useLoaderData() as ILoaderData;
 	const navigation = useNavigation();
 
@@ -21,6 +21,6 @@ const Home = () => {
 	</Typography>;
 };
 
-export default Home;
+export default Dashboard;
 
 
