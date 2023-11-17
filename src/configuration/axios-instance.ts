@@ -12,11 +12,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
 	( config ) => {
 		const token = store.getState().auth.token;
-		if ( token ) {
-			config.headers['Authorization'] = `Bearer ${ token }`;
-		} else {
-			delete config.headers['Authorization'];
-		}
+		token
+			? config.headers['Authorization'] = `Bearer ${ token }`
+			: delete config.headers['Authorization'];
+
 		return config;
 	},
 	( error ) => {
@@ -24,6 +23,7 @@ instance.interceptors.request.use(
 	}
 );
 
+// Might not even need a refresh token, will ask about this later...
 instance.interceptors.response.use(
 	( response ) => response,
 	async ( error ) => {
@@ -50,7 +50,6 @@ instance.interceptors.response.use(
 				console.log("You are forbidden from accessing this.");
 			}
 		}
-
 		return Promise.reject(error);
 	}
 );
