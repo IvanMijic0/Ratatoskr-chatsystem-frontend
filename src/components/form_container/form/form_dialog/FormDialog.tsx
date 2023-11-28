@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-
-import CustomButton from "../../../ui/CustomButton.tsx";
+import { Box, DialogContentText } from "@mui/material";
 import CustomTextField from "../../../ui/CustomTextField.tsx";
 import classes from "./FormDialog.module.css";
-import { errorPasswordTextField, passwordTextField } from "../shared/sharedFormInputs.tsx";
-import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 import IFormDialogProps from "./IFormDialog.ts";
 import axios from "axios";
+
+import CustomDialog from "../../../ui/custom_dialog/CustomDialog.tsx";
+import { errorPasswordTextField, passwordTextField } from "../shared/sharedFormInputs.tsx";
+import CustomTooltip from "../../../ui/CustomTooltip.tsx";
+import CustomButton from "../../../ui/CustomButton.tsx";
 
 const FormDialog: React.FC<IFormDialogProps> = ( props ) => {
 	const [isRegistered, setIsRegistered] = useState(false);
@@ -59,51 +60,101 @@ const FormDialog: React.FC<IFormDialogProps> = ( props ) => {
 		}
 	};
 
+	const registerContent = <>
+		<DialogContentText className={ classes['form-text'] }>
+			You have successfully registered to the Ratatoskr Chating System.
+			Please login manually or with google account again in order to enter the application.
+		</DialogContentText>
+		<DialogContentText className={ classes['form-text'] }>
+			Refreshing page in { seconds }
+		</DialogContentText>
+	</>;
+
+	const loginContent = <>
+		<DialogContentText className={ classes['form-text'] }>
+			We have noticed that you are not registered to this website.
+			To continue logging in via Google, please enter your registration password.
+		</DialogContentText>
+		{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
+		{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
+	</>;
+
+	const loginActions = <CustomTooltip
+		title={ !props.formIsValid ? "Please fill out password fields." : "" }
+		placement="top"
+	>
+		<Box className={ classes.tooltip }>
+			<CustomButton
+				className={ classes['register-button'] }
+				type="submit" variant="contained"
+				centerRipple
+				disabled={ !props.formIsValid }
+				onClick={ registerWithGoogleHandler }>
+				Register
+			</CustomButton>
+		</Box>
+	</CustomTooltip>;
+
 	return <>
 		{ isRegistered
-			? <Dialog open={ props.open } onClose={ handleDialogFormClose }>
-				<DialogTitle className={ classes['form-text'] }>Ratatoskr Register Service</DialogTitle>
-				<DialogContent className={ classes['form-container'] }>
-					<DialogContentText className={ classes['form-text'] }>
-						You have successfully registered to the Ratatoskr Chating System.
-						Please login manually or with google account again in order to enter the application.
-					</DialogContentText>
-					<DialogContentText className={ classes['form-text'] }>
-						Refreshing page in { seconds }
-					</DialogContentText>
-				</DialogContent>
-			</Dialog>
+			? <CustomDialog
+				open={ props.open }
+				onClose={ handleDialogFormClose }
+				title="Ratatoskr Register Service"
+				customContent={ registerContent }
+			/>
 
-			: <Dialog open={ props.open } onClose={ handleDialogFormClose }>
-				<DialogTitle className={ classes['form-text'] }>Ratatoskr Register Service</DialogTitle>
-				<DialogContent className={ classes['form-container'] }>
-					<DialogContentText className={ classes['form-text'] }>
-						We have noticed that you are not registered to this website.
-						To continue logging in via Google, please enter your registration password.
-					</DialogContentText>
-					{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
-					{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
-				</DialogContent>
-				<DialogActions className={ classes['form-action'] }>
-					<CustomTooltip
-						title={ !props.formIsValid ? "Please fill out password fields." : "" }
-						placement="top"
-					>
-						<Box className={ classes.tooltip }>
-							<CustomButton
-								className={ classes['register-button'] }
-								type="submit"
-								variant="contained"
-								centerRipple
-								disabled={ !props.formIsValid }
-								onClick={ registerWithGoogleHandler }
-							>
-								Register
-							</CustomButton>
-						</Box>
-					</CustomTooltip>
-				</DialogActions>
-			</Dialog>
+			// ? <Dialog open={ props.open } onClose={ handleDialogFormClose }>
+			// 	<DialogTitle className={ classes['form-text'] }>Ratatoskr Register Service</DialogTitle>
+			// 	<DialogContent className={ classes['form-container'] }>
+			// 		<DialogContentText className={ classes['form-text'] }>
+			// 			You have successfully registered to the Ratatoskr Chating System.
+			// 			Please login manually or with google account again in order to enter the application.
+			// 		</DialogContentText>
+			// 		<DialogContentText className={ classes['form-text'] }>
+			// 			Refreshing page in { seconds }
+			// 		</DialogContentText>
+			// 	</DialogContent>
+			// </Dialog>
+
+			: <CustomDialog
+				open={ props.open }
+				onClose={ handleDialogFormClose }
+				title="Ratatoskr Register Service"
+				customContent={ loginContent }
+				customActions={ loginActions }
+			/>
+
+			// : <Dialog open={ props.open } onClose={ handleDialogFormClose }>
+			// 	<DialogTitle className={ classes['form-text'] }>Ratatoskr Register Service</DialogTitle>
+			// 	<DialogContent className={ classes['form-container'] }>
+			// 		<DialogContentText className={ classes['form-text'] }>
+			// 			We have noticed that you are not registered to this website.
+			// 			To continue logging in via Google, please enter your registration password.
+			// 		</DialogContentText>
+			// 		{ !props.passwordHasError ? passwordTextField(props) : errorPasswordTextField(props) }
+			// 		{ !props.confirmPasswordHasError ? confirmPasswordTextField : errorConfirmPasswordTextField }
+			// 	</DialogContent>
+			// 	<DialogActions className={ classes['form-action'] }>
+			// 		<CustomTooltip
+			// 			title={ !props.formIsValid ? "Please fill out password fields." : "" }
+			// 			placement="top"
+			// 		>
+			// 			<Box className={ classes.tooltip }>
+			// 				<CustomButton
+			// 					className={ classes['register-button'] }
+			// 					type="submit"
+			// 					variant="contained"
+			// 					centerRipple
+			// 					disabled={ !props.formIsValid }
+			// 					onClick={ registerWithGoogleHandler }
+			// 				>
+			// 					Register
+			// 				</CustomButton>
+			// 			</Box>
+			// 		</CustomTooltip>
+			// 	</DialogActions>
+			// </Dialog>
 		}
 	</>;
 };

@@ -1,0 +1,28 @@
+.form-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-button {
+    margin-top: 1rem;
+    max-width: 12rem;
+}
+
+.upload-button:hover {
+    background-color: #183232;
+}
+
+.upload-input {
+    clip-path: inset(50%);
+    height: .5rem;
+    overflow: hidden;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    width: .5rem;
+}
+
+.action-button {
+    color: whitesmoke;
+}

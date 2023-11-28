@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 import classes from './Dashboard.module.css';
+import Server from "../../components/server/Server.tsx";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
@@ -14,15 +15,19 @@ const Dashboard = () => {
 				className={ classes.grid }
 				item
 				lg={ .8 }
+				sm={ .8 }
+				xs={ .8 /* For now */ }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
-				<Typography>God is dead</Typography>
+				<Server/>
 			</Grid>
 			<Grid
 				className={ classes.grid }
 				item
 				lg={ 2 }
+				sm={ 2 }
+				xs={ 2 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>
@@ -32,6 +37,8 @@ const Dashboard = () => {
 				className={ classes.grid }
 				item
 				lg={ 6.7 }
+				sm={ 6.7 }
+				xs={ 6.7 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
@@ -41,6 +48,8 @@ const Dashboard = () => {
 				className={ classes.grid }
 				item
 				lg={ 2.5 }
+				sm={ 2.5 }
+				xs={ 2.5 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>

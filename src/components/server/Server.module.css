@@ -1,0 +1,68 @@
+.stack {
+    padding-top: .5rem;
+}
+
+.scrollable-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #72767d #2f3136;
+}
+
+.scrollableContainer::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 3px;
+}
+
+.tooltip {
+    font-weight: bold;
+}
+
+.homepage-avatar {
+    width: 3.8vw;
+    height: 3.8vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.homepage-avatar:hover {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.avatar {
+    width: 3.8vw;
+    height: 3.8vw;
+    transition: border-radius 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.avatar:hover {
+    border-radius: 30%;
+}
+
+.avatar:active {
+    border-radius: 30%;
+}
+
+.add-icon {
+    background-color: #183232;
+    width: 3.8vw;
+    height: 3.8vw;
+    transition: border-radius 0.3s ease;
+    cursor: pointer;
+}
+
+.add-icon:hover {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.divider {
+    background-color: #424242;
+}
