@@ -23,6 +23,11 @@
     width: .5rem;
 }
 
+.avatar-selected-text {
+    padding-top: 5px;
+    font-size: 1rem;
+}
+
 .action-button {
     color: whitesmoke;
 }

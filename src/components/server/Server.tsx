@@ -30,7 +30,7 @@ const Server = () => {
 	};
 
 	return <Container className={ classes['scrollable-container'] }>
-		<Stack className={ classes.stack } direction="column" spacing={ 0 }>
+		<Stack className={ classes.stack } direction="column">
 			<ListItem>
 				<Box>
 					<Button>

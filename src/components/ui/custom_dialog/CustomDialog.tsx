@@ -12,7 +12,7 @@ interface ICustomDialogProps {
 }
 
 const CustomDialog: React.FC<ICustomDialogProps> = ( { open, onClose, title, customContent, customActions } ) => {
-	return <Dialog open={ open } onClose={ onClose }>
+	return <Dialog open={ open } onClose={ onClose } sx={ { marginBottom: "25vh" } }>
 		<DialogTitle className={ classes['form-text'] }>{ title }</DialogTitle>
 		<DialogContent className={ classes['form-content'] }>
 			{ customContent }
