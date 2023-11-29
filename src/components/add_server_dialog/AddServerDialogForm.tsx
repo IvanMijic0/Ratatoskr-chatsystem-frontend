@@ -6,6 +6,8 @@ import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
 import CustomTextField from "../ui/CustomTextField.tsx";
 import classes from "./AddServerDialogForm.module.css";
 import CustomTooltip from "../ui/CustomTooltip.tsx";
+import CustomButton from "../ui/CustomButton.tsx";
+import axiosInstance from "../../configuration/axios-instance.ts";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -13,6 +15,7 @@ interface IAddServerDialogForm {
 }
 
 const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } ) => {
+	const [serverName, setServerName] = useState('');
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
 	const [openSnack, setOpenSnack] = useState(false);
@@ -42,6 +45,37 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		setOpenSnack(false);
 	};
 
+	const handleServerNameChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+		setServerName(event.target.value);
+	};
+
+	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
+		event.preventDefault();
+
+		console.log("Submited");
+
+		const formData = new FormData();
+		formData.append('serverName', serverName);
+		if ( selectedFile ) {
+			formData.append('avatarIcon', selectedFile);
+		}
+
+		console.log(formData);
+
+		try {
+			const response = await axiosInstance.post('/server', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			console.log('Response:', response.data);
+			onClose();
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
 	const serverDialogContent = <Container className={ classes['form-content'] }>
 		<CustomTextField
 			autoFocus
@@ -49,6 +83,8 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			label="Server Name"
 			type="text"
 			id="serverName"
+			value={ serverName }
+			onChange={ handleServerNameChange }
 		/>
 
 		<CustomTooltip title="Add Server Avatar Icon" placement="bottom">
@@ -68,32 +104,40 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 				Selected: { selectedFile.name }
 			</Typography>
 		) }
-
 	</Container>;
 
 	const serverDialogActions = <>
+		<CustomButton type="submit" className={ classes['action-button'] }>Submit</CustomButton>
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</>;
 
-	return <form>
+	// useEffect(() => {
+	// 	console.log(selectedFile);
+	// 	console.log(serverName);
+	// }, [selectedFile, serverName]);
+
+	return <>
 		<CustomDialog
 			open={ open }
 			onClose={ onClose }
 			title="Enter Server data:"
 			customContent={ serverDialogContent }
 			customActions={ serverDialogActions }
+			handleSubmit={ handleSubmit }
 		/>
-		{ alertMessage && (
-			<Snackbar open={ openSnack } autoHideDuration={ 6000 } onClose={ handleClose }>
-				<Alert severity="error" onClose={ () => {
-					setAlertMessage(null);
-					setOpenSnack(false);
-				} }>
-					{ alertMessage }
-				</Alert>
-			</Snackbar>
-		) }
-	</form>;
+		{
+			alertMessage && (
+				<Snackbar open={ openSnack } autoHideDuration={ 6000 } onClose={ handleClose }>
+					<Alert severity="error" onClose={ () => {
+						setAlertMessage(null);
+						setOpenSnack(false);
+					} }>
+						{ alertMessage }
+					</Alert>
+				</Snackbar>
+			)
+		}
+	</>;
 };
 
 export default AddServerDialogForm;
