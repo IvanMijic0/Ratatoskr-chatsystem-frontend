@@ -3,8 +3,7 @@ import axiosInstance from "../../configuration/axios-instance.ts";
 
 const homeLoader: LoaderFunction | undefined = async () => {
 	try {
-		const response = await axiosInstance.get(`/user/specific`);
-		return response.data;
+		return ( await axiosInstance.get(`/user/specific`) ).data;
 	} catch (error) {
 		console.log("Error fetching user data: ", error);
 		throw error;

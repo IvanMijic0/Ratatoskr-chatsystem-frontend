@@ -26,7 +26,7 @@
     width: 3.8vw;
     height: 3.8vw;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
 }
 
 .homepage-avatar:hover {

@@ -1,6 +1,6 @@
 import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
-import React, { useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import React, { useState } from "react";
 
 import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
 import CustomTextField from "../ui/CustomTextField.tsx";
@@ -19,7 +19,6 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
 	const [openSnack, setOpenSnack] = useState(false);
-
 
 	const allowedFormats = ['image/jpeg', 'image/png', 'image/svg'];
 	const maxFileSize = 5 * 1024 * 1024; // 5 MB
@@ -52,24 +51,19 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
 
-		console.log("Submited");
-
 		const formData = new FormData();
 		formData.append('serverName', serverName);
 		if ( selectedFile ) {
 			formData.append('avatarIcon', selectedFile);
 		}
-
-		console.log(formData);
-
 		try {
 			const response = await axiosInstance.post('/server', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
+
 			});
 
-			console.log('Response:', response.data);
 			onClose();
 		} catch (error) {
 			console.error('Error:', error);
@@ -86,7 +80,6 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			value={ serverName }
 			onChange={ handleServerNameChange }
 		/>
-
 		<CustomTooltip title="Add Server Avatar Icon" placement="bottom">
 			<Button className={ classes['upload-button'] } component="label" variant="contained"
 					startIcon={ <CloudUploadIcon/> }>
@@ -111,11 +104,6 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</>;
 
-	// useEffect(() => {
-	// 	console.log(selectedFile);
-	// 	console.log(serverName);
-	// }, [selectedFile, serverName]);
-
 	return <>
 		<CustomDialog
 			open={ open }
@@ -125,17 +113,14 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			customActions={ serverDialogActions }
 			handleSubmit={ handleSubmit }
 		/>
-		{
-			alertMessage && (
-				<Snackbar open={ openSnack } autoHideDuration={ 6000 } onClose={ handleClose }>
-					<Alert severity="error" onClose={ () => {
-						setAlertMessage(null);
-						setOpenSnack(false);
-					} }>
-						{ alertMessage }
-					</Alert>
-				</Snackbar>
-			)
+		{ alertMessage && <Snackbar open={ openSnack } autoHideDuration={ 6000 } onClose={ handleClose }>
+          <Alert severity="error" onClose={ () => {
+			  setAlertMessage(null);
+			  setOpenSnack(false);
+		  } }>
+			  { alertMessage }
+          </Alert>
+        </Snackbar>
 		}
 	</>;
 };

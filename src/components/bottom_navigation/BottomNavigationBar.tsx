@@ -3,6 +3,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FolderIcon from '@mui/icons-material/Folder';
 import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import classes from './BottomNavigationBar.module.css';
 
 const BottomNavigationBar = () => {

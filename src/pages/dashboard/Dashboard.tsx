@@ -6,7 +6,7 @@ import Server from "../../components/server/Server.tsx";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
-	// const { username, email, role }: ILoaderData = useLoaderData() as ILoaderData;
+	// const { username, email, role }: IDashboardLoaderData = useLoaderData() as IDashboardLoaderData;
 	// const navigation = useNavigation();
 
 	return <Box>

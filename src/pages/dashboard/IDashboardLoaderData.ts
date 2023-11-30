@@ -1,4 +1,4 @@
-interface ILoaderData {
+interface IDashboardLoaderData {
 	username?: string;
 	name?: string;
 	email?: string;
@@ -7,4 +7,4 @@ interface ILoaderData {
 	role?: string;
 }
 
-export default ILoaderData;
+export default IDashboardLoaderData;
