@@ -8,7 +8,7 @@ import {
 	errorPasswordTextField,
 	passwordTextField
 } from "../shared/sharedFormInputs.tsx";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 import GoogleLoginButton from "../google_button/GoogleLoginButton.tsx";
 
@@ -23,9 +23,9 @@ const LoginFormInputs: React.FC<ILoginFormProps> = ( props ) => {
 					type="submit"
 					variant="contained"
 					centerRipple
-					disabled={ !props.formIsValid }
+					disabled={ !props.formIsValid || props.isLoading }
 				>
-					Login
+					{ props.isLoading ? <CircularProgress/> : "Login" }
 				</CustomButton>
 			</Box>
 		</CustomTooltip>

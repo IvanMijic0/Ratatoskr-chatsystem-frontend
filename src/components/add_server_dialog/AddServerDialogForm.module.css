@@ -24,6 +24,11 @@
     width: .5rem;
 }
 
+.action-button-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .avatar-selected-text {
     padding-top: 5px;
     font-size: 1rem;

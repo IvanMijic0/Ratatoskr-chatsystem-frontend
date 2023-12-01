@@ -11,7 +11,7 @@ import classes from "./GoogleLoginButton.module.css";
 import { setAuthData, validateTokenAsync } from "../../../../store/action/auth-action.ts";
 import FormDialog from "../form_dialog/FormDialog.tsx";
 import useInput from "../../../../hooks/useInput.tsx";
-import { passwordValidation } from "../shared/validationRegex.ts";
+import { passwordRegex } from "../shared/validationRegex.ts";
 import IGoogleUserData from "./IGoogleUserData.ts";
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ const GoogleLoginButton = () => {
 	const [user, setUser] = useState<IGoogleUserData | null>(null);
 	const [openDialogForm, setOpenDialogForm] = useState(false);
 
-	const registerPasswordValidation = useInput(passwordValidation);
+	const registerPasswordValidation = useInput(passwordRegex);
 	const registerConfirmPasswordValidation = useInput(
 		value => value.match(registerPasswordValidation.value)
 	);

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import CustomTooltip from "../../../ui/CustomTooltip.tsx";
 import React from "react";
 
@@ -55,9 +55,9 @@ const RegisterFormInputs: React.FC<IRegisterFormProps> = ( props ) => {
 						type="submit"
 						variant="contained"
 						centerRipple
-						disabled={ !props.formIsValid }
+						disabled={ !props.formIsValid || props.isLoading }
 					>
-						Register
+						{ props.isLoading ? <CircularProgress/> : "Register" }
 					</CustomButton>
 				</Box>
 			</CustomTooltip>

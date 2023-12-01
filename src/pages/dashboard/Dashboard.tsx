@@ -25,9 +25,9 @@ const Dashboard = () => {
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ 2 }
-				sm={ 2 }
-				xs={ 2 }
+				lg={ 1.5 }
+				sm={ 1.5 }
+				xs={ 1.5 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>
@@ -36,9 +36,9 @@ const Dashboard = () => {
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ 6.7 }
-				sm={ 6.7 }
-				xs={ 6.7 }
+				lg={ 7.7 }
+				sm={ 7.7 }
+				xs={ 7.7 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
@@ -47,9 +47,9 @@ const Dashboard = () => {
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ 2.5 }
-				sm={ 2.5 }
-				xs={ 2.5 }
+				lg={ 2 }
+				sm={ 2 }
+				xs={ 2 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>

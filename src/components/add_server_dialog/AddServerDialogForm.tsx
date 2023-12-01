@@ -1,13 +1,15 @@
-import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Container, Snackbar, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from "react";
 
 import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
-import CustomTextField from "../ui/CustomTextField.tsx";
 import classes from "./AddServerDialogForm.module.css";
 import CustomTooltip from "../ui/CustomTooltip.tsx";
 import CustomButton from "../ui/CustomButton.tsx";
 import axiosInstance from "../../configuration/axios-instance.ts";
+import useInput from "../../hooks/useInput.tsx";
+import { serverNameRegex } from "../form_container/form/shared/validationRegex.ts";
+import { errorServerNameTextField, serverNameTextField } from "../server/ServerFormInputs.tsx";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -15,11 +17,18 @@ interface IAddServerDialogForm {
 }
 
 const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } ) => {
-	const [serverName, setServerName] = useState('');
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
 	const [openSnack, setOpenSnack] = useState(false);
 
+	const serverNameValidation = useInput(serverNameRegex);
+
+	let dialogFormIsValid = false;
+
+	if ( serverNameValidation.isValid && selectedFile ) {
+		dialogFormIsValid = true;
+	}
 	const allowedFormats = ['image/jpeg', 'image/png', 'image/svg'];
 	const maxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -44,42 +53,46 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		setOpenSnack(false);
 	};
 
-	const handleServerNameChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-		setServerName(event.target.value);
-	};
-
 	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
+		setIsLoading(true);
+
+		if ( !dialogFormIsValid ) {
+			return;
+		}
 
 		const formData = new FormData();
-		formData.append('serverName', serverName);
+		formData.append('serverName', serverNameValidation.value);
 		if ( selectedFile ) {
 			formData.append('avatarIcon', selectedFile);
 		}
+
 		try {
-			const response = await axiosInstance.post('/server', formData, {
+			await axiosInstance.post('/server', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
-
 			});
 
 			onClose();
+			setIsLoading(false);
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
 
 	const serverDialogContent = <Container className={ classes['form-content'] }>
-		<CustomTextField
-			autoFocus
-			margin="dense"
-			label="Server Name"
-			type="text"
-			id="serverName"
-			value={ serverName }
-			onChange={ handleServerNameChange }
-		/>
+		{ !serverNameValidation.hasError
+			? serverNameTextField(
+				serverNameValidation.valueChangeHandler,
+				serverNameValidation.inputBlurHandler,
+				serverNameValidation.value)
+			: errorServerNameTextField(
+				serverNameValidation.valueChangeHandler,
+				serverNameValidation.inputBlurHandler,
+				serverNameValidation.value
+			)
+		}
 		<CustomTooltip title="Add Server Avatar Icon" placement="bottom">
 			<Button className={ classes['upload-button'] } component="label" variant="contained"
 					startIcon={ <CloudUploadIcon/> }>
@@ -99,10 +112,15 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		) }
 	</Container>;
 
-	const serverDialogActions = <>
-		<CustomButton type="submit" className={ classes['action-button'] }>Submit</CustomButton>
+	const serverDialogActions = <Box className={ classes['action-button-container'] }>
+		<CustomButton
+			disabled={ !dialogFormIsValid || isLoading }
+			type="submit"
+			className={ classes['action-button'] }>
+			{ isLoading ? <CircularProgress/> : "Submit" }
+		</CustomButton>
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
-	</>;
+	</Box>;
 
 	return <>
 		<CustomDialog
@@ -114,11 +132,13 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			handleSubmit={ handleSubmit }
 		/>
 		{ alertMessage && <Snackbar open={ openSnack } autoHideDuration={ 6000 } onClose={ handleClose }>
-          <Alert severity="error" onClose={ () => {
-			  setAlertMessage(null);
-			  setOpenSnack(false);
-		  } }>
-			  { alertMessage }
+          <Alert
+            severity="error"
+            onClose={ () => {
+				setAlertMessage(null);
+				setOpenSnack(false);
+			} }
+          >{ alertMessage }
           </Alert>
         </Snackbar>
 		}

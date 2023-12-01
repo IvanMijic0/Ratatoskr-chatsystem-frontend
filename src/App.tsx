@@ -9,8 +9,8 @@ import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
 import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
-import serverLoader from "./components/server/serverLoader.ts";
 import Server from "./components/server/Server.tsx";
+import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -30,10 +30,9 @@ const App = () => {
 			path: '/dashboard',
 			element: isAuthenticated ? <Dashboard/> : <Navigate to="/guest"/>,
 			errorElement: <GlobalError/>,
-			loader: serverLoader,
+			loader: dashboardLoader,
 			children: [
 				{
-					loader: serverLoader,
 					element: <Server/>,
 				}
 			]

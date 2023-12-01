@@ -20,6 +20,7 @@ interface IRegisterFormProps {
 	confirmPasswordHasError: boolean
 	isEmailVerificationTokenSent: boolean
 	helperText: string;
+	isLoading: boolean;
 }
 
 export default IRegisterFormProps;

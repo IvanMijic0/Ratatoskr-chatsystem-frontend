@@ -11,6 +11,7 @@ interface ILoginFormProps {
 	enteredPassword: string | number | readonly string[] | undefined,
 	passwordHasError: boolean
 	helperText: string;
+	isLoading: boolean;
 }
 
 export default ILoginFormProps;

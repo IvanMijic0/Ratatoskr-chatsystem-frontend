@@ -7,26 +7,23 @@ import RegisterFormInputs from "./register_form_inputs/RegisterFormInputs.tsx";
 import FormStatus from "./FormStatus.ts";
 import classes from "./Form.module.css";
 import useInput from "../../../hooks/useInput.tsx";
-import {
-	emailValidation,
-	passwordValidation,
-	usernameOrEmailValidation,
-	usernameValidation
-} from "./shared/validationRegex.ts";
+import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "./shared/validationRegex.ts";
 import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
 import { setAuthData } from "../../../store/action/auth-action.ts";
 import axios from "axios";
 
 const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+
 	const dispatch = useAppDispatch();
 
-	const registerUsernameValidation = useInput(usernameValidation);
-	const loginEmailValidation = useInput(usernameOrEmailValidation);
+	const registerUsernameValidation = useInput(usernameRegex);
+	const loginEmailValidation = useInput(usernameOrEmailRegex);
 
-	const registerEmailValidation = useInput(emailValidation);
-	const loginPasswordValidation = useInput(passwordValidation);
-	const registerPasswordValidation = useInput(passwordValidation);
+	const registerEmailValidation = useInput(emailRegex);
+	const loginPasswordValidation = useInput(passwordRegex);
+	const registerPasswordValidation = useInput(passwordRegex);
 
 	const registerConfirmPasswordValidation = useInput(
 		value => value.match(registerPasswordValidation.value)
@@ -84,6 +81,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 		preventDefault: () => void;
 	} ) => {
 		event.preventDefault();
+		setIsLoading(true);
 
 		const isLoginNotValid
 			= !loginEmailValidation.isValid
@@ -102,6 +100,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 			if ( isRegisterNotValid ) return;
 			await registerHandler();
 		}
+		setIsLoading(false);
 	};
 
 	return <>
@@ -121,6 +120,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					enteredPassword={ loginPasswordValidation.value }
 					passwordHasError={ loginPasswordValidation.hasError }
 					helperText="Please enter valid username or email."
+					isLoading={ isLoading }
 				/>
 				: <RegisterFormInputs
 					isEmailVerificationTokenSent={ isEmailVerificationSent }
@@ -142,6 +142,7 @@ const Form: React.FC<IFormProps> = ( { isLogin } ) => {
 					enteredConfirmPassword={ registerConfirmPasswordValidation.value }
 					confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
 					helperText="Please enter valid email."
+					isLoading={ isLoading }
 				/>
 			}
 		</Box>
