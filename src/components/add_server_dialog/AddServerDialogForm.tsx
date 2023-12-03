@@ -9,7 +9,7 @@ import CustomButton from "../ui/CustomButton.tsx";
 import axiosInstance from "../../configuration/axios-instance.ts";
 import useInput from "../../hooks/useInput.tsx";
 import { serverNameRegex } from "../form_container/form/shared/validationRegex.ts";
-import { errorServerNameTextField, serverNameTextField } from "../server/ServerFormInputs.tsx";
+import { errorServerNameTextField, serverNameTextField } from "../servers/ServerFormInputs.tsx";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -93,7 +93,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 				serverNameValidation.value
 			)
 		}
-		<CustomTooltip title="Add Server Avatar Icon" placement="bottom">
+		<CustomTooltip title="Add Servers Avatar Icon" placement="bottom">
 			<Button className={ classes['upload-button'] } component="label" variant="contained"
 					startIcon={ <CloudUploadIcon/> }>
 				Upload Avatar
@@ -126,7 +126,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		<CustomDialog
 			open={ open }
 			onClose={ onClose }
-			title="Enter Server data:"
+			title="Enter Servers data:"
 			customContent={ serverDialogContent }
 			customActions={ serverDialogActions }
 			handleSubmit={ handleSubmit }

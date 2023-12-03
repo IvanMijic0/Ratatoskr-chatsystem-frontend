@@ -11,7 +11,6 @@ const extractPayloadFromToken = ( token: string | null ): any | null => {
 			}
 		}
 	}
-
 	return null;
 };
 

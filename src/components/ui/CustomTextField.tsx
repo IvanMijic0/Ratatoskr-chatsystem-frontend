@@ -42,7 +42,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ( props ) => {
 	const helperTextSx: HelperTextStyles = {
 		color: error ? 'pink' : undefined,
 		fontSize: '1rem',
-		whiteSpace: 'normal', // Allow text to wrap to a new line if needed
+		whiteSpace: 'normal',
 	};
 
 	return (

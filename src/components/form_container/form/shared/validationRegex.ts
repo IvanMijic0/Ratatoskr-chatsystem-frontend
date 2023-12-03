@@ -14,3 +14,12 @@ export const passwordRegex = ( value: any ) => value.match(
 export const serverNameRegex = ( value: any ) => value.match(
 	/^(?:[^@:/\s]+\s*){1,50}$/
 );
+
+export const channelClusterNameRegex = ( value: any ) => value.match(
+	/^(?:[^@:/\s]+\s*){1,5}$/
+);
+
+export const channelNameRegex = ( value: any ) => value.match(
+	/^(?:[^@:/\s]+\s*){1,7}$/
+);
+

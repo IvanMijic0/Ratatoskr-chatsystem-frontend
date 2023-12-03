@@ -9,7 +9,6 @@ import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
 import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
-import Server from "./components/server/Server.tsx";
 import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
 
 const App = () => {
@@ -33,7 +32,7 @@ const App = () => {
 			loader: dashboardLoader,
 			children: [
 				{
-					element: <Server/>,
+					// element: <Servers/>,
 				}
 			]
 		},

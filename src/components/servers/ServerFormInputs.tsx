@@ -7,7 +7,7 @@ export const serverNameTextField = (
 	enteredServerName: unknown,
 ) => (
 	<CustomTextField
-		label="Server Name"
+		label="Servers Name"
 		required
 		name="name"
 		autoComplete="name"
@@ -26,8 +26,8 @@ export const errorServerNameTextField = (
 ) => (
 	<CustomTextField
 		error
-		label="Error: Server Name"
-		helperText="Enter a valid Server Name!"
+		label="Error: Servers Name"
+		helperText="Enter a valid Servers Name!"
 		name="name"
 		autoComplete="name"
 		margin="normal"

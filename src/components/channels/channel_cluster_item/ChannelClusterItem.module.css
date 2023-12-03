@@ -1,0 +1,10 @@
+.channel-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.channel-icon {
+    font-size: 1.3rem;
+    color: rgba(245, 245, 245, 0.54);
+    margin-right: .1rem;
+}

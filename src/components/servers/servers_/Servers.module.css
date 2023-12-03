@@ -23,8 +23,8 @@
 }
 
 .homepage-avatar {
-    width: 3.8vw;
-    height: 3.8vw;
+    width: 3.5vw;
+    height: 3.5vw;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -35,8 +35,8 @@
 }
 
 .avatar {
-    width: 3.8vw;
-    height: 3.8vw;
+    width: 3.5vw;
+    height: 3.5vw;
     transition: border-radius 0.3s ease;
     border: none;
     cursor: pointer;
@@ -52,8 +52,8 @@
 
 .add-icon {
     background-color: #183232;
-    width: 3.8vw;
-    height: 3.8vw;
+    width: 3.5vw;
+    height: 3.5vw;
     transition: border-radius 0.3s ease;
     cursor: pointer;
 }

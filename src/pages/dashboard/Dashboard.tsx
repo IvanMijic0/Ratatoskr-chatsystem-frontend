@@ -2,25 +2,30 @@ import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 import classes from './Dashboard.module.css';
-import Server from "../../components/server/Server.tsx";
+import Servers from "../../components/servers/servers_/Servers.tsx";
+import ChannelClusters from "../../components/channels/channel_clusters/ChannelClusters.tsx";
+import { useState } from "react";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
-	// const { username, email, role }: IDashboardLoaderData = useLoaderData() as IDashboardLoaderData;
-	// const navigation = useNavigation();
+	const [serverInfo, setServerInfo] = useState<{ serverId: string; serverName: string }>({
+		serverId: "",
+		serverName: ""
+	});
+
 
 	return <Box>
 		<Grid container direction="row">
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ .8 }
-				sm={ .8 }
-				xs={ .8 /* For now */ }
+				lg={ .7 }
+				sm={ .7 }
+				xs={ .7 /* For now */ }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
-				<Server/>
+				<Servers setServerInfo={ setServerInfo }/>
 			</Grid>
 			<Grid
 				className={ classes.grid }
@@ -31,14 +36,14 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>
-				<Typography>And we killed him</Typography>
+				<ChannelClusters serverId={ serverInfo.serverId } serverName={ serverInfo.serverName }/>
 			</Grid>
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ 7.7 }
-				sm={ 7.7 }
-				xs={ 7.7 }
+				lg={ 7.8 }
+				sm={ 7.8 }
+				xs={ 7.8 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
