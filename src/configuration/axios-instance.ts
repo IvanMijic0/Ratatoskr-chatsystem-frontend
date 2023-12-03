@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { store } from "../store";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { setTokens } from "../store/slice/auth-slice.ts";
 
 const instance = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
@@ -43,8 +42,9 @@ instance.interceptors.response.use(
 			if ( isAuthenticated && isTokenExpired(token) ) {
 				try {
 					console.log("Refreshing token");
-					const { data: { token, refreshToken } } = await instance.get('/auth/refreshToken');
-					store.dispatch(setTokens({ token, refreshToken }));
+					console.log("You need to handle this better.");
+					// const { data: { token, refreshToken } } = await instance.get('/auth/refreshToken');
+					// store.dispatch(setTokens({ token, refreshToken }));
 				} catch (error) {
 					throw Error('Could not Refresh token.');
 				}

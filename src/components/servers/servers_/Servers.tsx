@@ -1,32 +1,32 @@
 import { Container, Divider, ListItem, Stack } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import classes from './Servers.module.css';
-import AddServerDialogForm from "../../add_server_dialog/AddServerDialogForm.tsx";
-import IServerInfoLoaderData from "../ts/IServerInfoLoaderData.ts";
-import axiosInstance from "../../../configuration/axios-instance.ts";
+
+import AddServerDialogForm from "../add_server_dialog/AddServerDialogForm.tsx";
 import ServerButton from "../ServerButton.tsx";
 import HomeServer from "../HomeServerButton.tsx";
 import AddServerButton from "../AddServerButton.tsx";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
+import { selectServerInfoData } from "../../../store/slice/server_slice/server-slice.ts";
+import { fetchServerInfoDataAction } from "../../../store/action/server-action.ts";
+import classes from './Servers.module.css';
 
-const Servers = ( props: { setServerInfo: ( arg0: any ) => void } ) => {
-	const [serverInfoData, setServerInfoData] = useState<IServerInfoLoaderData[]>([]);
+const Servers = () => {
 	const [open, setOpen] = useState(false);
+	const dispatch = useAppDispatch();
+	const serverData = useAppSelector(selectServerInfoData);
 
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
+
 	const handleClose = () => {
 		setOpen(false);
 	};
 
-	const handleServerClick = ( clickedServerInfo: any ) => {
-		props.setServerInfo(clickedServerInfo);
-	};
 
 	const fetchServerInfoData = useCallback(async () => {
-		const response = ( await axiosInstance.get('server/summary') ).data;
-		setServerInfoData(response);
-	}, []);
+		dispatch(fetchServerInfoDataAction());
+	}, [dispatch]);
 
 	useEffect(() => {
 		try {
@@ -37,28 +37,29 @@ const Servers = ( props: { setServerInfo: ( arg0: any ) => void } ) => {
 		}
 	}, [fetchServerInfoData, open]);
 
-
-	return <Container className={ classes['scrollable-container'] }>
-		<Stack className={ classes.stack } direction="column">
-			<ListItem>
-				<HomeServer/>
-			</ListItem>
-			<ListItem>
-				<AddServerButton onClick={ handleClickOpen }/>
-				<AddServerDialogForm open={ open } onClose={ handleClose }/>
-			</ListItem>
-			<Divider className={ classes.divider } variant="middle" flexItem/>
-			{ serverInfoData.map(server => <ListItem key={ server.id }>
-				<ServerButton
-					serverId={ server.id }
-					serverName={ server.name }
-					avatarIconUrl={ server.avatarIconUrl }
-					handleServerClick={ handleServerClick }
-				/>
-			</ListItem>)
-			}
-		</Stack>
-	</Container>;
+	return (
+		<Container className={ classes['scrollable-container'] }>
+			<Stack className={ classes.stack } direction="column">
+				<ListItem>
+					<HomeServer/>
+				</ListItem>
+				<ListItem>
+					<AddServerButton onClick={ handleClickOpen }/>
+					<AddServerDialogForm open={ open } onClose={ handleClose }/>
+				</ListItem>
+				<Divider className={ classes.divider } variant="middle" flexItem/>
+				{ serverData.map(( server ) => (
+					<ListItem key={ server.id }>
+						<ServerButton
+							serverId={ server.id }
+							serverName={ server.name }
+							avatarIconUrl={ server.avatarIconUrl }
+						/>
+					</ListItem>
+				)) }
+			</Stack>
+		</Container>
+	);
 };
 
 export default Servers;

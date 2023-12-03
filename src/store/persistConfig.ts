@@ -1,6 +1,6 @@
 import storage from 'redux-persist/lib/storage';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import authReducer from './slice/auth-slice';
+import authReducer from './slice/auth_slice/auth-slice.ts';
 
 const persistConfig: PersistConfig<any> = {
 	key: 'root',

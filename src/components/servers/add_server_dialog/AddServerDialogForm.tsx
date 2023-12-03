@@ -2,14 +2,14 @@ import { Alert, Box, Button, CircularProgress, Container, Snackbar, Typography }
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from "react";
 
-import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
+import CustomDialog from "../../ui/custom_dialog/CustomDialog.tsx";
 import classes from "./AddServerDialogForm.module.css";
-import CustomTooltip from "../ui/CustomTooltip.tsx";
-import CustomButton from "../ui/CustomButton.tsx";
-import axiosInstance from "../../configuration/axios-instance.ts";
-import useInput from "../../hooks/useInput.tsx";
-import { serverNameRegex } from "../form_container/form/shared/validationRegex.ts";
-import { errorServerNameTextField, serverNameTextField } from "../servers/ServerFormInputs.tsx";
+import CustomTooltip from "../../ui/CustomTooltip.tsx";
+import CustomButton from "../../ui/CustomButton.tsx";
+import axiosInstance from "../../../configuration/axios-instance.ts";
+import useInput from "../../../hooks/useInput.tsx";
+import { serverNameRegex } from "../../form_container/form/shared/validationRegex.ts";
+import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs.tsx";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -47,7 +47,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	};
 
 	const handleClose = ( _event?: React.SyntheticEvent | Event, reason?: string ) => {
-		if ( reason === 'clickaway' ) {
+		if ( reason === 'clickable' ) {
 			return;
 		}
 		setOpenSnack(false);

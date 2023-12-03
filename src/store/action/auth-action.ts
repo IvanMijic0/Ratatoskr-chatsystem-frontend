@@ -1,6 +1,6 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import axiosInstance from '../../configuration/axios-instance.ts';
-import { setIsAuthenticated, setTokens } from '../slice/auth-slice.ts';
+import { setIsAuthenticated, setTokens } from '../slice/auth_slice/auth-slice.ts';
 import axios from 'axios';
 import { RootState } from "../index.ts";
 import { AnyAction } from "redux";

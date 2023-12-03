@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, RouteObject, RouterProvider } from "reac
 
 import { validateTokenAsync } from "./store/action/auth-action.ts";
 import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks.ts";
-import { selectIsAuthenticated } from "./store/slice/auth-slice.ts";
+import { selectIsAuthenticated } from "./store/slice/auth_slice/auth-slice.ts";
 
 import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";

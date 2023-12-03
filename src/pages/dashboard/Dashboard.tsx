@@ -4,16 +4,9 @@ import Grid from "@mui/material/Grid";
 import classes from './Dashboard.module.css';
 import Servers from "../../components/servers/servers_/Servers.tsx";
 import ChannelClusters from "../../components/channels/channel_clusters/ChannelClusters.tsx";
-import { useState } from "react";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
-	const [serverInfo, setServerInfo] = useState<{ serverId: string; serverName: string }>({
-		serverId: "",
-		serverName: ""
-	});
-
-
 	return <Box>
 		<Grid container direction="row">
 			<Grid
@@ -25,7 +18,7 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
-				<Servers setServerInfo={ setServerInfo }/>
+				<Servers/>
 			</Grid>
 			<Grid
 				className={ classes.grid }
@@ -36,7 +29,7 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>
-				<ChannelClusters serverId={ serverInfo.serverId } serverName={ serverInfo.serverName }/>
+				<ChannelClusters/>
 			</Grid>
 			<Grid
 				className={ classes.grid }
