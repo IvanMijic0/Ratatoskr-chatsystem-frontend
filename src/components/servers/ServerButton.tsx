@@ -2,32 +2,36 @@ import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../ui/CustomTooltip.tsx";
 import classes from "./servers_/Servers.module.css";
 import { stringAvatar } from "./ts/avatarUtils.ts";
-import { useAppDispatch } from "../../hooks/redux-hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks.ts";
 import { setServerInfo } from "../../store/action/server-action.ts";
+import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
 
-const ServerButton = ( props: {
+const ServerButton = ( { serverId, serverName, avatarIconUrl }: {
 	serverId: string;
 	serverName: string;
 	avatarIconUrl: string;
 } ) => {
 	const dispatch = useAppDispatch();
+	const selectedServerId = useAppSelector(selectCurrentServerId);
+	const isSelected = selectedServerId === serverId;
 
 	const handleClick = () => {
-		dispatch(setServerInfo({ serverName: props.serverName, serverId: props.serverId }));
+		dispatch(setServerInfo({ serverName, serverId }));
 	};
 
 	return (
-		<Box>
+		<Box className={ classes["avatar-container"] }>
 			<Button onClick={ handleClick }>
-				<CustomTooltip title={ props.serverName } placement="right">
+				<CustomTooltip title={ serverName } placement="right">
 					<Avatar
-						{ ...stringAvatar(props.serverName) }
-						className={ classes.avatar }
-						alt={ props.serverName }
-						src={ props.avatarIconUrl }
+						{ ...stringAvatar(serverName) }
+						className={ `${ classes.avatar } ${ isSelected ? classes.selected : '' }` }
+						alt={ serverName }
+						src={ avatarIconUrl }
 					/>
 				</CustomTooltip>
 			</Button>
+			<Box className={ `${ classes["avatar-dot"] } ${ isSelected ? classes.selected : '' }` }/>
 		</Box>
 	);
 };

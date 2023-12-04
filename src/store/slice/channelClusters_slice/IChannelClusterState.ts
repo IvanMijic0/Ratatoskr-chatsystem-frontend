@@ -6,6 +6,8 @@ interface ChannelCluster {
 
 interface IChannelClustersState {
 	data: ChannelCluster[];
+	currentChannelClusterId: string;
+	currentChannelClusterName: string;
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | null;
 }

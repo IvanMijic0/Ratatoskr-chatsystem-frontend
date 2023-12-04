@@ -21,7 +21,7 @@ const CustomDialog: React.FC<ICustomDialogProps> =
 			</DialogContent>
 			{ handleSubmit
 				? <DialogActions className={ classes['form-action'] }>
-					<form onSubmit={ handleSubmit }>{ customActions }</form>
+					<form method="post" onSubmit={ handleSubmit }>{ customActions }</form>
 				</DialogActions>
 				: <DialogActions className={ classes['form-action'] }>{ customActions }</DialogActions>
 			}

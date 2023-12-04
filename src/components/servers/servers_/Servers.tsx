@@ -7,7 +7,7 @@ import HomeServer from "../HomeServerButton.tsx";
 import AddServerButton from "../AddServerButton.tsx";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
 import { selectServerInfoData } from "../../../store/slice/server_slice/server-slice.ts";
-import { fetchServerInfoDataAction } from "../../../store/action/server-action.ts";
+import { fetchServerInfoDataAction, setServerInfo } from "../../../store/action/server-action.ts";
 import classes from './Servers.module.css';
 
 const Servers = () => {
@@ -16,13 +16,15 @@ const Servers = () => {
 	const serverData = useAppSelector(selectServerInfoData);
 
 	const handleClickOpen = () => {
+		dispatch(setServerInfo({ serverName: "Add Server", serverId: "1111-1111" }));
 		setOpen(true);
 	};
 
 	const handleClose = () => {
+		// For now lets go back to homepage after adding a server...
+		dispatch(setServerInfo({ serverName: "homepage", serverId: "0000-0000" }));
 		setOpen(false);
 	};
-
 
 	const fetchServerInfoData = useCallback(async () => {
 		dispatch(fetchServerInfoDataAction());

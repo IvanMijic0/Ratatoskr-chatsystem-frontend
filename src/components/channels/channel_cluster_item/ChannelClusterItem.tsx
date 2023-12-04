@@ -1,29 +1,39 @@
 import { Box, Collapse, List, ListItemButton, ListItemText } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import classes from "./ChannelClusterItem.module.css";
 import ChannelItem from "../channel_item/ChannelItem.tsx";
 import AddChannelButton from "../add_channel_button/AddChannelButton.tsx";
+import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
+import { setCurrentChannelCluster } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import { fetchChannelClustersData } from "../../../store/action/channelClusters-action.ts";
 
-const ChannelClusterItem = ( props: { channelClusterName: string; channels: any; } ) => {
+const ChannelClusterItem = ( props: {
+	channelClusterName: string;
+	channelClusterId: string;
+	channels: { name: string; _id: string; }[];
+	serverId: string | null;
+} ) => {
 	const [expand, setExpand] = useState(false);
 	const [open, setOpen] = useState(false);
 
+	const dispatch = useAppDispatch();
 
 	const handleClick = () => {
 		setExpand(!expand);
 	};
 
 	const handleClickOpen = () => {
+		dispatch(setCurrentChannelCluster({
+			clusterName: props.channelClusterName,
+			clusterId: props.channelClusterId
+		}));
 		setOpen(true);
 	};
 	const handleClose = () => {
+		dispatch(fetchChannelClustersData(props.serverId));
 		setOpen(false);
-	};
-
-	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
-		event.preventDefault();
 	};
 
 	return <>
@@ -34,14 +44,13 @@ const ChannelClusterItem = ( props: { channelClusterName: string; channels: any;
 				<ListItemText primary={ props.channelClusterName }/>
 			</ListItemButton>
 			<AddChannelButton
-				handleSubmit={ handleSubmit }
 				onClick={ handleClickOpen }
 				onClose={ handleClose }
 				open={ open }/>
 		</Box>
 
 		<Collapse in={ expand } timeout="auto" unmountOnExit>
-			<List component="div" disablePadding>
+			<List component="div" disablePadding dense>
 				{ props.channels.map(( channel: { name: string; _id: string; } ) =>
 					<ChannelItem
 						key={ channel._id }

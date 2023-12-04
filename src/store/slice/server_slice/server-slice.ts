@@ -19,6 +19,10 @@ const serverSlice = createSlice({
 			state.currentServerName = action.payload.serverName;
 			state.currentServerId = action.payload.serverId;
 		},
+		resetCurrentServerInfoData: ( state ) => {
+			state.currentServerName = "";
+			state.currentServerId = "";
+		},
 	},
 	extraReducers: ( builder ) => {
 		builder
@@ -36,7 +40,7 @@ const serverSlice = createSlice({
 	},
 });
 
-export const { setCurrentServerInfo } = serverSlice.actions;
+export const { setCurrentServerInfo, resetCurrentServerInfoData } = serverSlice.actions;
 
 export const selectServerInfoData = ( state: RootState ) => state.server.serverInfoData;
 export const selectServerStatus = ( state: RootState ) => state.server.status;

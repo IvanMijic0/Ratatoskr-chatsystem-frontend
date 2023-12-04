@@ -1,5 +1,5 @@
 import { Divider, List } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ChannelClusterItem from "../channel_cluster_item/ChannelClusterItem.tsx";
 import ChannelClusterTitle from "../ChannelClusterTitle.tsx";
 import classes from "./ChannelsClusters.module.css";
@@ -9,38 +9,33 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
 import { selectCurrentServerInfo } from "../../../store/slice/server_slice/server-slice.ts";
 
 const ChannelClusters = () => {
-	const [open, setOpen] = useState(false);
+	const [channelClusterFormOpen, setChannelClusterFormOpen] = useState(false);
 
 	const dispatch = useAppDispatch();
 	const channelClustersData = useAppSelector(selectChannelClustersData);
 	const serverInfoData = useAppSelector(selectCurrentServerInfo);
 
 	const handleClickOpen = () => {
-		setOpen(true);
+		setChannelClusterFormOpen(true);
 	};
 
 	const handleClose = () => {
-		setOpen(false);
+		setChannelClusterFormOpen(false);
 	};
 
-	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
-		event.preventDefault();
-		// Add your submit logic here if needed
-	};
-
-	const fetchChannelData = useCallback(() => {
+	const fetchChannelClusterData = useCallback(() => {
 		dispatch(fetchChannelClustersData(serverInfoData.serverId));
 	}, [dispatch, serverInfoData.serverId]);
 
 	useEffect(() => {
 		try {
-			fetchChannelData();
-
+			( !channelClusterFormOpen ) && fetchChannelClusterData();
 		} catch (error) {
 			console.log("Failed to fetch channel info data " + error);
 			throw error;
 		}
-	}, [fetchChannelData]);
+	}, [fetchChannelClusterData, channelClusterFormOpen]);
+
 
 	return (
 		<List
@@ -53,17 +48,18 @@ const ChannelClusters = () => {
 				<ChannelClusterTitle
 					primary={ serverInfoData.serverName }
 					onClick={ handleClickOpen }
-					open={ open }
+					open={ channelClusterFormOpen }
 					onClose={ handleClose }
-					handleSubmit={ handleSubmit }
 				/>
 			) }
 			<Divider className={ classes["channel-name-divider"] } variant="middle" flexItem/>
 			{ channelClustersData.map(( channelCluster ) => (
 				<ChannelClusterItem
 					key={ channelCluster._id }
+					channelClusterId={ channelCluster._id }
 					channelClusterName={ channelCluster.name }
 					channels={ channelCluster.channels }
+					serverId={ serverInfoData.serverId }
 				/>
 			)) }
 		</List>

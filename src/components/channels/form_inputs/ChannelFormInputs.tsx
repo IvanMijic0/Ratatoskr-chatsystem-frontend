@@ -28,7 +28,7 @@ export const errorChannelTextField = (
 		error
 		label="Error: Channel Name"
 		helperText="Enter a valid Channel Name!"
-		name="chanel--name-error"
+		name="chanel-name-error"
 		autoComplete="name"
 		margin="normal"
 		autoFocus

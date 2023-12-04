@@ -10,6 +10,8 @@ import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
 import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
 import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
+import Servers from "./components/servers/servers_/Servers.tsx";
+import ChannelClusters from "./components/channels/channel_clusters/ChannelClusters.tsx";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -32,7 +34,10 @@ const App = () => {
 			loader: dashboardLoader,
 			children: [
 				{
-					// element: <Servers/>,
+					element: <Servers/>,
+				},
+				{
+					element: <ChannelClusters/>,
 				}
 			]
 		},
