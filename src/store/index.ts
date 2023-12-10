@@ -1,15 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { persistStore } from "redux-persist";
-import persistedReducer from "./persistConfig.ts"; // Import redux-thunk
-import serverReducer from "./slice/server_slice/server-slice.ts";
 import channelClustersReducer from "./slice/channelClusters_slice/channelClusters-slice.ts";
+import channelReducer from "./slice/channel_slice/channel-slice.ts";
+import { persistedAuthReducer, persistedServerReducer } from "./persistConfig.ts";
 
 const store = configureStore({
 	reducer: {
-		auth: persistedReducer,
-		server: serverReducer,
+		auth: persistedAuthReducer,
+		server: persistedServerReducer,
 		channelClusters: channelClustersReducer,
+		channel: channelReducer
 	},
 	middleware: [thunk],
 });
@@ -18,7 +19,5 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 const persistor = persistStore(store);
-
-// export { store };
 
 export { store, persistor };

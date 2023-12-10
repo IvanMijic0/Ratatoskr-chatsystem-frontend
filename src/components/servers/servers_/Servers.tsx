@@ -21,7 +21,7 @@ const Servers = () => {
 	};
 
 	const handleClose = () => {
-		// For now lets go back to homepage after adding a server...
+		// For now, let's go back to homepage after adding a server...
 		dispatch(setServerInfo({ serverName: "homepage", serverId: "0000-0000" }));
 		setOpen(false);
 	};
@@ -50,7 +50,7 @@ const Servers = () => {
 					<AddServerDialogForm open={ open } onClose={ handleClose }/>
 				</ListItem>
 				<Divider className={ classes.divider } variant="middle" flexItem/>
-				{ serverData.map(( server ) => (
+				{ serverData.map(( server: { id: string; name: string; avatarIconUrl: string; } ) => (
 					<ListItem key={ server.id }>
 						<ServerButton
 							serverId={ server.id }

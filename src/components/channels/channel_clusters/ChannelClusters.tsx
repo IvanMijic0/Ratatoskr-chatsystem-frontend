@@ -1,12 +1,12 @@
 import { Divider, List } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import ChannelClusterItem from "../channel_cluster_item/ChannelClusterItem.tsx";
-import ChannelClusterTitle from "../ChannelClusterTitle.tsx";
+import ServerHeader from "../ServerHeader.tsx";
 import classes from "./ChannelsClusters.module.css";
 import { fetchChannelClustersData } from "../../../store/action/channelClusters-action.ts";
 import { selectChannelClustersData } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
 import { selectCurrentServerInfo } from "../../../store/slice/server_slice/server-slice.ts";
+import ChannelClusterItem from "../channel_cluster_item/ChannelClusterItem.tsx";
 
 const ChannelClusters = () => {
 	const [channelClusterFormOpen, setChannelClusterFormOpen] = useState(false);
@@ -29,7 +29,7 @@ const ChannelClusters = () => {
 
 	useEffect(() => {
 		try {
-			( !channelClusterFormOpen ) && fetchChannelClusterData();
+			!channelClusterFormOpen && fetchChannelClusterData();
 		} catch (error) {
 			console.log("Failed to fetch channel info data " + error);
 			throw error;
@@ -45,7 +45,7 @@ const ChannelClusters = () => {
 			dense
 		>
 			{ serverInfoData.serverName && (
-				<ChannelClusterTitle
+				<ServerHeader
 					primary={ serverInfoData.serverName }
 					onClick={ handleClickOpen }
 					open={ channelClusterFormOpen }
@@ -53,15 +53,15 @@ const ChannelClusters = () => {
 				/>
 			) }
 			<Divider className={ classes["channel-name-divider"] } variant="middle" flexItem/>
-			{ channelClustersData.map(( channelCluster ) => (
+			{ channelClustersData.map(channelCluster =>
 				<ChannelClusterItem
-					key={ channelCluster._id }
-					channelClusterId={ channelCluster._id }
+					key={ channelCluster.id }
+					channelClusterId={ channelCluster.id }
 					channelClusterName={ channelCluster.name }
-					channels={ channelCluster.channels }
+					channels={ channelCluster.channelInfos }
 					serverId={ serverInfoData.serverId }
 				/>
-			)) }
+			) }
 		</List>
 	);
 };

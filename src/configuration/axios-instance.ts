@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { store } from "../store";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { setTokens } from "../store/slice/auth_slice/auth-slice.ts";
 
 const instance = axios.create({
 	baseURL: 'http://localhost:8080/api/v1',
@@ -37,16 +38,21 @@ instance.interceptors.response.use(
 		const { response } = error;
 		if ( response ) {
 			const isAuthenticated = store.getState().auth.isAuthenticated;
+			const refreshToken = store.getState().auth.refreshToken;
 			const token = store.getState().auth.token;
 
-			if ( isAuthenticated && isTokenExpired(token) ) {
+			// TODO figure out when to logout user
+
+			if ( isAuthenticated && isTokenExpired(token) && !isTokenExpired(refreshToken) ) {
 				try {
+					store.dispatch({ type: "aut/PURGE" });
 					console.log("Refreshing token");
-					console.log("You need to handle this better.");
-					// const { data: { token, refreshToken } } = await instance.get('/auth/refreshToken');
-					// store.dispatch(setTokens({ token, refreshToken }));
+					const { data: { token: newToken, refreshToken } } = await instance.get('/auth/refreshToken');
+					store.dispatch(setTokens({ token: newToken, refreshToken }));
 				} catch (error) {
-					throw Error('Could not Refresh token.');
+					console.error('Could not refresh token:', error);
+					store.dispatch({ type: "aut/PURGE" });
+					console.log('User is not authenticated. Redirect to the login page.');
 				}
 
 				return instance(error.config);

@@ -1,5 +1,5 @@
 import IChannelClustersState from "./IChannelClusterState.ts";
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { fetchChannelClustersData } from "../../action/channelClusters-action.ts";
 import { RootState } from "../../index.ts";
 
@@ -45,9 +45,5 @@ export const selectChannelClustersStatus = ( state: RootState ) => state.channel
 export const selectChannelClustersError = ( state: RootState ) => state.channelClusters.error;
 export const selectCurrentClusterName = ( state: RootState ) => state.channelClusters.currentChannelClusterName;
 export const selectCurrentChannelClusterId = ( state: RootState ) => state.channelClusters.currentChannelClusterId;
-export const selectCurrentServerInfo = createSelector(
-	[selectCurrentChannelClusterId, selectCurrentClusterName],
-	( currentClusterId, currentClusterName ) => ( { clusterId: currentClusterId, clusterName: currentClusterName } )
-);
 
 export default channelClustersSlice.reducer;

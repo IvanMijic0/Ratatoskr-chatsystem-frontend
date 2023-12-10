@@ -1,24 +1,28 @@
-import { Box, Button, CircularProgress, Container, IconButton, ListItem, ListItemText } from "@mui/material";
-import classes from "./channel_clusters/ChannelsClusters.module.css";
-import { channelClusterTextField, errorChannelClusterTextField } from "./form_inputs/ChannelClusterFormInputs.tsx";
-import CustomButton from "../ui/CustomButton.tsx";
+import { Box, Button, CircularProgress, Container, ListItem, ListItemText, MenuItem } from "@mui/material";
 import React, { useState } from "react";
-import useInput from "../../hooks/useInput.tsx";
-import { channelClusterNameRegex } from "../form_container/form/shared/validationRegex.ts";
-import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
-import AddIcon from "@mui/icons-material/Add";
-import CustomTooltip from "../ui/CustomTooltip.tsx";
-import axiosInstance from "../../configuration/axios-instance.ts";
-import { useAppSelector } from "../../hooks/redux-hooks.ts";
-import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
 
-const ChannelClusterTitle = ( props: {
+import { channelClusterTextField, errorChannelClusterTextField } from "./form_inputs/ChannelClusterFormInputs.tsx";
+import { channelClusterNameRegex } from "../form_container/form/shared/validationRegex.ts";
+import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
+import { useAppSelector } from "../../hooks/redux-hooks.ts";
+import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
+import axiosInstance from "../../configuration/axios-instance.ts";
+import useInput from "../../hooks/useInput.tsx";
+import CustomButton from "../ui/CustomButton.tsx";
+import classes from "./channel_clusters/ChannelsClusters.module.css";
+import CustomMenu from "../ui/CustomMenu.tsx";
+
+const ServerHeader = ( props: {
 	primary: string,
 	onClick: () => void,
 	open: boolean,
 	onClose: () => void,
 } ) => {
-	const channelClusterNameValidation = useInput(channelClusterNameRegex);
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+
+	const channelClusterNameValidation =
+		useInput(channelClusterNameRegex);
 	const currentServerId = useAppSelector(selectCurrentServerId);
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +32,13 @@ const ChannelClusterTitle = ( props: {
 	if ( channelClusterNameValidation.isValid ) {
 		dialogFormIsValid = true;
 	}
+
+	const handleClick = ( event: React.MouseEvent<HTMLButtonElement> ) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 
 	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
@@ -74,19 +85,39 @@ const ChannelClusterTitle = ( props: {
 	</Box>;
 
 	return <ListItem>
-		<ListItemText
-			primary={ props.primary }
-			primaryTypographyProps={ { marginLeft: ".5rem", fontSize: "1rem", fontWeight: "bold" } }
-		/>
-		<CustomTooltip title="Add Channel Cluster" placement="right-start">
-			<IconButton
-				className={ classes["add-channel-button"] }
-				size="small"
-				onClick={ props.onClick }
+		<Button
+			className={ classes["server-header-button"] }
+			id="basic-button"
+			aria-controls={ open ? 'basic-menu' : undefined }
+			aria-haspopup="true"
+			aria-expanded={ open ? 'true' : undefined }
+			onClick={ handleClick }
+		>
+			<ListItemText
+				primary={ props.primary }
+				primaryTypographyProps={ { left: 0, fontSize: "1rem", fontWeight: "bold", color: "whitesmoke" } }
+			/>
+		</Button>
+		<CustomMenu
+			id="basic-menu"
+			anchorEl={ anchorEl }
+			open={ open }
+			onClose={ handleClose }
+		>
+			<MenuItem
+				className={ classes["menu-item"] }
+				onClick={ () => {
+					props.onClick();
+					handleClose();
+				} }
 			>
-				<AddIcon className={ classes["channel-icon"] }/>
-			</IconButton>
-		</CustomTooltip>
+				Add Cluster
+			</MenuItem>
+			<MenuItem className={ classes["menu-item-del"] } onClick={ handleClose }>
+				Delete Server
+			</MenuItem>
+		</CustomMenu>
+
 		<CustomDialog
 			open={ props.open }
 			onClose={ props.onClose }
@@ -98,4 +129,4 @@ const ChannelClusterTitle = ( props: {
 	</ListItem>;
 };
 
-export default ChannelClusterTitle;
+export default ServerHeader;

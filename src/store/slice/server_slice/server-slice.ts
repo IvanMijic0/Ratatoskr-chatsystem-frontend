@@ -7,8 +7,8 @@ const initialState: IServerState = {
 	serverInfoData: [],
 	status: 'idle',
 	error: null,
-	currentServerName: null,
-	currentServerId: null,
+	currentServerName: "Homepage",
+	currentServerId: "0000-0000",
 };
 
 const serverSlice = createSlice({

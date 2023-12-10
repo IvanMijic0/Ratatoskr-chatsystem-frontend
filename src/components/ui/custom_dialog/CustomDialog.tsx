@@ -14,7 +14,13 @@ interface ICustomDialogProps {
 
 const CustomDialog: React.FC<ICustomDialogProps> =
 	( { open, onClose, title, customContent, customActions, handleSubmit } ) => {
-		return <Dialog open={ open } onClose={ onClose } sx={ { marginBottom: "25vh" } }>
+		return <Dialog
+			open={ open }
+			onClose={ onClose }
+			sx={ {
+				marginBottom: "25vh"
+			} }
+			PaperProps={ { sx: { borderRadius: "5%", backgroundColor: "#3F5461FF" } } }>
 			<DialogTitle className={ classes['form-text'] }>{ title }</DialogTitle>
 			<DialogContent className={ classes['form-content'] }>
 				{ customContent }

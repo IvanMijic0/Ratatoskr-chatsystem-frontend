@@ -4,7 +4,12 @@ import axiosInstance from "../../configuration/axios-instance.ts";
 export const fetchChannelClustersData = createAsyncThunk(
 	'channelClusters/fetchChannelClustersData',
 	async ( serverId: string | null ) => {
-		const response = await axiosInstance.get(`/server/channelClusters?serverId=${ serverId }`);
-		return response.data;
+		try {
+			const response = await axiosInstance.get(`/server/channelClusters?serverId=${ serverId }`);
+			return response.data;
+		} catch (error) {
+			console.error("Error fetching channel clusters:", error);
+			throw error;
+		}
 	}
 );

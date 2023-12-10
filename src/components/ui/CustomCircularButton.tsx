@@ -21,16 +21,16 @@ const CustomCircularButton: React.FC<CustomCircularButtonProps> = ( {
 			sx={ {
 				backgroundColor: "#557385",
 				color: "white",
-				width: "4rem",
-				height: "4rem",
-				borderRadius: "5rem",
+				width: "3rem",
+				height: "3rem",
+				borderRadius: "100%",
 				"&:hover": {
 					backgroundColor: "#4a6473",
 				},
 				"&:active": {
 					backgroundColor: "#202d35",
 				},
-				fontSize: "1.3rem",
+				fontSize: "1rem",
 			} }
 		>
 			{ children }

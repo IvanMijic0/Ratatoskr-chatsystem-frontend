@@ -1,3 +1,8 @@
+.channel-actions-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .channel-icon {
     font-size: 1.3rem;
     color: rgba(245, 245, 245, 0.54);
@@ -5,5 +10,5 @@
 }
 
 .inner-channel-button {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
 }

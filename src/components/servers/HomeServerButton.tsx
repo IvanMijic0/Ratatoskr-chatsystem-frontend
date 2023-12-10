@@ -12,7 +12,7 @@ const HomeServerButton = () => {
 	const isSelected = selectedServerId === "0000-0000";
 
 	const handleClick = () => {
-		dispatch(setServerInfo({ serverName: "homepage", serverId: "0000-0000" }));
+		dispatch(setServerInfo({ serverName: "Homepage", serverId: "0000-0000" }));
 	};
 
 	return (

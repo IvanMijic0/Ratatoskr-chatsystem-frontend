@@ -1,8 +1,6 @@
-import { Box, Button, CircularProgress, Container, IconButton } from "@mui/material";
-import CustomTooltip from "../../ui/CustomTooltip.tsx";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Button, CircularProgress, Container } from "@mui/material";
 
-import classes from "./AddChannelButton.module.css";
+import classes from "./AddChannelDialog.module.css";
 import useInput from "../../../hooks/useInput.tsx";
 import { channelNameRegex } from "../../form_container/form/shared/validationRegex.ts";
 import { channelTextField, errorChannelTextField } from "../form_inputs/ChannelFormInputs.tsx";
@@ -14,8 +12,7 @@ import { useAppSelector } from "../../../hooks/redux-hooks.ts";
 import { selectCurrentServerId } from "../../../store/slice/server_slice/server-slice.ts";
 import { selectCurrentChannelClusterId } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
 
-const AddChannelButton = ( props: {
-	onClick: () => void,
+const AddChannelDialog = ( props: {
 	open: boolean,
 	onClose: () => void,
 } ) => {
@@ -76,21 +73,14 @@ const AddChannelButton = ( props: {
 		<Button className={ classes['action-button'] } onClick={ props.onClose }>Cancel</Button>
 	</Box>;
 
-	return <>
-		<CustomTooltip title="Add Channel" placement="right-start">
-			<IconButton className={ classes["add-channel-button"] } size="small" onClick={ props.onClick }>
-				<AddIcon className={ classes["channel-icon"] }/>
-			</IconButton>
-		</CustomTooltip>
-		<CustomDialog
-			open={ props.open }
-			onClose={ props.onClose }
-			title="Enter Channel data:"
-			customActions={ channelClustersDialogActions }
-			customContent={ channelClustersDialogContent }
-			handleSubmit={ handleSubmit }
-		/>
-	</>;
+	return <CustomDialog
+		open={ props.open }
+		onClose={ props.onClose }
+		title="Enter Channel data:"
+		customActions={ channelClustersDialogActions }
+		customContent={ channelClustersDialogContent }
+		handleSubmit={ handleSubmit }
+	/>;
 };
 
-export default AddChannelButton;
+export default AddChannelDialog;

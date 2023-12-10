@@ -1,5 +1,6 @@
 import { Box, Paper } from "@mui/material";
-import { LockOpen, PersonAdd } from "@mui/icons-material";
+import { PersonAdd } from "@mui/icons-material";
+import LoginIcon from '@mui/icons-material/Login';
 import { useState } from "react";
 
 import Form from "./form/Form.tsx";
@@ -31,7 +32,7 @@ const FormContainer = () => {
 				tooltipTitle="Login"
 				onClick={ loginButtonHandler }
 			>
-				<LockOpen className={ classes['bottom-action-logo'] }/>
+				<LoginIcon className={ classes['bottom-action-logo'] }/>
 			</CustomCircularButton>
 			<CustomCircularButton
 				className={ classes['bottom-action-button'] }

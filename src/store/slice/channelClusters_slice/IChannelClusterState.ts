@@ -1,7 +1,13 @@
-interface ChannelCluster {
-	_id: string;
+interface Channel {
+	id: string;
 	name: string;
-	channels: any[];
+	chatMessage?: [];
+}
+
+interface ChannelCluster {
+	id: string;
+	name: string;
+	channelInfos: Channel[];
 }
 
 interface IChannelClustersState {

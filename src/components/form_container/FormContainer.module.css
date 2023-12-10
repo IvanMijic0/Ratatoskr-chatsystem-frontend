@@ -40,11 +40,14 @@
 }
 
 .bottom-action-button {
-    margin-right: 1rem;
-    margin-left: 1rem;
+    margin-right: .5rem;
+    margin-left: .5rem;
+    border-radius: 25%;
+    width: 3rem;
+    height: 3rem;
 }
 
 .bottom-action-logo {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: whitesmoke;
 }

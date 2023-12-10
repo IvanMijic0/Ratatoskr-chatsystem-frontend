@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, Container, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Snackbar, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from "react";
 
@@ -10,6 +10,7 @@ import axiosInstance from "../../../configuration/axios-instance.ts";
 import useInput from "../../../hooks/useInput.tsx";
 import { serverNameRegex } from "../../form_container/form/shared/validationRegex.ts";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs.tsx";
+import CustomCircularProgressBar from "../../ui/CustomCircularProgressBar.tsx";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -36,7 +37,13 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 		const file = event.target.files?.[0] || null;
 
 		if ( file && allowedFormats.includes(file.type) && file.size <= maxFileSize ) {
-			setSelectedFile(file);
+			if ( file.name.includes(' ') ) {
+				setAlertMessage('Invalid file name. Please make sure the file name does not contain spaces.');
+				setOpenSnack(true);
+				setSelectedFile(null);
+			} else {
+				setSelectedFile(file);
+			}
 		} else {
 			setSelectedFile(null);
 			setAlertMessage(
@@ -45,6 +52,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			setOpenSnack(true);
 		}
 	};
+
 
 	const handleClose = ( _event?: React.SyntheticEvent | Event, reason?: string ) => {
 		if ( reason === 'clickable' ) {
@@ -117,7 +125,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			disabled={ !dialogFormIsValid || isLoading }
 			type="submit"
 			className={ classes['action-button'] }>
-			{ isLoading ? <CircularProgress/> : "Submit" }
+			{ isLoading ? <CustomCircularProgressBar/> : "Submit" }
 		</CustomButton>
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</Box>;

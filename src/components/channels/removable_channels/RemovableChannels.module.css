@@ -1,0 +1,33 @@
+.removable-channel-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 3rem;
+}
+
+.channel-name {
+    color: whitesmoke;
+    font-size: 1.2rem;
+}
+
+.checkbox {
+    position: absolute;
+    right: 0;
+    margin-right: .5rem;
+}
+
+.channel-icon {
+    font-size: 1rem;
+    color: rgba(245, 245, 245, 0.54);
+}
+
+.channel-remove-icon-outline {
+    font-size: 1.1rem;
+    color: rgba(245, 245, 245, 0.54);
+}
+
+.channel-remove-icon-filled {
+    font-size: 1.1rem;
+    color: #dc4747;
+}

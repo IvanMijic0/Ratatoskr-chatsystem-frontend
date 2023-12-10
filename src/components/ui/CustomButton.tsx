@@ -19,8 +19,8 @@ const CustomButton: React.FC<CustomButtonProps> = ( {
 		<Button
 			{ ...otherProps }
 			sx={ {
-				width: "6rem",
-				height: "2.5rem",
+				width: "5rem",
+				height: "2rem",
 				backgroundColor: "#557385",
 				color: "white",
 				"&:hover": {
@@ -29,7 +29,7 @@ const CustomButton: React.FC<CustomButtonProps> = ( {
 				"&:active": {
 					backgroundColor: "#202d35",
 				},
-				fontSize: "1.1rem",
+				fontSize: "1rem",
 				borderRadius: "10px"
 			} }
 		>

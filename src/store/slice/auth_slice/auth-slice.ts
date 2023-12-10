@@ -21,6 +21,11 @@ const authSlice = createSlice({
 			state.refreshToken = action.payload.refreshToken || null;
 		},
 	},
+	extraReducers: ( builder ) => {
+		builder.addCase("auth/purge", () => {
+			return initialState;
+		});
+	},
 });
 
 export const selectIsAuthenticated = ( state: RootState ) => state.auth.isAuthenticated;
