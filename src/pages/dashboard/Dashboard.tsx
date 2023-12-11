@@ -11,6 +11,7 @@ import FriendsList from "../../components/info_list/friends_info/friends_list/Fr
 import { selectCurrentFriendId } from "../../store/slice/friend_slice/friend-slice.ts";
 import FriendContent from "../../components/main_content/friend_content/FriendContent.tsx";
 import DirectChatContent from "../../components/main_content/direct_chat_content/DirectChatContent.tsx";
+import TopAppBar from "../../components/main_content/top_app_bar/TopAppBar.tsx";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
@@ -51,6 +52,7 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
+				<TopAppBar/>
 				{ isFriendsContent ? <FriendContent/> : <DirectChatContent/> }
 			</Grid>
 			<Grid
