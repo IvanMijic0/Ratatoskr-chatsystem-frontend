@@ -13,6 +13,7 @@ import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
 import Servers from "./components/servers/servers_/Servers.tsx";
 import ChannelClusters from "./components/info_list/server_info/channel_clusters/ChannelClusters.tsx";
 import UserPanel from "./components/info_list/user_panel/UserPanel.tsx";
+import { fetchUserSpecific } from "./store/action/user-action.ts";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -20,6 +21,7 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(validateTokenAsync());
+		dispatch(fetchUserSpecific());
 	}, [dispatch]);
 
 	const routerConfig: RouteObject[] = [

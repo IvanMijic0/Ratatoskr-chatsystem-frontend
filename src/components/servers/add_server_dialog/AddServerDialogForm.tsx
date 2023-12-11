@@ -11,6 +11,8 @@ import useInput from "../../../hooks/useInput.tsx";
 import { serverNameRegex } from "../../form_container/form/shared/validationRegex.ts";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs.tsx";
 import CustomCircularProgressBar from "../../ui/CustomCircularProgressBar.tsx";
+import { useAppSelector } from "../../../hooks/redux-hooks.ts";
+import { selectServerStatus } from "../../../store/slice/server_slice/server-slice.ts";
 
 interface IAddServerDialogForm {
 	open: boolean;
@@ -22,6 +24,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [openSnack, setOpenSnack] = useState(false);
+	const serverStatus = useAppSelector(selectServerStatus);
 
 	const serverNameValidation = useInput(serverNameRegex);
 
@@ -127,7 +130,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			disabled={ !dialogFormIsValid || isLoading }
 			type="submit"
 			className={ classes['action-button'] }>
-			{ isLoading ? <CustomCircularProgressBar/> : "Submit" }
+			{ serverStatus === "loading" ? <CustomCircularProgressBar/> : "Submit" }
 		</CustomButton>
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</Box>;

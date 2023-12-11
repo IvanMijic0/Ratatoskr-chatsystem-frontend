@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 import classes from './Dashboard.module.css';
@@ -8,13 +8,14 @@ import UserPanel from "../../components/info_list/user_panel/UserPanel.tsx";
 import { useAppSelector } from "../../hooks/redux-hooks.ts";
 import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
 import FriendsList from "../../components/info_list/friends_info/friends_list/FriendsList.tsx";
+import { selectCurrentFriendId } from "../../store/slice/friend_slice/friend-slice.ts";
+import FriendContent from "../../components/main_content/friend_content/FriendContent.tsx";
+import DirectChatContent from "../../components/main_content/direct_chat_content/DirectChatContent.tsx";
 
 // TODO: make this responsive, when you get time
 const Dashboard = () => {
 	const isHomeServer = useAppSelector(selectCurrentServerId) === "0000-0000";
-
-	console.log(isHomeServer);
-
+	const isFriendsContent = useAppSelector(selectCurrentFriendId) === "0000-0000";
 
 	return <Box>
 		<Grid container direction="row">
@@ -50,6 +51,7 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }
 			>
+				{ isFriendsContent ? <FriendContent/> : <DirectChatContent/> }
 			</Grid>
 			<Grid
 				className={ classes.grid }
@@ -60,7 +62,7 @@ const Dashboard = () => {
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }
 			>
-				<Typography>Nietzsche</Typography>
+				Details
 			</Grid>
 		</Grid>
 	</Box>;
