@@ -19,21 +19,19 @@ const ServerButton = ( { serverId, serverName, avatarIconUrl }: {
 		dispatch(setServerInfo({ serverName, serverId }));
 	};
 
-	return (
-		<Box className={ classes["avatar-container"] }>
-			<Button onClick={ handleClick }>
-				<CustomTooltip title={ serverName } placement="right">
-					<Avatar
-						{ ...stringAvatar(serverName) }
-						className={ `${ classes.avatar } ${ isSelected ? classes.selected : '' }` }
-						alt={ serverName }
-						src={ avatarIconUrl }
-					/>
-				</CustomTooltip>
-			</Button>
-			<Box className={ `${ classes["avatar-dot"] } ${ isSelected ? classes.selected : '' }` }/>
-		</Box>
-	);
+	return <Box className={ classes["avatar-container"] }>
+		<Button onClick={ handleClick }>
+			<CustomTooltip title={ serverName } placement="right">
+				<Avatar
+					{ ...stringAvatar(serverName) }
+					className={ `${ classes.avatar } ${ isSelected ? classes.selected : '' }` }
+					alt={ serverName }
+					src={ avatarIconUrl }
+				/>
+			</CustomTooltip>
+		</Button>
+		<Box className={ `${ classes["avatar-dot"] } ${ isSelected ? classes.selected : '' }` }/>
+	</Box>;
 };
 
 export default ServerButton;

@@ -59,11 +59,9 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ( props ) => {
 				sx: inputPropsSx,
 			} }
 			helperText={
-				error ? (
-					<span style={ helperTextSx }>{ props.helperText }</span>
-				) : (
-					<span style={ helperTextSx }>{ props.helperText }</span>
-				)
+				error
+					? <span style={ helperTextSx }>{ props.helperText }</span>
+					: <span style={ helperTextSx }>{ props.helperText }</span>
 			}
 		/>
 	);

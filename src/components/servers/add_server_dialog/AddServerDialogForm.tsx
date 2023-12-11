@@ -81,11 +81,13 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 					'Content-Type': 'multipart/form-data',
 				},
 			});
-
 			onClose();
-			setIsLoading(false);
 		} catch (error) {
 			console.error('Error:', error);
+		} finally {
+			serverNameValidation.reset();
+			setSelectedFile(null);
+			setIsLoading(false);
 		}
 	};
 

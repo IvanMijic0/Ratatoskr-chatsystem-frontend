@@ -1,5 +1,5 @@
 import React from "react";
-import CustomTextField from "../../ui/CustomTextField.tsx";
+import CustomTextField from "../../../ui/CustomTextField.tsx";
 
 export const channelTextField = (
 	channelNameChangeHandler: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined,

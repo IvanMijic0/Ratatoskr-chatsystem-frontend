@@ -11,7 +11,8 @@ import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
 import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
 import Servers from "./components/servers/servers_/Servers.tsx";
-import ChannelClusters from "./components/channels/channel_clusters/ChannelClusters.tsx";
+import ChannelClusters from "./components/info_list/server_info/channel_clusters/ChannelClusters.tsx";
+import UserPanel from "./components/info_list/user_panel/UserPanel.tsx";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -34,10 +35,16 @@ const App = () => {
 			loader: dashboardLoader,
 			children: [
 				{
+					path: 'servers',
 					element: <Servers/>,
 				},
 				{
+					path: 'channelClusters',
 					element: <ChannelClusters/>,
+				},
+				{
+					path: 'userPanel',
+					element: <UserPanel/>
 				}
 			]
 		},

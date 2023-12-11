@@ -1,10 +1,10 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import classes from "./ChannelItem.module.css";
 import TagIcon from "@mui/icons-material/Tag";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
-import { selectCurrentServerId } from "../../../store/slice/server_slice/server-slice.ts";
-import { selectCurrentChannelClusterId } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
-import { fetchChannelData } from "../../../store/action/channel-action.ts";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux-hooks.ts";
+import { selectCurrentServerId } from "../../../../store/slice/server_slice/server-slice.ts";
+import { selectCurrentChannelClusterId } from "../../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import { fetchChannelData } from "../../../../store/action/channel-action.ts";
 
 const ChannelItem = ( props: { channelName: string; channelId: string; } ) => {
 

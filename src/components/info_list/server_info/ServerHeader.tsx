@@ -1,16 +1,17 @@
 import { Box, Button, CircularProgress, Container, ListItem, ListItemText, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 
-import { channelClusterTextField, errorChannelClusterTextField } from "./form_inputs/ChannelClusterFormInputs.tsx";
-import { channelClusterNameRegex } from "../form_container/form/shared/validationRegex.ts";
-import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
-import { useAppSelector } from "../../hooks/redux-hooks.ts";
-import CustomDialog from "../ui/custom_dialog/CustomDialog.tsx";
-import axiosInstance from "../../configuration/axios-instance.ts";
-import useInput from "../../hooks/useInput.tsx";
-import CustomButton from "../ui/CustomButton.tsx";
+import { channelClusterNameRegex } from "../../form_container/form/shared/validationRegex.ts";
+import { selectCurrentServerId } from "../../../store/slice/server_slice/server-slice.ts";
+import { fetchServerInfoDataAction } from "../../../store/action/server-action.ts";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks.ts";
+import CustomDialog from "../../ui/custom_dialog/CustomDialog.tsx";
+import axiosInstance from "../../../configuration/axios-instance.ts";
+import useInput from "../../../hooks/useInput.tsx";
+import CustomButton from "../../ui/CustomButton.tsx";
+import CustomMenu from "../../ui/CustomMenu.tsx";
 import classes from "./channel_clusters/ChannelsClusters.module.css";
-import CustomMenu from "../ui/CustomMenu.tsx";
+import { channelClusterTextField, errorChannelClusterTextField } from "./form_inputs/ChannelClusterFormInputs.tsx";
 
 const ServerHeader = ( props: {
 	primary: string,
@@ -20,6 +21,8 @@ const ServerHeader = ( props: {
 } ) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+
+	const dispatch = useAppDispatch();
 
 	const channelClusterNameValidation =
 		useInput(channelClusterNameRegex);
@@ -57,6 +60,17 @@ const ServerHeader = ( props: {
 			console.error('Error:', error);
 		} finally {
 			setIsLoading(false);
+		}
+	};
+
+	const handleDeleteServer = async () => {
+		try {
+			await axiosInstance.delete(`/server/${ currentServerId }`);
+			console.log('Server deleted successfully');
+			handleClose();
+			dispatch(fetchServerInfoDataAction());
+		} catch (error) {
+			console.error('Error deleting server:', error);
 		}
 	};
 
@@ -113,7 +127,7 @@ const ServerHeader = ( props: {
 			>
 				Add Cluster
 			</MenuItem>
-			<MenuItem className={ classes["menu-item-del"] } onClick={ handleClose }>
+			<MenuItem className={ classes["menu-item-del"] } onClick={ handleDeleteServer }>
 				Delete Server
 			</MenuItem>
 		</CustomMenu>

@@ -1,14 +1,16 @@
-import CustomDialog from "../../ui/custom_dialog/CustomDialog.tsx";
-import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
-import CustomButton from "../../ui/CustomButton.tsx";
+import CustomDialog from "../../../ui/custom_dialog/CustomDialog.tsx";
+import { Box, Button, Container, Typography } from "@mui/material";
+import CustomButton from "../../../ui/CustomButton.tsx";
 import { useState } from "react";
 import RemovableChannels from "../removable_channels/RemovableChannels.tsx";
 
 import classes from "./RemoveChannelDialog.module.css";
-import axiosInstance from "../../../configuration/axios-instance.ts";
-import { useAppSelector } from "../../../hooks/redux-hooks.ts";
-import { selectCurrentServerId } from "../../../store/slice/server_slice/server-slice.ts";
-import { selectCurrentChannelClusterId } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import axiosInstance from "../../../../configuration/axios-instance.ts";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux-hooks.ts";
+import { selectCurrentServerId } from "../../../../store/slice/server_slice/server-slice.ts";
+import { selectCurrentChannelClusterId } from "../../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import CustomCircularProgressBar from "../../../ui/CustomCircularProgressBar.tsx";
+import { fetchChannelClustersData } from "../../../../store/action/channelClusters-action.ts";
 
 export const RemoveChannelDialog = ( props: {
 	open: boolean,
@@ -21,23 +23,22 @@ export const RemoveChannelDialog = ( props: {
 	const currentServerId = useAppSelector(selectCurrentServerId);
 	const currentClusterId = useAppSelector(selectCurrentChannelClusterId);
 
+	const dispatch = useAppDispatch();
+
 	const handleSubmit = async ( event: { preventDefault: () => void; } ) => {
 		event.preventDefault();
 		setIsLoading(true);
 
 		try {
-			const response =
-				await axiosInstance.delete(`/server/${ currentServerId }/channelCluster/${ currentClusterId }/channels`, {
-					data: props.removableChannelIds,
-				});
+			await axiosInstance.delete(`/server/${ currentServerId }/channelCluster/${ currentClusterId }/channels`, {
+				data: props.removableChannelIds,
+			});
 
-			if ( response.status === 200 ) {
-				console.log('Channels deleted successfully!');
-			} else {
-				console.error('Error deleting channels:', response.statusText);
-			}
+			console.log('Channels deleted successfully!');
 
+			dispatch(fetchChannelClustersData(currentServerId));
 			props.onClose();
+
 		} catch (error) {
 			console.error('Error:', error);
 		} finally {
@@ -62,7 +63,7 @@ export const RemoveChannelDialog = ( props: {
 		<CustomButton
 			disabled={ isLoading }
 			type="submit">
-			{ isLoading ? <CircularProgress/> : "Apply" }
+			{ isLoading ? <CustomCircularProgressBar/> : "Apply" }
 		</CustomButton>
 		<Button className={ classes["cancel-button"] } onClick={ props.onClose }>Cancel</Button>
 	</Box>;

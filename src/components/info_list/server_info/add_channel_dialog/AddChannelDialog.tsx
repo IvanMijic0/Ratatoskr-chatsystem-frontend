@@ -1,16 +1,16 @@
 import { Box, Button, CircularProgress, Container } from "@mui/material";
 
 import classes from "./AddChannelDialog.module.css";
-import useInput from "../../../hooks/useInput.tsx";
-import { channelNameRegex } from "../../form_container/form/shared/validationRegex.ts";
+import useInput from "../../../../hooks/useInput.tsx";
+import { channelNameRegex } from "../../../form_container/form/shared/validationRegex.ts";
 import { channelTextField, errorChannelTextField } from "../form_inputs/ChannelFormInputs.tsx";
-import CustomButton from "../../ui/CustomButton.tsx";
+import CustomButton from "../../../ui/CustomButton.tsx";
 import React, { useState } from "react";
-import CustomDialog from "../../ui/custom_dialog/CustomDialog.tsx";
-import axiosInstance from "../../../configuration/axios-instance.ts";
-import { useAppSelector } from "../../../hooks/redux-hooks.ts";
-import { selectCurrentServerId } from "../../../store/slice/server_slice/server-slice.ts";
-import { selectCurrentChannelClusterId } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import CustomDialog from "../../../ui/custom_dialog/CustomDialog.tsx";
+import axiosInstance from "../../../../configuration/axios-instance.ts";
+import { useAppSelector } from "../../../../hooks/redux-hooks.ts";
+import { selectCurrentServerId } from "../../../../store/slice/server_slice/server-slice.ts";
+import { selectCurrentChannelClusterId } from "../../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
 
 const AddChannelDialog = ( props: {
 	open: boolean,
@@ -46,6 +46,7 @@ const AddChannelDialog = ( props: {
 			console.error('Error:', error);
 		} finally {
 			setIsLoading(false);
+			channelNameValidation.reset();
 		}
 	};
 

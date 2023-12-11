@@ -1,16 +1,17 @@
-import { Box, Collapse, List, ListItem, ListItemButton, ListItemText, MenuItem } from "@mui/material";
+import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import React, { useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import ChannelItem from "../channel_item/ChannelItem.tsx";
-import { useAppDispatch } from "../../../hooks/redux-hooks.ts";
-import { setCurrentChannelCluster } from "../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
-import { fetchChannelClustersData } from "../../../store/action/channelClusters-action.ts";
-import ChannelClusterOptionsButton from "../channel_cluster_options_button/ChannelClusterOptionsButton.tsx";
+import { useAppDispatch } from "../../../../hooks/redux-hooks.ts";
+import { setCurrentChannelCluster } from "../../../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import { fetchChannelClustersData } from "../../../../store/action/channelClusters-action.ts";
 import classes from "./ChannelClusterItem.module.css";
-import CustomMenu from "../../ui/CustomMenu.tsx";
 import AddChannelDialog from "../add_channel_dialog/AddChannelDialog.tsx";
 import RemoveChannelDialog from "../remove_channel_dialog/RemoveChannelDialog.tsx";
+import ChannelClusterMenu from "../channel_cluster_menu/ChannelClusterMenu.tsx";
+import ChannelClusterOptionsButton from "../channel_cluster_options_button/ChannelClusterOptionsButton.tsx";
+
 
 const ChannelClusterItem = ( props: {
 	channelClusterName: string;
@@ -28,6 +29,10 @@ const ChannelClusterItem = ( props: {
 	const dispatch = useAppDispatch();
 
 	const handleMenuOpen = ( event: React.MouseEvent<HTMLButtonElement> ) => {
+		dispatch(setCurrentChannelCluster({
+			clusterName: props.channelClusterName,
+			clusterId: props.channelClusterId
+		}));
 		setAnchorEl(event.currentTarget);
 	};
 
@@ -49,11 +54,13 @@ const ChannelClusterItem = ( props: {
 			clusterId: props.channelClusterId
 		}));
 		setOpenAddDialog(true);
+		handleMenuClose();
 	};
 
 	const handleRemoveDialogClose = () => {
 		setOpenRemoveDialog(false);
 		setRemovableChannelIds([]);
+		handleMenuClose();
 	};
 
 	const handleRemoveDialogOpen = () => {
@@ -64,6 +71,7 @@ const ChannelClusterItem = ( props: {
 	const handleAddDialogClose = () => {
 		dispatch(fetchChannelClustersData(props.serverId));
 		setOpenAddDialog(false);
+		handleMenuClose();
 	};
 
 	return <>
@@ -75,25 +83,12 @@ const ChannelClusterItem = ( props: {
 					<ListItemText primary={ props.channelClusterName }/>
 				</ListItemButton>
 				<ChannelClusterOptionsButton handleMenuOpen={ handleMenuOpen }/>
-				<CustomMenu
-					id="basic-menu"
+				<ChannelClusterMenu
 					anchorEl={ anchorEl }
 					open={ menuOpen }
 					onClose={ handleMenuClose }
-				>
-					<MenuItem
-						className={ classes["menu-item"] }
-						onClick={ () => {
-							handleAddDialogOpen();
-							handleMenuClose();
-						} }
-					>
-						Add Channel
-					</MenuItem>
-					<MenuItem className={ classes["menu-item-del"] } onClick={ handleRemoveDialogOpen }>
-						Remove Channels
-					</MenuItem>
-				</CustomMenu>
+					onAddDialogCLick={ handleAddDialogOpen }
+					onRemoveChannelDialogClick={ handleRemoveDialogOpen }/>
 			</ListItem>
 		</Box>
 

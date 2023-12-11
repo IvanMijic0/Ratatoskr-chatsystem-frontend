@@ -13,13 +13,6 @@
     flex-direction: row;
 }
 
-.menu-item {
-    color: whitesmoke;
-}
-
-.menu-item-del {
-    color: #dc4747;
-}
 
 .remove-actions {
     display: flex;
