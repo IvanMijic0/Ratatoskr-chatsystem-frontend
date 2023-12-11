@@ -9,6 +9,8 @@ import { selectFriendInfoData } from "../../../../store/slice/friend_slice/frien
 const FriendsList = () => {
 	const friendData = useAppSelector(selectFriendInfoData);
 
+	console.log(friendData);
+
 	return <List
 		className={ classes["friends-list"] }
 		component="nav"
