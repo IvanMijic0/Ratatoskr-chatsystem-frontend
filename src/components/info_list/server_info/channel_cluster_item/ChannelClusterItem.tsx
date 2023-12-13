@@ -1,5 +1,5 @@
 import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import ChannelItem from "../channel_item/ChannelItem.tsx";
@@ -11,6 +11,7 @@ import AddChannelDialog from "../add_channel_dialog/AddChannelDialog.tsx";
 import RemoveChannelDialog from "../remove_channel_dialog/RemoveChannelDialog.tsx";
 import ChannelClusterMenu from "../channel_cluster_menu/ChannelClusterMenu.tsx";
 import ChannelClusterOptionsButton from "../channel_cluster_options_button/ChannelClusterOptionsButton.tsx";
+import { useParams } from "react-router-dom";
 
 
 const ChannelClusterItem = ( props: {
@@ -25,8 +26,18 @@ const ChannelClusterItem = ( props: {
 	const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
 	const [removableChannelIds, setRemovableChannelIds] = useState<string[]>([]);
 
-	const menuOpen = Boolean(anchorEl);
+	const { clusterId } = useParams();
 	const dispatch = useAppDispatch();
+
+	const menuOpen = Boolean(anchorEl);
+
+	useEffect(() => {
+		dispatch(setCurrentChannelCluster({
+			clusterName: props.channelClusterName,
+			clusterId: props.channelClusterId
+		}));
+		clusterId === props.channelClusterId && setExpand(true);
+	}, [clusterId, dispatch, props.channelClusterId, props.channelClusterName]);
 
 	const handleMenuOpen = ( event: React.MouseEvent<HTMLButtonElement> ) => {
 		dispatch(setCurrentChannelCluster({

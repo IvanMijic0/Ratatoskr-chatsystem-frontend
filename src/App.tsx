@@ -5,15 +5,15 @@ import { validateTokenAsync } from "./store/action/auth-action.ts";
 import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks.ts";
 import { selectIsAuthenticated } from "./store/slice/auth_slice/auth-slice.ts";
 
-import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import VerifyEmail from "./components/verify_email/VerifyEmail.tsx";
 import Guest from "./pages/guest/Guest.tsx";
 import GlobalError from "./pages/error/GlobalError.tsx";
-import dashboardLoader from "./pages/dashboard/dashboardLoader.ts";
-import Servers from "./components/servers/servers_/Servers.tsx";
-import ChannelClusters from "./components/info_list/server_info/channel_clusters/ChannelClusters.tsx";
-import UserPanel from "./components/info_list/user_panel/UserPanel.tsx";
 import { fetchUserSpecific } from "./store/action/user-action.ts";
+import ServerDashboard from "./pages/dashboard/ServerDashboard.tsx";
+import ChannelContent from "./components/main_content/channel_content/ChannelContent.tsx";
+import AddFriendContent from "./components/main_content/add_friend_content/AddFriendContent.tsx";
+import FriendContent from "./components/main_content/friend_content/FriendContent.tsx";
+import HomeDashboard from "./pages/dashboard/HomeDashboard.tsx";
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -24,29 +24,37 @@ const App = () => {
 		dispatch(fetchUserSpecific());
 	}, [dispatch]);
 
+	// TODO Ask advice for this
+
 	const routerConfig: RouteObject[] = [
 		{
 			path: '/guest',
-			element: isAuthenticated ? <Navigate to="/dashboard"/> : <Guest/>,
+			element: isAuthenticated ? <Navigate to="/home"/> : <Guest/>,
 			index: true,
 		},
 		{
-			path: '/dashboard',
-			element: isAuthenticated ? <Dashboard/> : <Navigate to="/guest"/>,
+			path: '/home',
+			element: isAuthenticated ? <HomeDashboard/> : <Navigate to="/guest"/>,
 			errorElement: <GlobalError/>,
-			loader: dashboardLoader,
 			children: [
 				{
-					path: 'servers',
-					element: <Servers/>,
+					path: 'all-friends',
+					element: <FriendContent/>
 				},
 				{
-					path: 'channelClusters',
-					element: <ChannelClusters/>,
-				},
+					path: 'add-friend',
+					element: <AddFriendContent/>
+				}
+			]
+		},
+		{
+			path: '/servers/:serverId',
+			element: isAuthenticated ? <ServerDashboard/> : <Navigate to="/guest"/>,
+			errorElement: <GlobalError/>,
+			children: [
 				{
-					path: 'userPanel',
-					element: <UserPanel/>
+					path: ':clusterId/:channelId',
+					element: <ChannelContent id=""/>
 				}
 			]
 		},

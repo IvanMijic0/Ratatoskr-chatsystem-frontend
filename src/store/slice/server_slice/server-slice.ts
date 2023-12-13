@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from "../../index.ts";
 import { fetchServerInfoDataAction } from "../../action/server-action.ts";
-import IServerState from "./IServerState.ts";
+import IServerState, { IServer } from "./IServerState.ts";
 
 const initialState: IServerState = {
 	serverInfoData: [],
@@ -53,5 +53,11 @@ export const selectCurrentServerInfo = createSelector(
 	[selectCurrentServerName, selectCurrentServerId],
 	( currentServerName, currentServerId ) => ( { serverName: currentServerName, serverId: currentServerId } )
 );
+export const selectServerInfoByServerId = ( serverId: string | undefined ) =>
+	createSelector([selectServerInfoData], ( serverInfoData ) =>
+		serverId
+			? serverInfoData.filter(( serverInfo: IServer ) => serverInfo.id === serverId)
+			: []
+	);
 
 export default serverSlice.reducer;

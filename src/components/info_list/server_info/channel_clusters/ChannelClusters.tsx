@@ -15,7 +15,7 @@ const ChannelClusters = () => {
 
 	const dispatch = useAppDispatch();
 	const channelClustersData = useAppSelector(selectChannelClustersData);
-	const serverInfoData = useAppSelector(selectCurrentServerInfo);
+	const currentServerInfoData = useAppSelector(selectCurrentServerInfo);
 
 	const handleClickOpen = () => {
 		setChannelClusterFormOpen(true);
@@ -26,17 +26,17 @@ const ChannelClusters = () => {
 	};
 
 	const fetchChannelClusterData = useCallback(() => {
-		dispatch(fetchChannelClustersData(serverInfoData.serverId));
-	}, [dispatch, serverInfoData.serverId]);
+		dispatch(fetchChannelClustersData(currentServerInfoData.serverId));
+	}, [dispatch, currentServerInfoData.serverId]);
 
 	useEffect(() => {
 		try {
-			!channelClusterFormOpen && fetchChannelClusterData();
+			currentServerInfoData.serverId && fetchChannelClusterData();
 		} catch (error) {
 			console.log("Failed to fetch channel info data " + error);
 			throw error;
 		}
-	}, [fetchChannelClusterData, channelClusterFormOpen]);
+	}, [fetchChannelClusterData, currentServerInfoData]);
 
 
 	return <List
@@ -45,9 +45,9 @@ const ChannelClusters = () => {
 		aria-labelledby="nested-list-subheader"
 		dense
 	>
-		{ serverInfoData.serverName && (
+		{ currentServerInfoData.serverName && (
 			<ServerHeader
-				primary={ serverInfoData.serverName }
+				primary={ currentServerInfoData.serverName }
 				onClick={ handleClickOpen }
 				open={ channelClusterFormOpen }
 				onClose={ handleClose }
@@ -60,7 +60,7 @@ const ChannelClusters = () => {
 				channelClusterId={ channelCluster.id }
 				channelClusterName={ channelCluster.name }
 				channels={ channelCluster.channelInfos }
-				serverId={ serverInfoData.serverId }
+				serverId={ currentServerInfoData.serverId }
 			/>
 		) }
 	</List>;

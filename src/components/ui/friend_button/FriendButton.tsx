@@ -1,6 +1,7 @@
-import classes from "../../../servers/servers_/Servers.module.css";
-import { Avatar, Box, Button, Typography } from "@mui/material";
-import { stringAvatar } from "../../../servers/ts/avatarUtils.ts";
+import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
+import { stringAvatar } from "../../servers/ts/avatarUtils.ts";
+
+import classes from "./FriendButton.module.css";
 
 const FriendButton = ( { friendId, friendUsername, friendAvatarIconUrl }: {
 	friendId: string;
@@ -19,8 +20,9 @@ const FriendButton = ( { friendId, friendUsername, friendAvatarIconUrl }: {
 				alt={ friendUsername }
 				src={ friendAvatarIconUrl }
 			/>
-			<Typography>{ friendUsername }</Typography>
+			<Typography className={ classes["friend-username"] }>{ friendUsername }</Typography>
 		</Button>
+		<Divider className={ classes.divider } variant="middle" flexItem/>
 	</Box>;
 };
 

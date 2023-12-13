@@ -19,6 +19,9 @@ const channelClustersSlice = createSlice({
 			state.currentChannelClusterId = action.payload.clusterId;
 			state.currentChannelClusterName = action.payload.clusterName;
 		},
+		resetChannelClustersState: () => {
+			return initialState;
+		},
 	},
 	extraReducers: ( builder ) => {
 		builder
@@ -37,7 +40,7 @@ const channelClustersSlice = createSlice({
 });
 
 export const {
-	setCurrentChannelCluster
+	setCurrentChannelCluster, resetChannelClustersState
 } = channelClustersSlice.actions;
 
 export const selectChannelClustersData = ( state: RootState ) => state.channelClusters.data;

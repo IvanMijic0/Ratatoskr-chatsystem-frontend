@@ -3,6 +3,7 @@ interface IOption {
 }
 
 interface ICustomAutoCompleteProps {
+	placeHolder?: string;
 	className?: string;
 	disablePortal?: boolean;
 	id?: string;

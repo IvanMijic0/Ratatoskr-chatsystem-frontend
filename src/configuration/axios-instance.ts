@@ -21,9 +21,14 @@ const isTokenExpired = ( token: string ): boolean => {
 instance.interceptors.request.use(
 	( config ) => {
 		const token = store.getState().auth.token;
+		const refreshToken = store.getState().auth.refreshToken;
+
 		token
 			? config.headers['Authorization'] = `Bearer ${ token }`
 			: delete config.headers['Authorization'];
+		refreshToken
+			? ( config.headers['Refresh-Token'] = refreshToken )
+			: delete config.headers['Refresh-Token'];
 
 		return config;
 	},
@@ -47,8 +52,15 @@ instance.interceptors.response.use(
 				try {
 					store.dispatch({ type: "aut/PURGE" });
 					console.log("Refreshing token");
-					const { data: { token: newToken, refreshToken } } = await instance.get('/auth/refreshToken');
-					store.dispatch(setTokens({ token: newToken, refreshToken }));
+
+					const {
+						data: {
+							token: newToken,
+							refreshToken: newRefreshToken
+						}
+					} = await axios.post('http://localhost:8080/api/v1/auth/refreshToken', { refreshToken });
+
+					store.dispatch(setTokens({ token: newToken, refreshToken: newRefreshToken }));
 				} catch (error) {
 					console.error('Could not refresh token:', error);
 					store.dispatch({ type: "aut/PURGE" });
@@ -60,6 +72,7 @@ instance.interceptors.response.use(
 				console.log('User is not authenticated. Redirect to login page.');
 			}
 		}
+
 		return Promise.reject(error);
 	}
 );

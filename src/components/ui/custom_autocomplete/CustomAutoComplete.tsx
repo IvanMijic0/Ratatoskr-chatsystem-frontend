@@ -4,7 +4,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { FC } from "react";
 import ICustomAutoCompleteProps from "./ICustomAutoCompleteProps.ts";
 
-const CustomAutoComplete: FC<ICustomAutoCompleteProps> = ( { options, label, ...props } ) => {
+const CustomAutoComplete: FC<ICustomAutoCompleteProps> = ( { placeHolder, options, label, ...props } ) => {
 	return (
 		<Autocomplete
 			className={ props.className }
@@ -14,6 +14,7 @@ const CustomAutoComplete: FC<ICustomAutoCompleteProps> = ( { options, label, ...
 			popupIcon={ <ArrowDropDownIcon sx={ { color: 'whitesmoke' } }/> }
 			clearIcon={ <ClearIcon sx={ { color: 'whitesmoke', fontSize: '1.2rem' } }/> }
 			noOptionsText={ <Typography>No options</Typography> }
+			placeholder={ placeHolder }
 			renderInput={ ( params ) => (
 				<TextField
 					{ ...params }

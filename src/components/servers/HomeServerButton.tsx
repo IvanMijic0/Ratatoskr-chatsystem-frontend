@@ -2,17 +2,23 @@ import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../ui/CustomTooltip.tsx";
 import classes from "./servers_/Servers.module.css";
 import ratatoskrIcon from "../../assets/ratatoskr.png";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks.ts";
-import { setServerInfo } from "../../store/action/server-action.ts";
-import { selectCurrentServerId } from "../../store/slice/server_slice/server-slice.ts";
+import { useAppDispatch } from "../../hooks/redux-hooks.ts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { resetChannelClustersState } from "../../store/slice/channelClusters_slice/channelClusters-slice.ts";
+import { setCurrentServerInfo } from "../../store/slice/server_slice/server-slice.ts";
 
 const HomeServerButton = () => {
-	const selectedServerId = useAppSelector(selectCurrentServerId);
 	const dispatch = useAppDispatch();
-	const isSelected = selectedServerId === "0000-0000";
+	const location = useLocation();
+	const currentUrl = location.pathname.slice(1);
+	const isSelected = currentUrl === "home";
+
+	const navigate = useNavigate();
 
 	const handleClick = () => {
-		dispatch(setServerInfo({ serverName: "Homepage", serverId: "0000-0000" }));
+		dispatch(resetChannelClustersState());
+		navigate("/home");
+		dispatch(setCurrentServerInfo({ serverName: "Homepage", serverId: "home" }));
 	};
 
 	return (
