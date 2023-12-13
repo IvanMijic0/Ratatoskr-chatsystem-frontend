@@ -8,3 +8,10 @@
     margin-top: 1rem;
     width: 90%;
 }
+
+.add-friend-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}

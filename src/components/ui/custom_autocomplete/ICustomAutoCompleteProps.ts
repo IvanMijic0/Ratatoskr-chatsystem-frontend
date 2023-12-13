@@ -1,7 +1,4 @@
-interface IOption {
-	username: string;
-	label: string;
-}
+import IUserInfo from "../../main_content/friend_content/IUserInfo.ts";
 
 interface ICustomAutoCompleteProps {
 	onInputChange: any;
@@ -10,7 +7,7 @@ interface ICustomAutoCompleteProps {
 	className?: string;
 	disablePortal?: boolean;
 	id?: string;
-	options: IOption[];
+	options: IUserInfo[];
 	label?: string;
 }
 
