@@ -1,6 +1,8 @@
 .friend-button-container {
-    justify-content: flex-start;
-    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 97%;
 }
 
 .friend-username {
@@ -13,4 +15,12 @@
     background-color: #2f3436;
     margin-top: .5rem;
     margin-bottom: .5rem;
+}
+
+.add-friend-button {
+    margin-left: auto;
+}
+
+.add-friend-button-icon {
+    color: whitesmoke;
 }
