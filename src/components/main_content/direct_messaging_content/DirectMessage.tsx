@@ -55,7 +55,7 @@ const DirectMessage = () => {
 	const sendPublicMessage = ( e: FormEvent ) => {
 		e.preventDefault();
 		const messageContent = message.trim();
-		if ( messageContent ) {
+		if ( messageContent && webSocketService ) {
 			const chatMessage = {
 				sender: username,
 				content: messageContent,

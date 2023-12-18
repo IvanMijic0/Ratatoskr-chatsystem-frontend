@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Container, Snackbar, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { useState } from "react";
+import { ChangeEvent, FC, FormEvent, SyntheticEvent, useState } from "react";
 
 import CustomDialog from "../../ui/custom_dialog/CustomDialog.tsx";
 import classes from "./AddServerDialogForm.module.css";
@@ -11,20 +11,17 @@ import useInput from "../../../hooks/useInput.tsx";
 import { serverNameRegex } from "../../form_container/form/shared/validationRegex.ts";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs.tsx";
 import CustomCircularProgressBar from "../../ui/CustomCircularProgressBar.tsx";
-import { useAppSelector } from "../../../hooks/redux-hooks.ts";
-import { selectServerStatus } from "../../../store/slice/server_slice/server-slice.ts";
 
 interface IAddServerDialogForm {
 	open: boolean;
 	onClose: () => void;
 }
 
-const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } ) => {
+const AddServerDialogForm: FC<IAddServerDialogForm> = ( { open, onClose } ) => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [openSnack, setOpenSnack] = useState(false);
-	const serverStatus = useAppSelector(selectServerStatus);
 
 	const serverNameValidation = useInput(serverNameRegex);
 
@@ -36,7 +33,8 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	const allowedFormats = ['image/jpeg', 'image/png', 'image/svg'];
 	const maxFileSize = 5 * 1024 * 1024; // 5 MB
 
-	const handleFileChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+
+	const handleFileChange = ( event: ChangeEvent<HTMLInputElement> ) => {
 		const file = event.target.files?.[0] || null;
 
 		if ( file && allowedFormats.includes(file.type) && file.size <= maxFileSize ) {
@@ -57,14 +55,14 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 	};
 
 
-	const handleClose = ( _event?: React.SyntheticEvent | Event, reason?: string ) => {
+	const handleClose = ( _event?: SyntheticEvent | Event, reason?: string ) => {
 		if ( reason === 'clickable' ) {
 			return;
 		}
 		setOpenSnack(false);
 	};
 
-	const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ) => {
+	const handleSubmit = async ( event: FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
 		setIsLoading(true);
 
@@ -130,7 +128,7 @@ const AddServerDialogForm: React.FC<IAddServerDialogForm> = ( { open, onClose } 
 			disabled={ !dialogFormIsValid || isLoading }
 			type="submit"
 			className={ classes['action-button'] }>
-			{ serverStatus === "loading" ? <CustomCircularProgressBar/> : "Submit" }
+			{ isLoading ? <CustomCircularProgressBar/> : "Submit" }
 		</CustomButton>
 		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</Box>;

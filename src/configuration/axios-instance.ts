@@ -4,7 +4,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { setTokens } from "../store/slice/auth_slice/auth-slice.ts";
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8080/api/v1',
+	baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL
 });
 
 const isTokenExpired = ( token: string ): boolean => {

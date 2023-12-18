@@ -34,11 +34,10 @@ class WebSocketService {
 
 	public send( destination: string, headers: Stomp.Headers, body: any ): void {
 		if ( this.stompClient ) {
-			console.log(this.stompClient);
 			this.stompClient.send(destination, headers, JSON.stringify(body));
 		}
 	}
 }
 
-const webSocketService = new WebSocketService("http://localhost:8080/ws");
+const webSocketService = new WebSocketService(import.meta.env.VITE_REACT_APP_BACKEND_WS_URL);
 export default webSocketService;
