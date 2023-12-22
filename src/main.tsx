@@ -3,8 +3,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import App from './App.tsx';
 import './index.css';
-import ReduxWrapper from "./components/wrappers/ReduxWrapper.tsx";
-import StyleWrapper from "./components/wrappers/StyleWrapper.tsx";
+import { ReduxWrapper, StyleWrapper } from "./components/Wrappers";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<ReduxWrapper>
