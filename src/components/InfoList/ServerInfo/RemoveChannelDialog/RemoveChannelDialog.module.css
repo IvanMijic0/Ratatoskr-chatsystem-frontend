@@ -1,0 +1,8 @@
+.action-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.cancel-button {
+    color: whitesmoke;
+}

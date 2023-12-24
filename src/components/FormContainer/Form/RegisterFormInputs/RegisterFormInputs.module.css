@@ -1,0 +1,11 @@
+.register-button {
+    margin-top: 1rem;
+}
+
+.tooltip:hover {
+    cursor: pointer;
+}
+
+.email-verification {
+    color: whitesmoke;
+}

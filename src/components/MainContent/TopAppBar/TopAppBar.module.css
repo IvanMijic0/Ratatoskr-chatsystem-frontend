@@ -1,0 +1,19 @@
+.options {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-friend-button {
+    margin-left: 1rem;
+    background-color: #126212;
+}
+
+.add-friend-button:hover {
+    background-color: #147014;
+
+}
+
+.add-friend-text {
+    font-weight: bold;
+    color: #e1e1e1;
+}
