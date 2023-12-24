@@ -1,9 +1,9 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import { useState } from "react";
 
-import axiosInstance from "../../../../Configuration/axios-instance.ts";
+import axiosInstance from "../../../../configuration/axios-instance.ts";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { fetchChannelClustersData, selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../Store";
+import { fetchChannelClustersData, selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../store";
 import { CustomButton, CustomCircularProgressBar, CustomDialog } from "../../../UI";
 import { RemovableChannels } from "../RemovableChannels";
 import classes from "./RemoveChannelDialog.module.css";

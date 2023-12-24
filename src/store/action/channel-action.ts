@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../Configuration/axios-instance.ts";
+import axiosInstance from "../../configuration/axios-instance.ts";
 
 const fetchChannelData = createAsyncThunk(
 	'channel/fetchChannelData',

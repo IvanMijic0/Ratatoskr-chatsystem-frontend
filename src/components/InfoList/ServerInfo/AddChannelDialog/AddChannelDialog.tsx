@@ -1,12 +1,12 @@
 import { Box, Button, CircularProgress, Container } from "@mui/material";
 import { FormEvent, useState } from "react";
 
-import { selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../Store";
+import { selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../store";
 import { channelTextField, errorChannelTextField } from "../FormInputs";
-import axiosInstance from "../../../../Configuration/axios-instance.ts";
+import axiosInstance from "../../../../configuration/axios-instance.ts";
 import { useAppSelector, useInput } from "../../../../hooks";
 import { CustomButton, CustomDialog } from "../../../UI";
-import { channelNameRegex } from "../../../../Regex";
+import { channelNameRegex } from "../../../../regex";
 import classes from "./AddChannelDialog.module.css";
 
 const AddChannelDialog = ( props: {

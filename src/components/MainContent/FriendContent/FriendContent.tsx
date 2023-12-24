@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 
-import { InputChangeHandler, UserInfo } from "../../../Types";
+import { InputChangeHandler, UserInfo } from "../../../types";
 import { CustomAutoComplete, FriendItem } from "../../UI";
 import classes from "./FriendContent.module.css";
 

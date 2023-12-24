@@ -3,7 +3,7 @@ import PeopleIcon from '@mui/icons-material/People';
 
 import { ConvoSearch } from "../ConvoSearch";
 import { useAppSelector } from "../../../../hooks";
-import { selectFriendInfoData } from "../../../../Store";
+import { selectFriendInfoData } from "../../../../store";
 import classes from "./ConvosList.module.css";
 
 const ConvosList = () => {

@@ -6,7 +6,7 @@ import { ServerButton } from "../ServerButton";
 import { HomeServerButton } from "../HomeServerButton";
 import { AddServerButton } from "../AddServerButton";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchServerInfoDataAction, selectServerInfoData, setCurrentServerInfo } from "../../../Store";
+import { fetchServerInfoDataAction, selectServerInfoData, setCurrentServerInfo } from "../../../store";
 import classes from './ServersList.module.css';
 
 const ServersList = () => {

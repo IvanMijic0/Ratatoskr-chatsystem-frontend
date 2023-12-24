@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import { fetchGoogleUserInfo } from "../../../../Configuration/axios-instance.ts";
+import { fetchGoogleUserInfo } from "../../../../configuration/axios-instance.ts";
 import { useAppDispatch, useInput } from "../../../../hooks";
-import { setAuthData, validateTokenAsync } from "../../../../Store";
-import { passwordRegex } from "../../../../Regex";
-import { GoogleUserData } from "../../../../Types";
+import { setAuthData, validateTokenAsync } from "../../../../store";
+import { passwordRegex } from "../../../../regex";
+import { GoogleUserData } from "../../../../types";
 import { CustomButton } from "../../../UI";
 import { FormDialog } from "../FormDialog";
 import classes from "./GoogleLoginButton.module.css";

@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from "../store.ts";
-import { Server, ServerState } from "../../Types";
+import { Server, ServerState } from "../../types";
 import { fetchServerInfoDataAction } from "../action/server-action.ts";
 
 const initialState: ServerState = {

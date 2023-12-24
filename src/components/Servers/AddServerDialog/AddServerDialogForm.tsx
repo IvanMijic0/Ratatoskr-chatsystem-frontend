@@ -3,10 +3,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ChangeEvent, FC, FormEvent, SyntheticEvent, useState } from "react";
 
 import { CustomButton, CustomCircularProgressBar, CustomDialog, CustomTooltip } from "../../UI";
-import axiosInstance from "../../../Configuration/axios-instance.ts";
+import axiosInstance from "../../../configuration/axios-instance.ts";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs";
-import { AddServerDialogFormProps } from "../../../Types";
-import { serverNameRegex } from "../../../Regex";
+import { AddServerDialogFormProps } from "../../../types";
+import { serverNameRegex } from "../../../regex";
 import { useInput } from "../../../hooks";
 import classes from "./AddServerDialogForm.module.css";
 

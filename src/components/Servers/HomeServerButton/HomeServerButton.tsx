@@ -3,7 +3,7 @@ import CustomTooltip from "../../UI/CustomTooltip.tsx";
 import ratatoskrIcon from "../../../assets/ratatoskr.png";
 import { useAppDispatch } from "../../../hooks";
 import { useLocation, useNavigate } from "react-router-dom";
-import { resetChannelClustersState, setCurrentServerInfo } from "../../../Store";
+import { resetChannelClustersState, setCurrentServerInfo } from "../../../store";
 import classes from "../ServersList/ServersList.module.css";
 
 const HomeServerButton = () => {

@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from "react";
 
 import _debounce from 'lodash.debounce';
 import { Box } from "@mui/material";
-import axiosInstance from "../../../Configuration/axios-instance.ts";
+import axiosInstance from "../../../configuration/axios-instance.ts";
 import { useAppSelector } from "../../../hooks";
-import { selectUser } from "../../../Store";
-import { InputChangeHandler, UserInfo } from "../../../Types";
+import { selectUser } from "../../../store";
+import { InputChangeHandler, UserInfo } from "../../../types";
 import { CustomAutoComplete, FriendItem } from "../../UI";
 import classes from "./AddFriendContent.module.css";
 

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store.ts";
-import { ChannelClustersState } from "../../Types";
+import { ChannelClustersState } from "../../types";
 import { fetchChannelClustersData } from "../action/channelClusters-action.ts";
 
 const initialState: ChannelClustersState = {

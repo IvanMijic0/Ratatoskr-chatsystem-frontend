@@ -2,7 +2,7 @@ import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../../UI/CustomTooltip.tsx";
 import AddIcon from "@mui/icons-material/Add";
 import { useAppSelector } from "../../../hooks";
-import { selectCurrentServerId } from "../../../Store";
+import { selectCurrentServerId } from "../../../store";
 import classes from "../ServersList/ServersList.module.css";
 
 const AddServerButton = ( props: { onClick: () => void } ) => {

@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useAppSelector } from "../../../hooks";
-import { selectUser } from "../../../Store";
+import { selectUser } from "../../../store";
 import { Box, Typography } from "@mui/material";
-import webSocketService from "../../../Services/WebSocketService.ts";
-import { ChatMessage } from "../../../Types";
+import webSocketService from "../../../services/WebSocketService.ts";
+import { ChatMessage } from "../../../types";
 import { CustomButton, CustomTextField } from "../../UI";
 import classes from "./DirectMessage.module.css";
 

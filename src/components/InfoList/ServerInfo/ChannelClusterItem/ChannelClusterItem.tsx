@@ -3,7 +3,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchChannelClustersData, setCurrentChannelCluster } from "../../../../Store";
+import { fetchChannelClustersData, setCurrentChannelCluster } from "../../../../store";
 import { ChannelClusterOptionsButton } from "../ChannelClusterOptionsButton";
 import { RemoveChannelDialog } from "../RemoveChannelDialog";
 import { ChannelClusterMenu } from "../ChannelClusterMenu";

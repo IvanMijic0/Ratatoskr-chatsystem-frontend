@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ChannelClusterItem } from "../ChannelClusterItem";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { fetchChannelClustersData, selectChannelClustersData, selectCurrentServerInfo } from "../../../../Store";
+import { fetchChannelClustersData, selectChannelClustersData, selectCurrentServerInfo } from "../../../../store";
 import { ServerHeader } from "../ServerHeader";
 import classes from "./ChannelsClusters.module.css";
 

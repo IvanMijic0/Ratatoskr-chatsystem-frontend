@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { FC } from "react";
-import { TransitionBackgroundProps } from "../../../Types";
+import { TransitionBackgroundProps } from "../../../types";
 
 import classes from "./TransitionBackground.module.css";
 

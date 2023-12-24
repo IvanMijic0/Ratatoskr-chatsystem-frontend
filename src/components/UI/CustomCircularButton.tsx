@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 import CustomTooltip from "./CustomTooltip.tsx";
-import { CustomCircularButtonProps } from "../../Types";
+import { CustomCircularButtonProps } from "../../types";
 
 const CustomCircularButton: React.FC<CustomCircularButtonProps>
 	= ( {

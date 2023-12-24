@@ -3,7 +3,7 @@ import { FC } from "react";
 import { emailTextField, errorEmailTextField, errorPasswordTextField, passwordTextField } from "../Shared";
 import { Box, CircularProgress } from "@mui/material";
 import CustomTooltip from "../../../UI/CustomTooltip.tsx";
-import { LoginFormProps } from "../../../../Types";
+import { LoginFormProps } from "../../../../types";
 import { CustomButton } from "../../../UI";
 import { GoogleLoginButton } from "../GoogleButton";
 import classes from "./LoginFormInputs.module.css";

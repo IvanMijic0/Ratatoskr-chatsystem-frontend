@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { CustomTextFieldProps, HelperTextStyles } from "../../Types";
+import { CustomTextFieldProps, HelperTextStyles } from "../../types";
 import { FC } from "react";
 
 const CustomTextField: FC<CustomTextFieldProps> = ( props ) => {

@@ -2,7 +2,7 @@ import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../../UI/CustomTooltip.tsx";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectServerInfoByServerId, setCurrentServerInfo } from "../../../Store";
+import { selectServerInfoByServerId, setCurrentServerInfo } from "../../../store";
 import { stringAvatar } from "../../../utils";
 import classes from "../ServersList/ServersList.module.css";
 

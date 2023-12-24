@@ -1,7 +1,7 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchUserSpecific, selectUser } from "../../../Store";
+import { fetchUserSpecific, selectUser } from "../../../store";
 import { useEffect } from "react";
 import { stringAvatar } from "../../../utils";
 import classes from "./UserPanel.module.css";

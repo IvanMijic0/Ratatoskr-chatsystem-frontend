@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 import CustomTooltip from "./CustomTooltip.tsx";
-import CustomButtonProps from "../../Types/CustomButtonProps.ts";
+import CustomButtonProps from "../../types/CustomButtonProps.ts";
 
 const CustomButton: React.FC<CustomButtonProps>
 	= ( {

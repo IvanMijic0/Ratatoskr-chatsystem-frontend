@@ -1,4 +1,4 @@
-import axiosInstance from "../../Configuration/axios-instance.ts";
+import axiosInstance from "../../configuration/axios-instance.ts";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchServerInfoDataAction =

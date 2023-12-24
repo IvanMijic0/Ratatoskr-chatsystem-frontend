@@ -2,12 +2,12 @@ import { Box, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import axios from "axios";
 
-import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "../../../Regex";
+import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "../../../regex";
 import { RegisterFormInputs } from "./RegisterFormInputs";
 import { LoginFormInputs } from "./LoginFormInputs";
 import { useAppDispatch, useInput } from "../../../hooks";
-import { setAuthData } from "../../../Store";
-import { FormProps } from "../../../Types";
+import { setAuthData } from "../../../store";
+import { FormProps } from "../../../types";
 import { FormStatus } from "../../../enums";
 import classes from "./Form.module.css";
 

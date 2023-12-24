@@ -3,8 +3,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import classes from "./FriendItem.module.css";
 import { FC } from "react";
-import webSocketService from "../../../Services/WebSocketService.ts";
-import { FriendItemProps } from "../../../Types";
+import webSocketService from "../../../services/WebSocketService.ts";
+import { FriendItemProps } from "../../../types";
 import { stringAvatar } from "../../../utils";
 
 const FriendItem: FC<FriendItemProps>

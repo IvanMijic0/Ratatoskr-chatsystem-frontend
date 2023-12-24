@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import webSocketService from "../../Services/WebSocketService.ts";
+import webSocketService from "../../services/WebSocketService.ts";
 import { useAppSelector } from "../../hooks";
-import { selectUser } from "../../Store";
+import { selectUser } from "../../store";
 
 const WSNotifications = () => {
 	const { _id } = useAppSelector(selectUser);
