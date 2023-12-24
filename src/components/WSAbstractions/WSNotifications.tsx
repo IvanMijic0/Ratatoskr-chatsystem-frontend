@@ -7,7 +7,7 @@ const WSNotifications = () => {
 	const { _id } = useAppSelector(selectUser);
 
 	const onUserNotificationReceive = ( payload: { body: string } ) => {
-		//console.log(payload.body);
+		console.log(payload.body);
 	};
 
 	const onConnected = () => {

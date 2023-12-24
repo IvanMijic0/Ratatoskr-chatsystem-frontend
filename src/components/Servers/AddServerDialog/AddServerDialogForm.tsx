@@ -85,7 +85,7 @@ const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) 
 		}
 	};
 
-	const serverDialogContent = <Container className={ classes['Form-content'] }>
+	const serverDialogContent = <Container className={ classes['form-content'] }>
 		{ !serverNameValidation.hasError
 			? serverNameTextField(
 				serverNameValidation.valueChangeHandler,
@@ -130,7 +130,7 @@ const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) 
 		<CustomDialog
 			open={ open }
 			onClose={ onClose }
-			title="Enter ServersList data:"
+			title="Enter Server data:"
 			customContent={ serverDialogContent }
 			customActions={ serverDialogActions }
 			handleSubmit={ handleSubmit }

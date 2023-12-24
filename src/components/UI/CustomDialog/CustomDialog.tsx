@@ -21,15 +21,15 @@ const CustomDialog: React.FC<ICustomDialogProps> =
 				marginBottom: "25vh"
 			} }
 			PaperProps={ { sx: { borderRadius: "5%", backgroundColor: "#3F5461FF" } } }>
-			<DialogTitle className={ classes['Form-text'] }>{ title }</DialogTitle>
-			<DialogContent className={ classes['Form-content'] }>
+			<DialogTitle className={ classes['form-text'] }>{ title }</DialogTitle>
+			<DialogContent className={ classes['form-content'] }>
 				{ customContent }
 			</DialogContent>
 			{ handleSubmit
-				? <DialogActions className={ classes['Form-action'] }>
+				? <DialogActions className={ classes['form-action'] }>
 					<form method="post" onSubmit={ handleSubmit }>{ customActions }</form>
 				</DialogActions>
-				: <DialogActions className={ classes['Form-action'] }>{ customActions }</DialogActions>
+				: <DialogActions className={ classes['form-action'] }>{ customActions }</DialogActions>
 			}
 		</Dialog>;
 	};
