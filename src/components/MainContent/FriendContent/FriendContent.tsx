@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 
-import InputChangeHandler from "../../../Types/InputChangeHandler.ts";
+import { InputChangeHandler, UserInfo } from "../../../Types";
 import { CustomAutoComplete, FriendItem } from "../../UI";
-import { UserInfo } from "../../../Types";
 import classes from "./FriendContent.module.css";
 
 export const FriendContent = () => {

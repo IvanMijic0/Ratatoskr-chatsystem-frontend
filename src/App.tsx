@@ -49,7 +49,7 @@ const App = () => {
 			]
 		},
 		{
-			path: '/ServersList/:serverId',
+			path: '/servers/:serverId',
 			element: isAuthenticated ? <ServerDashboard/> : <Navigate to="/guest"/>,
 			errorElement: <GlobalError/>,
 			children: [

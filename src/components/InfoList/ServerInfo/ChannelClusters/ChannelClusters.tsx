@@ -51,14 +51,18 @@ const ChannelClusters = () => {
 			/>
 		) }
 		<Divider className={ classes["channel-name-divider"] } variant="middle" flexItem/>
-		{ channelClustersData.map(channelCluster =>
-			<ChannelClusterItem
-				key={ channelCluster.id }
-				channelClusterId={ channelCluster.id }
-				channelClusterName={ channelCluster.name }
-				channels={ channelCluster.channelInfos }
-				serverId={ currentServerInfoData.serverId }
-			/>
+		{ channelClustersData.map(( channelCluster: {
+				id: string;
+				name: string;
+				channelInfos: { name: string; id: string; }[];
+			} ) =>
+				<ChannelClusterItem
+					key={ channelCluster.id }
+					channelClusterId={ channelCluster.id }
+					channelClusterName={ channelCluster.name }
+					channels={ channelCluster.channelInfos }
+					serverId={ currentServerInfoData.serverId }
+				/>
 		) }
 	</List>;
 };
