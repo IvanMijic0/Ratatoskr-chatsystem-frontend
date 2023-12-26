@@ -20,6 +20,7 @@ const ChannelClusters = () => {
 
 	const handleClose = () => {
 		setChannelClusterFormOpen(false);
+		dispatch(fetchChannelClustersData(currentServerInfoData.serverId));
 	};
 
 	const fetchChannelClusterData = useCallback(() => {

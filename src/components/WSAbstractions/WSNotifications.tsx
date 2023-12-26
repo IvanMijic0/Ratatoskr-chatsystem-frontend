@@ -20,9 +20,14 @@ const WSNotifications = () => {
 	};
 
 	useEffect(() => {
-		webSocketService.connect(onConnected, onError);
+		const timeoutId = setTimeout(() => {
+			webSocketService.connect(onConnected, onError);
+		}, 5000);
 
-		return () => webSocketService.disconnect();
+		return () => {
+			clearTimeout(timeoutId);
+			webSocketService.disconnect();
+		};
 	}, []);
 
 	return <></>;

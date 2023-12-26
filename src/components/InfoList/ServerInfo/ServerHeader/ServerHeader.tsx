@@ -51,11 +51,11 @@ const ServerHeader = ( props: {
 				}
 			});
 
-			props.onClose();
 		} catch (error) {
 			console.error('Error:', error);
 		} finally {
 			setIsLoading(false);
+			props.onClose();
 		}
 	};
 

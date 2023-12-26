@@ -1,6 +1,6 @@
 import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchChannelClustersData, setCurrentChannelCluster } from "../../../../store";
@@ -37,7 +37,7 @@ const ChannelClusterItem = ( props: {
 		clusterId === props.channelClusterId && setExpand(true);
 	}, [clusterId, dispatch, props.channelClusterId, props.channelClusterName]);
 
-	const handleMenuOpen = ( event: MouseEvent<HTMLButtonElement> ) => {
+	const handleMenuOpen = ( event: MouseEvent<HTMLElement> ) => {
 		dispatch(setCurrentChannelCluster({
 			clusterName: props.channelClusterName,
 			clusterId: props.channelClusterId
