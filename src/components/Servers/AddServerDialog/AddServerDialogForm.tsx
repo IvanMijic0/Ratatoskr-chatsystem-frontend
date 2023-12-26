@@ -3,7 +3,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ChangeEvent, FC, FormEvent, SyntheticEvent, useState } from "react";
 
 import { CustomButton, CustomCircularProgressBar, CustomDialog, CustomTooltip } from "../../UI";
-import axiosInstance from "../../../configuration/axios-instance.ts";
+import { axiosInstance } from "../../../configuration";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs";
 import { AddServerDialogFormProps } from "../../../types";
 import { serverNameRegex } from "../../../regex";
@@ -25,7 +25,6 @@ const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) 
 	}
 	const allowedFormats = ['image/jpeg', 'image/png', 'image/svg'];
 	const maxFileSize = 5 * 1024 * 1024; // 5 MB
-
 
 	const handleFileChange = ( event: ChangeEvent<HTMLInputElement> ) => {
 		const file = event.target.files?.[0] || null;

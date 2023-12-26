@@ -2,18 +2,19 @@ import { FC, useEffect, useState } from "react";
 
 import _debounce from 'lodash.debounce';
 import { Box } from "@mui/material";
-import axiosInstance from "../../../configuration/axios-instance.ts";
+import { axiosInstance } from "../../../configuration";
 import { useAppSelector } from "../../../hooks";
 import { selectUser } from "../../../store";
 import { InputChangeHandler, UserInfo } from "../../../types";
 import { CustomAutoComplete, FriendItem } from "../../UI";
 import classes from "./AddFriendContent.module.css";
+import { ActionType } from "../../../enums";
 
 const AddFriendContent: FC = () => {
 	const [filteredUsers, setFilteredUsers] = useState<UserInfo[]>([]);
 	const [inputValue, setInputValue] = useState('');
 
-	const { _id } = useAppSelector(selectUser);
+	const { _id, username } = useAppSelector(selectUser);
 
 	const fetchUsers = async ( query: string ) => {
 		try {
@@ -46,7 +47,7 @@ const AddFriendContent: FC = () => {
 			placeHolder="Search all users..."
 			className={ classes.search }
 			options={ filteredUsers }
-			label="Add Friend"
+			label="Search all users..."
 			value={ inputValue }
 			onInputChange={ handleInputChange }
 		/>
@@ -58,7 +59,8 @@ const AddFriendContent: FC = () => {
 					friendUsername={ filteredUser.username }
 					friendAvatarIconUrl={ filteredUser.avatarUrl }
 					currentUserId={ _id }
-					hasAction
+					currentUserUsername={ username }
+					actionType={ ActionType.ADD_FRIEND }
 				/>
 			) }
 		</Box>

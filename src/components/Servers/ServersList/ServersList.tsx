@@ -6,22 +6,26 @@ import { ServerButton } from "../ServerButton";
 import { HomeServerButton } from "../HomeServerButton";
 import { AddServerButton } from "../AddServerButton";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchServerInfoDataAction, selectServerInfoData, setCurrentServerInfo } from "../../../store";
+import { fetchServerInfoDataAction, selectServerInfoData } from "../../../store";
 import classes from './ServersList.module.css';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ServersList = () => {
 	const [open, setOpen] = useState(false);
+
 	const dispatch = useAppDispatch();
 	const serverData = useAppSelector(selectServerInfoData);
+	const navigate = useNavigate();
+	const url = useLocation().pathname;
 
 	const handleClickOpen = () => {
-		dispatch(setCurrentServerInfo({ serverName: "Add Server", serverId: "1111-1111" }));
-		setOpen(true);
+		navigate('/home/add-server');
+		setTimeout(() => {
+		}, 100);
 	};
 
 	const handleClose = () => {
-		// For now, let's go back to homepage after adding a server...
-		dispatch(setCurrentServerInfo({ serverName: "homepage", serverId: "0000-0000" }));
+		navigate('/home');
 		setOpen(false);
 	};
 
@@ -38,29 +42,31 @@ const ServersList = () => {
 		}
 	}, [fetchServerInfoData, open]);
 
-	return (
-		<Container className={ classes['scrollable-container'] }>
-			<Stack className={ classes.stack } direction="column">
-				<ListItem>
-					<HomeServerButton/>
+	useEffect(() => {
+		url.endsWith("/add-server") && setOpen(true);
+	}, [url]);
+
+	return <Container className={ classes['scrollable-container'] }>
+		<Stack className={ classes.stack } direction="column">
+			<ListItem>
+				<HomeServerButton/>
+			</ListItem>
+			<ListItem>
+				<AddServerButton onClick={ handleClickOpen }/>
+				<AddServerDialogForm open={ open } onClose={ handleClose }/>
+			</ListItem>
+			<Divider className={ classes.divider } variant="middle" flexItem/>
+			{ serverData.map(( server: { id: string; name: string; avatarIconUrl: string; } ) => (
+				<ListItem key={ server.id }>
+					<ServerButton
+						serverId={ server.id }
+						serverName={ server.name }
+						avatarIconUrl={ server.avatarIconUrl }
+					/>
 				</ListItem>
-				<ListItem>
-					<AddServerButton onClick={ handleClickOpen }/>
-					<AddServerDialogForm open={ open } onClose={ handleClose }/>
-				</ListItem>
-				<Divider className={ classes.divider } variant="middle" flexItem/>
-				{ serverData.map(( server: { id: string; name: string; avatarIconUrl: string; } ) => (
-					<ListItem key={ server.id }>
-						<ServerButton
-							serverId={ server.id }
-							serverName={ server.name }
-							avatarIconUrl={ server.avatarIconUrl }
-						/>
-					</ListItem>
-				)) }
-			</Stack>
-		</Container>
-	);
+			)) }
+		</Stack>
+	</Container>;
 };
 
 export default ServersList;

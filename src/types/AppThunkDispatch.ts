@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
-import { RootState } from "../store/store.ts";
 import { AnyAction } from "redux";
+import RootState from "./RootState.ts";
 
 type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>;
 

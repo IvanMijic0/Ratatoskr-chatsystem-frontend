@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { channelClusterTextField, errorChannelClusterTextField } from "../FormInputs";
 import { fetchServerInfoDataAction, selectCurrentServerId } from "../../../../store";
 import { useAppDispatch, useAppSelector, useInput } from "../../../../hooks";
-import axiosInstance from "../../../../configuration/axios-instance.ts";
+import { axiosInstance } from "../../../../configuration";
 import { CustomButton, CustomDialog, CustomMenu } from "../../../UI";
 import { channelClusterNameRegex } from "../../../../regex";
 import classes from "../ChannelClusters/ChannelsClusters.module.css";

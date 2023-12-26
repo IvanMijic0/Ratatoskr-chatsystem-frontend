@@ -1,8 +1,8 @@
 import { MenuItem } from "@mui/material";
 
-import axiosInstance from "../../../../configuration/axios-instance.ts";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { fetchChannelClustersData, selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../store";
+import { axiosInstance } from "../../../../configuration";
 import { CustomMenu } from "../../../UI";
 import classes from "./ChannelClusterMenu.module.css";
 

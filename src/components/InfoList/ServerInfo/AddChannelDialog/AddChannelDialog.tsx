@@ -3,7 +3,7 @@ import { FormEvent, useState } from "react";
 
 import { selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../store";
 import { channelTextField, errorChannelTextField } from "../FormInputs";
-import axiosInstance from "../../../../configuration/axios-instance.ts";
+import { axiosInstance } from "../../../../configuration";
 import { useAppSelector, useInput } from "../../../../hooks";
 import { CustomButton, CustomDialog } from "../../../UI";
 import { channelNameRegex } from "../../../../regex";

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import FriendState from "../../types/FriendState.ts";
 import { setCurrentFriendInfo } from "../index.ts";
-import axiosInstance from "../../configuration/axios-instance.ts";
+import { axiosInstance } from "../../configuration";
 
 export const fetchFriendInfoDataAction =
 	createAsyncThunk('friend/fetchFriendInfoData', async () => {

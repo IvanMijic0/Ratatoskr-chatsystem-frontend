@@ -1,27 +1,40 @@
-import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
+import { Avatar, Box, Divider, IconButton, Typography } from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import { FC, useState } from "react";
 
-import classes from "./FriendItem.module.css";
-import { FC } from "react";
 import webSocketService from "../../../services/WebSocketService.ts";
-import { FriendItemProps } from "../../../types";
+import { FriendItemProps, Notification } from "../../../types";
 import { stringAvatar } from "../../../utils";
+import { NotificationType } from "../../../enums";
+import classes from "./FriendItem.module.css";
+import { axiosInstance } from "../../../configuration";
+import { useAppDispatch } from "../../../hooks";
+import { fetchNotificationData } from "../../../store";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
+			currentUserUsername,
 			currentUserId,
 			friendId,
 			friendUsername,
 			friendAvatarIconUrl,
-			hasAction,
+			actionType,
+			description,
 		} ) => {
 
-	const addFriendHandler = () => {
-		const notification = {
-			notificationType: 'FRIEND_REQUEST',
+	const [statusChangeText, setStatusChangeText] = useState('');
+
+	const dispatch = useAppDispatch();
+
+	const addFriendHandler = async () => {
+		const notification: Notification = {
+			notificationType: NotificationType.FRIEND_REQUEST,
 			date: new Date().toISOString(),
-			senderId: 'user123',
-			content: 'Friend request content',
+			senderId: currentUserId,
+			receiverId: friendId,
+			content: `${ currentUserUsername } sent you a friend request!`,
 		};
 
 		webSocketService.send(
@@ -29,8 +42,57 @@ const FriendItem: FC<FriendItemProps>
 			{},
 			notification
 		);
+
+		setStatusChangeText('sent');
+
+		// Do only if user is offline, fix later...
+		await axiosInstance.post(`/notifications/${ friendId }`, notification);
+		dispatch(fetchNotificationData());
 	};
 
+	const confirmFriendRequestHandler = async () => {
+		try {
+			console.log(await axiosInstance.post(`/user/add-friend/${ friendId }`));
+
+			await clearFriendRequestHandler();
+		} catch (error) {
+			console.log("Could not confirm friend request: " + error);
+			throw error;
+		}
+	};
+
+	const clearFriendRequestHandler = async () => {
+		try {
+			await axiosInstance.delete(`/notifications`);
+
+			dispatch(fetchNotificationData());
+		} catch (error) {
+			console.log("Could not clear friend request: " + error);
+			throw error;
+		}
+	};
+
+	const actions = () => {
+		switch (actionType) {
+			case 0: {
+				return <IconButton className={ classes["friend-button"] } onClick={ addFriendHandler }>
+					<PersonAddIcon className={ classes["friend-button-icon"] }/>
+				</IconButton>;
+			}
+			case 1: {
+				return <Box className={ classes['request-button-container'] }>
+					<IconButton className={ classes["approve-button"] } onClick={ confirmFriendRequestHandler }>
+						<CheckIcon className={ classes["approve-icon"] }/>
+					</IconButton>
+					<IconButton className={ classes["clear-button"] } onClick={ clearFriendRequestHandler }>
+						<ClearIcon className={ classes["clear-icon"] }/>
+					</IconButton>
+				</Box>;
+			}
+			default:
+				return null;
+		}
+	};
 
 	return <>
 		<Box className={ classes["friend-button-container"] }>
@@ -40,15 +102,13 @@ const FriendItem: FC<FriendItemProps>
 				src={ friendAvatarIconUrl }
 			/>
 			<Typography className={ classes["friend-username"] }>
-				{ friendUsername }
+				{ `${ friendUsername } ${ description || '' }` }
 			</Typography>
-			{ hasAction
-				&& <Button
-                className={ classes["add-friend-button"] }>
-                <PersonAddIcon className={ classes["add-friend-button-icon"] }
-                               onClick={ addFriendHandler }/>
-              </Button>
-			}
+			<Box className={ classes['action-container'] }>
+				{ statusChangeText !== ''
+					? <Typography className={ classes.text }>{ statusChangeText }</Typography>
+					: actions() }
+			</Box>
 		</Box>
 		<Divider className={ classes.divider } variant="middle" flexItem/>
 	</>;

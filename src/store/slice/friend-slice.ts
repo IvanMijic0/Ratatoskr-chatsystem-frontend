@@ -1,7 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store.ts';
-import FriendState from '../../types/FriendState.ts';
 import { fetchFriendInfoDataAction } from "../action/friend-action.ts";
+import { FriendState, RootState } from "../../types";
 
 const initialState: FriendState = {
 	friendInfoData: [],

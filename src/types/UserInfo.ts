@@ -1,5 +1,5 @@
 type UserInfo = {
-	_Id: string;
+	_id: string;
 	username: string;
 	fullName?: string;
 	email?: string;

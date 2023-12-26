@@ -1,10 +1,9 @@
-import { ThunkDispatch } from 'redux-thunk';
-import axiosInstance from '../../configuration/axios-instance.ts';
-import { RootState } from "../store.ts";
-import { AnyAction } from "redux";
 import { setIsAuthenticated, setTokens } from "../index.ts";
+import { axiosInstance } from "../../configuration";
+import { AppThunk, RootState } from "../../types";
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from "redux";
 import axios from 'axios';
-import { AppThunk } from "../../types";
 
 const validateTokenAsync = (): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {

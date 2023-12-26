@@ -1,0 +1,7 @@
+enum NotificationType {
+	FRIEND_REQUEST = 'FRIEND_REQUEST',
+	CHAT_MESSAGE = 'CHAT_MESSAGE',
+	FRIEND_REQUEST_ACCEPTED = 'FRIEND_REQUEST_ACCEPTED',
+}
+
+export default NotificationType;

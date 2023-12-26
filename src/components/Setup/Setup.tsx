@@ -1,5 +1,11 @@
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchUserSpecific, selectIsAuthenticated, selectUser, validateTokenAsync } from "../../store";
+import {
+	fetchNotificationData,
+	fetchUserSpecific,
+	selectIsAuthenticated,
+	selectUser,
+	validateTokenAsync
+} from "../../store";
 import { useEffect } from "react";
 import WSNotifications from "../WSAbstractions/WSNotifications.tsx";
 
@@ -11,7 +17,7 @@ export const Setup = () => {
 	useEffect(() => {
 		dispatch(validateTokenAsync());
 		dispatch(fetchUserSpecific());
-
+		dispatch(fetchNotificationData());
 	}, [dispatch]);
 
 	return isAuthenticated && user && <WSNotifications/>;

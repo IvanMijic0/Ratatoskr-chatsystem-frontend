@@ -1,8 +1,14 @@
-import axiosInstance from "../../configuration/axios-instance.ts";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../configuration";
 
-export const fetchServerInfoDataAction =
+const fetchServerInfoDataAction =
 	createAsyncThunk('server/fetchServerInfoData', async () => {
-		const response = await axiosInstance.get('/server/summary');
-		return response.data;
+		try {
+			const response = await axiosInstance.get('/server/summary');
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching server info data:', error);
+		}
 	});
+
+export { fetchServerInfoDataAction };

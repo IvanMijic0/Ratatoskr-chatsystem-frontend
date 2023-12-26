@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import { fetchGoogleUserInfo } from "../../../../configuration/axios-instance.ts";
+import fetchGoogleUserInfo from "./fetchGoogleUserInfo.ts";
 import { useAppDispatch, useInput } from "../../../../hooks";
 import { setAuthData, validateTokenAsync } from "../../../../store";
 import { passwordRegex } from "../../../../regex";

@@ -4,6 +4,7 @@ import { persistStore } from "redux-persist";
 import channelClustersReducer from "./slice/channelClusters-slice.ts";
 import channelReducer from "./slice/channel-slice.ts";
 import friendReducer from "./slice/friend-slice.ts";
+import notificationReducer from "./slice/notification-slice.ts";
 import { persistedAuthReducer, persistedServerReducer, persistedUserReducer } from "./persistConfig.ts";
 
 const store = configureStore({
@@ -13,7 +14,8 @@ const store = configureStore({
 		friend: friendReducer,
 		server: persistedServerReducer,
 		channelClusters: channelClustersReducer,
-		channel: channelReducer
+		channel: channelReducer,
+		notification: notificationReducer,
 	},
 	middleware: [thunk],
 });

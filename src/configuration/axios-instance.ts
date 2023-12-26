@@ -77,8 +77,6 @@ instance.interceptors.response.use(
 	}
 );
 
-export default instance;
-
 const axiosInstanceGoogle = axios.create({
 	baseURL: 'https://www.googleapis.com/',
 	headers: {
@@ -86,10 +84,5 @@ const axiosInstanceGoogle = axios.create({
 	},
 });
 
-export const fetchGoogleUserInfo = ( accessToken: string | undefined ) => {
-	return axiosInstanceGoogle.get(`/oauth2/v1/userinfo?access_token=${ accessToken }`, {
-		headers: {
-			Authorization: `Bearer ${ accessToken }`,
-		}
-	});
-};
+export default instance;
+export { axiosInstanceGoogle };

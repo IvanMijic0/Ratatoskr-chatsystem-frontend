@@ -1,9 +1,10 @@
 import { DialogContentText } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 
+import { CustomDialogContentText } from "../../../types";
 import classes from "./CustomDialogContentText.module.css";
 
-const CustomDialogContentText: React.FC<CustomDialogContentText> = ( props ) => {
+const CustomDialogContentText: FC<CustomDialogContentText> = ( props ) => {
 	return <DialogContentText className={ classes['Form-text'] }>
 		{ props.children }
 	</DialogContentText>;

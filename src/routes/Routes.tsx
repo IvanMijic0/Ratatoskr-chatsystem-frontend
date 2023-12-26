@@ -2,11 +2,13 @@ import { createBrowserRouter, Navigate, RouteObject, RouterProvider } from "reac
 import { useAppSelector } from "../hooks";
 import { selectIsAuthenticated } from "../store";
 import { GlobalError, Guest, HomeDashboard, ServerDashboard } from "../pages";
-import { FriendContent } from "../components/MainContent/FriendContent";
+import { AllFriendContent } from "../components/MainContent/AllFriendsContent";
 import { AddFriendContent } from "../components/MainContent/AddFriendContent";
 import { DirectMessage } from "../components/MainContent/DirectMessagingContent";
 import { ChannelContent } from "../components/MainContent/ChannelContent";
 import { VerifyEmail } from "../components/VerifyEmail";
+import { OnlineFriendsContent } from "../components/MainContent/OnlineFriendsContent";
+import { PendingFriendRequests } from "../components/MainContent/PendingFriendRequests";
 
 const Routes = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -23,8 +25,20 @@ const Routes = () => {
 			errorElement: <GlobalError/>,
 			children: [
 				{
+					path: 'add-server',
+					element: null
+				},
+				{
+					path: 'online-friends',
+					element: <OnlineFriendsContent/>
+				},
+				{
 					path: 'all-friends',
-					element: <FriendContent/>
+					element: <AllFriendContent/>
+				},
+				{
+					path: 'pending-requests',
+					element: <PendingFriendRequests/>
 				},
 				{
 					path: 'add-friend',

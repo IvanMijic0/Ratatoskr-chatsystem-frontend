@@ -2,8 +2,8 @@ import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../../UI/CustomTooltip.tsx";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectServerInfoByServerId, setCurrentServerInfo } from "../../../store";
 import { stringAvatar } from "../../../utils";
+import { selectServerInfoByServerId, setCurrentServerInfo } from "../../../store";
 import classes from "../ServersList/ServersList.module.css";
 
 const ServerButton = ( { serverId, serverName, avatarIconUrl }: {

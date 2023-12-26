@@ -1,5 +1,4 @@
-import { Connect } from "vite";
-import Server = Connect.Server;
+import { Server } from '../types';
 
 type ServerState = {
 	serverInfoData: Server[];

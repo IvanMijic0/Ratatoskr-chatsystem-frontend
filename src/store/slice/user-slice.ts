@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store.ts';
 import UserState from "../../types/UserState.ts";
 import { fetchUserSpecific } from "../action/user-action.ts";
+import { RootState } from "../../types";
 
 const initialState: UserState = {
 	userInfo: null,

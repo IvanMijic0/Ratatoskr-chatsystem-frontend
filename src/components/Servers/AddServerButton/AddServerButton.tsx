@@ -1,13 +1,12 @@
 import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../../UI/CustomTooltip.tsx";
 import AddIcon from "@mui/icons-material/Add";
-import { useAppSelector } from "../../../hooks";
-import { selectCurrentServerId } from "../../../store";
 import classes from "../ServersList/ServersList.module.css";
+import { useLocation } from "react-router-dom";
 
 const AddServerButton = ( props: { onClick: () => void } ) => {
-	const selectedServerId = useAppSelector(selectCurrentServerId);
-	const isSelected = selectedServerId === "1111-1111";
+	const url = useLocation().pathname;
+	const isSelected = url.endsWith("/add-server");
 
 	return <Box>
 		<Button onClick={ props.onClick }>
