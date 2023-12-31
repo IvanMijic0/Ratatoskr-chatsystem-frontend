@@ -1,4 +1,4 @@
-import { axiosInstanceGoogle } from "../../../../configuration";
+import { axiosInstanceGoogle } from "../configuration";
 
 const fetchGoogleUserInfo = ( accessToken: string | undefined ) => {
 	return axiosInstanceGoogle.get(`/oauth2/v1/userinfo?access_token=${ accessToken }`, {
@@ -8,4 +8,4 @@ const fetchGoogleUserInfo = ( accessToken: string | undefined ) => {
 	});
 };
 
-export default fetchGoogleUserInfo;
+export default { fetchGoogleUserInfo };

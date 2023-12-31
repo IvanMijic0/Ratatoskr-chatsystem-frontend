@@ -2,6 +2,7 @@ import { Avatar, Box, Divider, IconButton, Typography } from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import ChatIcon from '@mui/icons-material/Chat';
 import { FC, useState } from "react";
 
 import webSocketService from "../../../services/WebSocketService.ts";
@@ -12,6 +13,7 @@ import classes from "./FriendItem.module.css";
 import { axiosInstance } from "../../../configuration";
 import { useAppDispatch } from "../../../hooks";
 import { fetchNotificationData } from "../../../store";
+import { CustomTooltip } from "../index.ts";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
@@ -52,7 +54,7 @@ const FriendItem: FC<FriendItemProps>
 
 	const confirmFriendRequestHandler = async () => {
 		try {
-			console.log(await axiosInstance.post(`/user/add-friend/${ friendId }`));
+			await axiosInstance.post(`/user/add-friend/${ friendId }`);
 
 			await clearFriendRequestHandler();
 		} catch (error) {
@@ -72,6 +74,9 @@ const FriendItem: FC<FriendItemProps>
 		}
 	};
 
+	const startConversationHandler = async () => {
+	};
+
 	const actions = () => {
 		switch (actionType) {
 			case 0: {
@@ -88,6 +93,13 @@ const FriendItem: FC<FriendItemProps>
 						<ClearIcon className={ classes["clear-icon"] }/>
 					</IconButton>
 				</Box>;
+			}
+			case 2: {
+				return <IconButton className={ classes["friend-button"] } onClick={ startConversationHandler }>
+					<CustomTooltip title="start convo" placement="right-end">
+						<ChatIcon className={ classes["friend-button-icon"] }/>
+					</CustomTooltip>
+				</IconButton>;
 			}
 			default:
 				return null;

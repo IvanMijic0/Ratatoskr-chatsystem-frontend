@@ -30,6 +30,7 @@ const AddChannelDialog = ( props: {
 		setIsLoading(true);
 
 		try {
+			// Done
 			await axiosInstance.post('/server/channel', null, {
 				params: {
 					serverId: currentServerId,

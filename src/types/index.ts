@@ -32,3 +32,8 @@ export type { default as FriendState } from './FriendState.ts';
 export type { default as NotificationState } from './NotificationState.ts';
 export type { default as FormDialogProps } from './FormDialogProps.ts';
 export type { default as CustomDialogContentText } from './CustomDialogContentText.ts';
+export type { default as ReactQueryWrapperProps } from './ReactQueryWrapperProps.ts';
+export type { default as ChannelServiceProps } from './ChannelServiceProps.ts';
+export type { default as ChannelClusterServiceProps } from './ChannelClusterServiceProps.ts';
+export type { default as UserServiceProps } from './UserServiceProps.ts';
+export type { default as NotificationServiceProps } from './NotificationServiceProps.ts';

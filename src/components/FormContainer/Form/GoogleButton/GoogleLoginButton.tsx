@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import fetchGoogleUserInfo from "./fetchGoogleUserInfo.ts";
-import { useAppDispatch, useInput } from "../../../../hooks";
 import { setAuthData, validateTokenAsync } from "../../../../store";
-import { passwordRegex } from "../../../../regex";
+import { useAppDispatch, useInput } from "../../../../hooks";
+import { googleService } from "../../../../services";
 import { GoogleUserData } from "../../../../types";
+import { passwordRegex } from "../../../../regex";
 import { CustomButton } from "../../../UI";
 import { FormDialog } from "../FormDialog";
 import classes from "./GoogleLoginButton.module.css";
@@ -48,7 +48,7 @@ const GoogleLoginButton = () => {
 				if ( accessToken === null ) {
 					return;
 				}
-				const { data: googleUserData } = await fetchGoogleUserInfo(accessToken);
+				const { data: googleUserData } = await googleService.fetchGoogleUserInfo(accessToken);
 
 				setUser(googleUserData);
 

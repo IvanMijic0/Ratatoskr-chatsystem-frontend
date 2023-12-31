@@ -5,6 +5,7 @@ import { CustomAutoComplete, FriendItem } from "../../UI";
 import { InputChangeHandler, UserInfo } from "../../../types";
 import { axiosInstance } from "../../../configuration";
 import classes from './AllFriendsContent.module.css';
+import actionType from "../../../enums/ActionType.ts";
 
 export const AllFriendsContent = () => {
 	const [inputValue, setInputValue] = useState('');
@@ -61,6 +62,7 @@ export const AllFriendsContent = () => {
 						friendId={ filteredUser._id }
 						friendUsername={ filteredUser.username }
 						friendAvatarIconUrl={ filteredUser.avatarUrl }
+						actionType={ actionType.START_CONVO }
 					/>
 				)) }
 			</Box>

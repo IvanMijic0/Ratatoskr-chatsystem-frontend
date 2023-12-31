@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { store } from "../store";
+import { setTokens, store } from "../store";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { setTokens } from "../store/slice/auth-slice.ts";
 
 const instance = axios.create({
 	baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL
@@ -77,12 +76,4 @@ instance.interceptors.response.use(
 	}
 );
 
-const axiosInstanceGoogle = axios.create({
-	baseURL: 'https://www.googleapis.com/',
-	headers: {
-		Accept: 'application/json',
-	},
-});
-
 export default instance;
-export { axiosInstanceGoogle };
