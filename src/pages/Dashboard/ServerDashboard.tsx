@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { Box } from "@mui/material";
 
 import { ServersList } from "../../components/Servers/ServersList";
 import { UserPanel } from "../../components/InfoList/UserPanel";
@@ -20,8 +20,7 @@ const ServerDashboard = () => {
 				sm={ .7 }
 				xs={ .7 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#0A1717" } }
-			>
+				sx={ { backgroundColor: "#0A1717" } }>
 				<ServersList/>
 			</Grid>
 			<Grid
@@ -31,8 +30,7 @@ const ServerDashboard = () => {
 				sm={ 1.5 }
 				xs={ 1.5 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#252A2E" } }
-			>
+				sx={ { backgroundColor: "#252A2E" } }>
 				<ChannelClusters/>
 				<UserPanel/>
 			</Grid>
@@ -43,8 +41,7 @@ const ServerDashboard = () => {
 				sm={ 7.8 }
 				xs={ 7.8 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#0A1717" } }
-			>
+				sx={ { backgroundColor: "#0A1717" } }>
 				{ channelId && <ChannelContent id={ channelId }/> }
 			</Grid>
 			<Grid
@@ -54,8 +51,7 @@ const ServerDashboard = () => {
 				sm={ 2 }
 				xs={ 2 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#252A2E" } }
-			>
+				sx={ { backgroundColor: "#252A2E" } }>
 				Server Details
 			</Grid>
 		</Grid>

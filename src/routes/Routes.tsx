@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, RouteObject, RouterProvider } from "react-router-dom";
+
 import { useAppSelector } from "../hooks";
 import { selectIsAuthenticated } from "../store";
 import { GlobalError, Guest, HomeDashboard, ServerDashboard } from "../pages";
@@ -15,7 +16,7 @@ const Routes = () => {
 
 	const routerConfig: RouteObject[] = [
 		{
-			path: '/Guest',
+			path: '/guest',
 			element: isAuthenticated ? <Navigate to="/home"/> : <Guest/>,
 			index: true,
 		},
@@ -66,15 +67,18 @@ const Routes = () => {
 			element: <VerifyEmail/>,
 		},
 		{
-			path: '',
+			path: '/',
 			element: <Navigate to="/guest"/>,
 		},
+		{
+			path: '*',
+			element: <Navigate to="/guest"/>,
+		}
 	];
 
 	const router = createBrowserRouter(routerConfig);
 
 	return <RouterProvider router={ router }/>;
-
 };
 
 export default Routes;

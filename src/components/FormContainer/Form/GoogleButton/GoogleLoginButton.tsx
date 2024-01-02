@@ -1,13 +1,13 @@
-import { Box } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import { useEffect, useState } from "react";
+import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Box } from '@mui/material';
 import axios from 'axios';
 
 import { setAuthData, validateTokenAsync } from "../../../../store";
 import { useAppDispatch, useInput } from "../../../../hooks";
-import { googleService } from "../../../../services";
+import { GoogleService } from "../../../../services";
 import { GoogleUserData } from "../../../../types";
 import { passwordRegex } from "../../../../regex";
 import { CustomButton } from "../../../UI";
@@ -48,7 +48,7 @@ const GoogleLoginButton = () => {
 				if ( accessToken === null ) {
 					return;
 				}
-				const { data: googleUserData } = await googleService.fetchGoogleUserInfo(accessToken);
+				const { data: googleUserData } = await GoogleService.fetchGoogleUserInfo(accessToken);
 
 				setUser(googleUserData);
 
@@ -90,8 +90,7 @@ const GoogleLoginButton = () => {
 				onClick={ () => googleLogin() }
 				showTooltip
 				tooltipTitle="Login with your google account."
-				tooltipPlacement="bottom"
-			>
+				tooltipPlacement="bottom">
 				<GoogleIcon className={ classes['google-button-icon'] }/>
 			</CustomButton>
 		</Box>

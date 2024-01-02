@@ -101,3 +101,10 @@
 .divider {
     background-color: #424242;
 }
+
+.loading-bar {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

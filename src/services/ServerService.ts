@@ -1,5 +1,5 @@
 import { axiosInstance } from "../configuration";
-import { ChannelClusterServiceProps, ChannelServiceProps, Server } from "../types";
+import { ChannelCluster, ChannelClusterServiceProps, ChannelServiceProps, Server } from "../types";
 
 const createChannel = async ( { serverId, channelClusterId, channelName }: ChannelServiceProps ): Promise<void> => {
 	try {
@@ -55,10 +55,9 @@ const createChannelCluster = async ( { serverId, channelClusterName }: ChannelCl
 	}
 };
 
-const deleteServer = async ( { id }: Server ): Promise<void> => {
+const deleteServer = async ( id: string ): Promise<void> => {
 	try {
 		await axiosInstance.delete(`/server/${ id }`);
-		console.log('Server deleted successfully');
 	} catch (error) {
 		console.error('Error deleting server:', error);
 		throw error;
@@ -78,12 +77,32 @@ const createServer = async ( formData: FormData ): Promise<void> => {
 	}
 };
 
-const fetchServerSummary = async (): Promise<any> => {
+const fetchServersSummary = async (): Promise<Server[]> => {
 	try {
 		const response = await axiosInstance.get('/server/summary');
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching server summary data:', error);
+		throw error;
+	}
+};
+
+const fetchServerSummary = async ( serverId: string ): Promise<Server> => {
+	try {
+		const response = await axiosInstance.get(`/server/summary/${ serverId }`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching server summary data:', error);
+		throw error;
+	}
+};
+
+const fetchChannelClusters = async ( serverId: string ): Promise<ChannelCluster[]> => {
+	try {
+		const response = await axiosInstance.get(`/server/channelClusters/${ serverId }`);
+		return response.data;
+	} catch (error) {
+		console.error("Error fetching channel clusters:", error);
 		throw error;
 	}
 };
@@ -95,5 +114,7 @@ export default {
 	createChannelCluster,
 	deleteServer,
 	createServer,
+	fetchServersSummary,
 	fetchServerSummary,
+	fetchChannelClusters
 };

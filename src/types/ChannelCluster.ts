@@ -3,7 +3,7 @@ import Channel from "./Channel.ts";
 type ChannelCluster = {
 	id: string;
 	name: string;
-	channelInfos: Channel[];
+	channels: Channel[];
 }
 
 export default ChannelCluster;

@@ -3,7 +3,7 @@ import { axiosInstance } from "../../configuration";
 
 const fetchChannelData = createAsyncThunk(
 	'channel/fetchChannelData',
-	async ( channelIds: { serverId: string; channelClusterId: string; channelId: string } ) => {
+	async ( channelIds: { serverId: string | undefined; channelClusterId: string | undefined; channelId: string } ) => {
 		try {
 			const response = await axiosInstance.get("/server/channel", {
 				params: {

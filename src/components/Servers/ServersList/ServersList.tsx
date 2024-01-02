@@ -1,51 +1,38 @@
 import { Container, Divider, ListItem, Stack } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import { memo, useCallback, useEffect, useState } from "react";
 import { AddServerDialogForm } from "../AddServerDialog";
 import { ServerButton } from "../ServerButton";
 import { HomeServerButton } from "../HomeServerButton";
 import { AddServerButton } from "../AddServerButton";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchServerInfoDataAction, selectServerInfoData } from "../../../store";
+import { useServers } from "../../../hooks";
 import classes from './ServersList.module.css';
-import { useLocation, useNavigate } from "react-router-dom";
+import { Server } from "../../../types";
+import { CustomCircularProgressBar } from "../../UI";
 
-const ServersList = () => {
+const ServersList = memo(() => {
 	const [open, setOpen] = useState(false);
+	const { data: serverData, isLoading } = useServers();
 
-	const dispatch = useAppDispatch();
-	const serverData = useAppSelector(selectServerInfoData);
 	const navigate = useNavigate();
 	const url = useLocation().pathname;
 
-	const handleClickOpen = () => {
+	const handleClickOpen = useCallback(() => {
 		navigate('/home/add-server');
 		setTimeout(() => {
 		}, 100);
-	};
+	}, [navigate]);
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		navigate('/home');
 		setOpen(false);
-	};
-
-	const fetchServerInfoData = useCallback(async () => {
-		dispatch(fetchServerInfoDataAction());
-	}, [dispatch]);
-
-	useEffect(() => {
-		try {
-			!open && fetchServerInfoData();
-		} catch (error) {
-			console.log("Could not fetch ServersList info data: " + error);
-			throw error;
-		}
-	}, [fetchServerInfoData, open]);
+	}, [navigate]);
 
 	useEffect(() => {
 		url.endsWith("/add-server") && setOpen(true);
 	}, [url]);
-
+	
 	return <Container className={ classes['scrollable-container'] }>
 		<Stack className={ classes.stack } direction="column">
 			<ListItem>
@@ -56,17 +43,24 @@ const ServersList = () => {
 				<AddServerDialogForm open={ open } onClose={ handleClose }/>
 			</ListItem>
 			<Divider className={ classes.divider } variant="middle" flexItem/>
-			{ serverData.map(( server: { id: string; name: string; avatarIconUrl: string; } ) => (
-				<ListItem key={ server.id }>
-					<ServerButton
-						serverId={ server.id }
-						serverName={ server.name }
-						avatarIconUrl={ server.avatarIconUrl }
-					/>
+			{ isLoading
+				? <ListItem className={ classes['loading-bar'] }>
+					<CustomCircularProgressBar/>
 				</ListItem>
-			)) }
+				: serverData?.map(( server: Server ) => (
+					<ListItem key={ server.id }>
+						<ServerButton
+							id={ server.id }
+							name={ server.name }
+							avatarIconUrl={ server.avatarIconUrl }
+							firstClusterId={ server.firstClusterId }
+							firstChannelId={ server.firstChannelId }
+						/>
+					</ListItem>
+				)) }
 		</Stack>
 	</Container>;
-};
+});
+
 
 export default ServersList;

@@ -1,29 +1,22 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import TagIcon from "@mui/icons-material/Tag";
-import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { fetchChannelData, selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../store";
-import { useNavigate } from "react-router-dom";
+
+import { Channel } from "../../../../types";
 import classes from "./ChannelItem.module.css";
 
-const ChannelItem = ( props: { channelName: string; channelId: string; } ) => {
-	const currentIds = {
-		serverId: useAppSelector(selectCurrentServerId),
-		channelClusterId: useAppSelector(selectCurrentChannelClusterId),
-		channelId: props.channelId,
-	};
-
-	const dispatch = useAppDispatch();
+const ChannelItem = ( { id, name, clusterId, }: Channel & { clusterId: string } ) => {
 	const navigate = useNavigate();
+	const { serverId } = useParams();
 
 	const handleClick = () => {
-		dispatch(fetchChannelData(currentIds));
-		navigate(`/servers/${ currentIds.serverId }/${ currentIds.channelClusterId }/${ currentIds.channelId }`);
+		navigate(`/servers/${ serverId }/${ clusterId }/${ id }`);
 	};
 
 	return <Box className={ classes["channel-actions-container"] }>
 		<ListItemButton className={ classes["inner-channel-button"] } onClick={ handleClick }>
 			<TagIcon className={ classes["channel-icon"] }/>
-			<ListItemText primary={ props.channelName } primaryTypographyProps={ { fontSize: ".9rem" } }/>
+			<ListItemText primary={ name } primaryTypographyProps={ { fontSize: ".9rem" } }/>
 		</ListItemButton>
 	</Box>;
 };

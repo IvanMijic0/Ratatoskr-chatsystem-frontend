@@ -1,7 +1,7 @@
 type Server = {
 	avatarIconUrl?: string;
 	id: string;
-	name?: string;
+	name: string;
 	firstClusterId?: string;
 	firstChannelId?: string;
 }

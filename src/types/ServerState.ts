@@ -2,7 +2,6 @@ import { Server } from '../types';
 
 type ServerState = {
 	serverInfoData: Server[];
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | null;
 	currentServerName: string | null;
 	currentServerId: string | null;

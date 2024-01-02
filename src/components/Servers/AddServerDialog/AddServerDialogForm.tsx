@@ -3,18 +3,18 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ChangeEvent, FC, FormEvent, SyntheticEvent, useState } from "react";
 
 import { CustomButton, CustomCircularProgressBar, CustomDialog, CustomTooltip } from "../../UI";
-import { axiosInstance } from "../../../configuration";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs";
 import { AddServerDialogFormProps } from "../../../types";
 import { serverNameRegex } from "../../../regex";
-import { useInput } from "../../../hooks";
+import { useCreateServer, useInput } from "../../../hooks";
 import classes from "./AddServerDialogForm.module.css";
 
 const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [alertMessage, setAlertMessage] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
 	const [openSnack, setOpenSnack] = useState(false);
+
+	const { mutate: mutateServer, isLoading } = useCreateServer();
 
 	const serverNameValidation = useInput(serverNameRegex);
 
@@ -39,13 +39,10 @@ const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) 
 			}
 		} else {
 			setSelectedFile(null);
-			setAlertMessage(
-				'Invalid file format or size. Please select a valid image file.'
-			);
+			setAlertMessage('Invalid file format or size. Please select a valid image file.');
 			setOpenSnack(true);
 		}
 	};
-
 
 	const handleClose = ( _event?: SyntheticEvent | Event, reason?: string ) => {
 		if ( reason === 'clickable' ) {
@@ -56,32 +53,25 @@ const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) 
 
 	const handleSubmit = async ( event: FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
-		setIsLoading(true);
 
 		if ( !dialogFormIsValid ) {
 			return;
 		}
 
 		const formData = new FormData();
-		formData.append('serverName', serverNameValidation.value);
-		if ( selectedFile ) {
-			formData.append('avatarIcon', selectedFile);
-		}
 
-		try {
-			await axiosInstance.post('/server', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-			onClose();
-		} catch (error) {
-			console.error('Error:', error);
-		} finally {
-			serverNameValidation.reset();
-			setSelectedFile(null);
-			setIsLoading(false);
-		}
+		formData.append('serverName', serverNameValidation.value);
+		selectedFile && formData.append('avatarIcon', selectedFile);
+
+		mutateServer(formData, {
+			onSuccess: () => {
+				onClose();
+			},
+			onSettled: () => {
+				serverNameValidation.reset();
+				setSelectedFile(null);
+			},
+		});
 	};
 
 	const serverDialogContent = <Container className={ classes['form-content'] }>

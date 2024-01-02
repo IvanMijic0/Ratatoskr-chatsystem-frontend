@@ -1,10 +1,8 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState, Server, ServerState } from "../../types";
-import { fetchServerInfoDataAction } from "../action/server-action.ts";
 
 const initialState: ServerState = {
 	serverInfoData: [],
-	status: 'idle',
 	error: null,
 	currentServerName: "Homepage",
 	currentServerId: "0000-0000",
@@ -22,21 +20,7 @@ const serverSlice = createSlice({
 			state.currentServerName = "";
 			state.currentServerId = "";
 		},
-	},
-	extraReducers: ( builder ) => {
-		builder
-			.addCase(fetchServerInfoDataAction.pending, ( state ) => {
-				state.status = 'loading';
-			})
-			.addCase(fetchServerInfoDataAction.fulfilled, ( state, action ) => {
-				state.status = 'succeeded';
-				state.serverInfoData = action.payload;
-			})
-			.addCase(fetchServerInfoDataAction.rejected, ( state, action ) => {
-				state.status = 'failed';
-				state.error = action.error.message || 'An Error occurred.';
-			});
-	},
+	}
 });
 
 export const { setCurrentServerInfo, resetCurrentServerInfoData } = serverSlice.actions;

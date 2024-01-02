@@ -1,50 +1,37 @@
-import { useCallback, useEffect, useState } from "react";
-import { Alert, Snackbar } from "@mui/material";
+import { useCallback, useEffect } from "react";
 
 import webSocketService from "../../services/WebSocketService.ts";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector, useSnackBar } from "../../hooks";
 import { fetchNotificationData, selectUser } from "../../store";
 import { axiosInstance } from "../../configuration";
 import { Notification } from "../../types";
 
 const WSNotifications = () => {
-	const [notificationReceived, setNotificationReceived] = useState(false);
-	const [alertText, setAlertText] = useState('');
+	const { showSnackbar } = useSnackBar();
 
 	const { _id } = useAppSelector(selectUser);
 	const dispatch = useAppDispatch();
 
 	const onUserNotificationReceive = useCallback(async ( message: { body: string } ) => {
 		const body: Notification = JSON.parse(message.body);
-		setAlertText(body.content);
-		setNotificationReceived(true);
+		showSnackbar(body.content, "info");
 
 		await axiosInstance.post(`/notifications/${ body.receiverId }`, body);
 		dispatch(fetchNotificationData());
-	}, [dispatch]);
+	}, [dispatch, showSnackbar]);
 
 	const onConnected = useCallback(() => {
-		console.log("WS Notifications connected successfully");
+		//console.log("WS Notifications connected successfully");
 		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
 	}, [_id, onUserNotificationReceive]);
 
 	const onError = () => {
 		console.error("Could not connect to WS Notifications. Please refresh this page and try again!");
 	};
-
-	const handleClose = () => {
-		setNotificationReceived(false);
-
-		setTimeout(() => {
-			setAlertText('');
-		}, 1000);
-
-	};
-
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			webSocketService.connect(onConnected, onError);
-		}, 2000);
+		}, 1000);
 
 		return () => {
 			clearTimeout(timeoutId);
@@ -52,11 +39,7 @@ const WSNotifications = () => {
 		};
 	}, [onConnected]);
 
-	return <Snackbar open={ notificationReceived } autoHideDuration={ 4000 } onClose={ handleClose }>
-		<Alert onClose={ handleClose } severity="info" sx={ { width: '100%' } }>
-			{ alertText }
-		</Alert>
-	</Snackbar>;
+	return <> </>;
 };
 
 export default WSNotifications;

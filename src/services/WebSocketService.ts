@@ -16,7 +16,8 @@ class WebSocketService {
 
 		this.stompClient = Stomp.over(socket);
 
-		// this.stompClient.debug = () => {};
+		this.stompClient.debug = () => {
+		};
 
 		this.stompClient.connect({}, onConnected, onError);
 	}
