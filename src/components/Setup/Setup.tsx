@@ -1,13 +1,7 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
-import {
-	fetchNotificationData,
-	fetchUserSpecific,
-	selectIsAuthenticated,
-	selectUser,
-	validateTokenAsync
-} from "../../store";
+import { AuthAction, NotificationAction, selectIsAuthenticated, selectUser, UserAction, } from "../../store";
 import { WSNotifications } from "../WSAbstractions";
 
 export const Setup = () => {
@@ -18,9 +12,9 @@ export const Setup = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(validateTokenAsync());
-		dispatch(fetchUserSpecific());
-		dispatch(fetchNotificationData());
+		dispatch(AuthAction.validateTokenAsync());
+		dispatch(UserAction.fetchUserSpecific());
+		dispatch(NotificationAction.fetchNotificationData());
 	}, [dispatch]);
 
 	return <>

@@ -13,8 +13,8 @@ export {
 
 export { setUser, selectUser, setLoading } from "./slice/user-slice.ts";
 
-export { validateTokenAsync, setAuthData, register } from "./action/auth-action.ts";
+export { default as AuthAction } from "./action/auth-action.ts";
 
-export { fetchUserSpecific } from "./action/user-action.ts";
+export { default as UserAction } from "./action/user-action.ts";
 
-export { fetchNotificationData } from "./action/notification-action.ts";
+export { default as NotificationAction } from "./action/notification-action.ts";

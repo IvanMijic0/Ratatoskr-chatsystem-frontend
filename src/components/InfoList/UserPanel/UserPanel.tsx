@@ -2,7 +2,7 @@ import { Avatar, Box, IconButton, Paper, Typography } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchUserSpecific, selectUser } from "../../../store";
+import { selectUser, UserAction } from "../../../store";
 import { useEffect } from "react";
 import { stringAvatar } from "../../../utils";
 import { CustomTooltip } from "../../UI";
@@ -13,7 +13,7 @@ const UserPanel = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchUserSpecific());
+		dispatch(UserAction.fetchUserSpecific());
 	}, [dispatch]);
 
 	return <Paper className={ classes["user-panel"] }>

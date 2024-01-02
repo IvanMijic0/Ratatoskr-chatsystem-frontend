@@ -10,8 +10,7 @@ const ConvosList = () => {
 	return <List
 		className={ classes["friends-list"] }
 		aria-labelledby="nested-list-subheader"
-		dense
-	>
+		dense>
 		<ConvoSearch/>
 		<Button
 			className={ classes["add-friend-button"] }
@@ -23,7 +22,7 @@ const ConvosList = () => {
 		<Divider className={ classes.divider } variant="middle" flexItem/>
 		{ friendData.length === 0
 			? <Typography className={ classes.description }>No direct convos yet...</Typography>
-			: <Typography>fren</Typography> }
+			: <Typography>friends</Typography> }
 	</List>;
 };
 

@@ -1,6 +1,6 @@
 type UserInfo = {
 	_id?: string;
-	username: string;
+	username?: string;
 	usernameOrEmail?: string;
 	firstName?: string;
 	lastName?: string;

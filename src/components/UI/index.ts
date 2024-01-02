@@ -10,3 +10,4 @@ export { default as CustomCircularProgressBar } from './CustomCircularProgressBa
 export { default as CustomMenu } from './CustomMenu.tsx';
 export { default as CustomTextField } from './CustomTextField.tsx';
 export { default as CustomTooltip } from './CustomTooltip.tsx';
+export { default as FriendMenuButton } from './FriendMenuButton/FriendMenuButton.tsx';

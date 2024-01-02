@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { Box } from '@mui/material';
 import axios from 'axios';
 
-import { setAuthData, validateTokenAsync } from "../../../../store";
 import { useAppDispatch, useInput } from "../../../../hooks";
 import { GoogleService } from "../../../../services";
 import { GoogleUserData } from "../../../../types";
 import { passwordRegex } from "../../../../regex";
+import { AuthAction } from "../../../../store";
 import { CustomButton } from "../../../UI";
 import { FormDialog } from "../FormDialog";
 import classes from "./GoogleLoginButton.module.css";
@@ -58,14 +58,14 @@ const GoogleLoginButton = () => {
 
 				// I could probably add a better check
 				if ( userExistsResponse.status === 200 ) {
-					dispatch(setAuthData(undefined, {
+					dispatch(AuthAction.setAuthData(undefined, {
 						email: googleUserData.email,
 						firstName: googleUserData.given_name,
 						lastName: googleUserData.family_name,
 						googleId: googleUserData.id,
 						avatarImageUrl: googleUserData.picture,
 					}));
-					dispatch(validateTokenAsync());
+					dispatch(AuthAction.validateTokenAsync());
 				}
 
 				console.log('Google user info:', googleUserData);

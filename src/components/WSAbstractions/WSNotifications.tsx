@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from "react";
 
-import webSocketService from "../../services/WebSocketService.ts";
 import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
-import { fetchNotificationData, selectUser } from "../../store";
-import { axiosInstance } from "../../configuration";
+import webSocketService from "../../services/WebSocketService.ts";
+import { NotificationAction, selectUser } from "../../store";
 import { Notification } from "../../types";
 
 const WSNotifications = () => {
@@ -16,12 +15,11 @@ const WSNotifications = () => {
 		const body: Notification = JSON.parse(message.body);
 		showSnackbar(body.content, "info");
 
-		await axiosInstance.post(`/notifications/${ body.receiverId }`, body);
-		dispatch(fetchNotificationData());
+		dispatch(NotificationAction.postNotificationData(body, body.receiverId!));
 	}, [dispatch, showSnackbar]);
 
 	const onConnected = useCallback(() => {
-		//console.log("WS Notifications connected successfully");
+		console.log("WS Notifications connected successfully");
 		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
 	}, [_id, onUserNotificationReceive]);
 

@@ -5,10 +5,10 @@ import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "
 import { RegisterFormInputs } from "./RegisterFormInputs";
 import { LoginFormInputs } from "./LoginFormInputs";
 import { useAppDispatch, useInput } from "../../../hooks";
-import { register, setAuthData } from "../../../store";
 import { FormProps } from "../../../types";
 import { FormStatus } from "../../../enums";
 import classes from "./Form.module.css";
+import { AuthAction } from "../../../store";
 
 const Form: FC<FormProps> = ( { isLogin } ) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
@@ -39,9 +39,9 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 
 	const loginHandler = async () => {
 		try {
-			dispatch(setAuthData({
-				usernameOrEmail: loginEmailValidation.value,
-				password: loginPasswordValidation.value
+			dispatch(AuthAction.setAuthData({
+				usernameOrEmail: loginEmailValidation?.value,
+				password: loginPasswordValidation?.value
 			}, undefined));
 
 			return Promise.resolve();
@@ -55,7 +55,7 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 
 	const registerHandler = async () => {
 		try {
-			dispatch(register({
+			dispatch(AuthAction.register({
 				username: registerUsernameValidation.value,
 				email: registerEmailValidation.value,
 				password: registerPasswordValidation.value

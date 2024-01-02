@@ -5,15 +5,14 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ChatIcon from '@mui/icons-material/Chat';
 import { FC, useState } from "react";
 
-import webSocketService from "../../../services/WebSocketService.ts";
-import { useAppDispatch, useCreateFriendRequest } from "../../../hooks";
+import { CustomTooltip, FriendMenuButton } from "../index.ts";
 import { FriendItemProps, Notification } from "../../../types";
-import { axiosInstance } from "../../../configuration";
-import { fetchNotificationData } from "../../../store";
+import { webSocketService } from "../../../services";
 import { NotificationType } from "../../../enums";
+import { useAppDispatch } from "../../../hooks";
 import { stringAvatar } from "../../../utils";
-import { CustomTooltip } from "../index.ts";
 import classes from "./FriendItem.module.css";
+import { NotificationAction, UserAction } from "../../../store";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
@@ -27,8 +26,6 @@ const FriendItem: FC<FriendItemProps>
 		} ) => {
 
 	const [statusChangeText, setStatusChangeText] = useState('');
-
-	const { mutate: mutateCreateFriendRequest } = useCreateFriendRequest();
 
 	const dispatch = useAppDispatch();
 
@@ -50,30 +47,15 @@ const FriendItem: FC<FriendItemProps>
 		setStatusChangeText('sent');
 
 		// Do only if user is offline, fix later...
-		await axiosInstance.post(`/notifications/${ friendId }`, notification);
-		dispatch(fetchNotificationData());
+		dispatch(NotificationAction.postNotificationData(notification, friendId!));
 	};
 
 	const confirmFriendRequestHandler = async () => {
-		try {
-			await axiosInstance.post(`/user/add-friend/${ friendId }`);
-
-			await clearFriendRequestHandler();
-		} catch (error) {
-			console.log("Could not confirm friend request: " + error);
-			throw error;
-		}
+		dispatch(UserAction.addFriend(friendId!));
 	};
 
 	const clearFriendRequestHandler = async () => {
-		try {
-			await axiosInstance.delete(`/notifications`);
-
-			dispatch(fetchNotificationData());
-		} catch (error) {
-			console.log("Could not clear friend request: " + error);
-			throw error;
-		}
+		dispatch(NotificationAction.clearNotificationData());
 	};
 
 	const startConversationHandler = async () => {
@@ -101,11 +83,14 @@ const FriendItem: FC<FriendItemProps>
 				</Box>;
 			}
 			case 2: {
-				return <IconButton className={ classes["friend-button"] } onClick={ startConversationHandler }>
-					<CustomTooltip title="start convo" placement="right-end">
-						<ChatIcon className={ classes["friend-button-icon"] }/>
-					</CustomTooltip>
-				</IconButton>;
+				return <Box className={ classes['friend-button-container'] }>
+					<IconButton className={ classes["friend-button"] } onClick={ startConversationHandler }>
+						<CustomTooltip title="start convo" placement="left-start">
+							<ChatIcon className={ classes["friend-button-icon"] }/>
+						</CustomTooltip>
+					</IconButton>
+					<FriendMenuButton/>
+				</Box>;
 			}
 			default:
 				return null;

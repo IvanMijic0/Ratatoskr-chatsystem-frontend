@@ -17,7 +17,7 @@ const validateTokenAsync = (): AppThunk => {
 };
 
 const setAuthData = (
-	loginData?: { password: string; usernameOrEmail: string },
+	loginData?: UserInfo | undefined,
 	googleLoginData?: UserInfo | undefined
 ): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
@@ -62,4 +62,4 @@ const triggerReload = () => {
 	window.location.reload();
 };
 
-export { validateTokenAsync, setAuthData, register };
+export default { validateTokenAsync, setAuthData, register };

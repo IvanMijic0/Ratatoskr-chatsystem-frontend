@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import UserState from "../../types/UserState.ts";
-import { fetchUserSpecific } from "../action/user-action.ts";
 import { RootState } from "../../types";
+import UserAction from "../action/user-action.ts";
 
 const initialState: UserState = {
 	userInfo: null,
@@ -32,14 +32,14 @@ const userSlice = createSlice({
 	},
 	extraReducers: ( builder ) => {
 		builder
-			.addCase(fetchUserSpecific.pending, ( state ) => {
+			.addCase(UserAction.fetchUserSpecific.pending, ( state ) => {
 				state.status = 'loading';
 			})
-			.addCase(fetchUserSpecific.fulfilled, ( state, action ) => {
+			.addCase(UserAction.fetchUserSpecific.fulfilled, ( state, action ) => {
 				state.status = 'succeeded';
 				state.userInfo = action.payload;
 			})
-			.addCase(fetchUserSpecific.rejected, ( state, action ) => {
+			.addCase(UserAction.fetchUserSpecific.rejected, ( state, action ) => {
 				state.status = 'failed';
 				state.error = action.error.message || 'An Error occurred.';
 			});

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { NotificationState, RootState } from "../../types";
-import { fetchNotificationData } from "../action/notification-action.ts";
+import NotificationAction from "../action/notification-action.ts";
 
 const initialState: NotificationState = {
 	data: [],
@@ -15,14 +15,14 @@ const notificationSlice = createSlice({
 	reducers: {},
 	extraReducers: ( builder ) => {
 		builder
-			.addCase(fetchNotificationData.pending, ( state ) => {
+			.addCase(NotificationAction.fetchNotificationData.pending, ( state ) => {
 				state.status = "loading";
 			})
-			.addCase(fetchNotificationData.fulfilled, ( state, action ) => {
+			.addCase(NotificationAction.fetchNotificationData.fulfilled, ( state, action ) => {
 				state.status = "succeeded";
 				state.data = action.payload;
 			})
-			.addCase(fetchNotificationData.rejected, ( state, action ) => {
+			.addCase(NotificationAction.fetchNotificationData.rejected, ( state, action ) => {
 				state.status = "failed";
 				state.error = action.error.message || "An error occurred.";
 			});

@@ -19,8 +19,7 @@ const HomeDashboard = () => {
 				sm={ .7 }
 				xs={ .7 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#0A1717" } }
-			>
+				sx={ { backgroundColor: "#0A1717" } }>
 				<ServersList/>
 			</Grid>
 			<Grid
@@ -30,8 +29,7 @@ const HomeDashboard = () => {
 				sm={ 1.5 }
 				xs={ 1.5 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#252A2E" } }
-			>
+				sx={ { backgroundColor: "#252A2E" } }>
 				<ConvosList/>
 				<UserPanel/>
 			</Grid>
@@ -42,8 +40,7 @@ const HomeDashboard = () => {
 				sm={ 7.8 }
 				xs={ 7.8 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#0A1717" } }
-			>
+				sx={ { backgroundColor: "#0A1717" } }>
 				<TopAppBar/>
 				<Outlet/>
 			</Grid>
@@ -54,8 +51,7 @@ const HomeDashboard = () => {
 				sm={ 2 }
 				xs={ 2 }
 				zeroMinWidth
-				sx={ { backgroundColor: "#252A2E" } }
-			>
+				sx={ { backgroundColor: "#252A2E" } }>
 				Home Details
 			</Grid>
 		</Grid>
@@ -63,5 +59,3 @@ const HomeDashboard = () => {
 };
 
 export default HomeDashboard;
-
-
