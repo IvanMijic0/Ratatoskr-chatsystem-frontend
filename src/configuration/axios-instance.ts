@@ -10,7 +10,7 @@ const isTokenExpired = ( token: string ): boolean => {
 	try {
 		const decodedToken: JwtPayload = jwtDecode(token);
 
-		return decodedToken.exp !== undefined && decodedToken.exp < Date.now() / 1000;
+		return decodedToken.exp !== undefined && decodedToken.exp < Date.now() * 0.0001;
 	} catch (error) {
 		console.error('Error decoding token:', error);
 		return true;

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import _debounce from 'lodash.debounce';
 import { Box } from "@mui/material";
 import { axiosInstance } from "../../../configuration";
-import { useAppSelector } from "../../../hooks";
+import { useAppSelector, useUsers } from "../../../hooks";
 import { selectUser } from "../../../store";
 import { InputChangeHandler, UserInfo } from "../../../types";
 import { CustomAutoComplete, FriendItem } from "../../UI";
@@ -14,6 +14,7 @@ const AddFriendContent: FC = () => {
 	const [filteredUsers, setFilteredUsers] = useState<UserInfo[]>([]);
 	const [inputValue, setInputValue] = useState('');
 
+	const { data: filteredUsersData } = useUsers('');
 	const { _id, username } = useAppSelector(selectUser);
 
 	const fetchUsers = async ( query: string ) => {
@@ -57,7 +58,7 @@ const AddFriendContent: FC = () => {
 					key={ filteredUser._id }
 					friendId={ filteredUser._id }
 					friendUsername={ filteredUser.username }
-					friendAvatarIconUrl={ filteredUser.avatarUrl }
+					friendAvatarIconUrl={ filteredUser.avatarImageUrl }
 					currentUserId={ _id }
 					currentUserUsername={ username }
 					actionType={ ActionType.ADD_FRIEND }

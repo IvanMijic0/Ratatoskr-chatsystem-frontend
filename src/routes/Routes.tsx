@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate, RouteObject, RouterProvider } from "reac
 
 import { useAppSelector } from "../hooks";
 import { selectIsAuthenticated } from "../store";
-import { GlobalError, Guest, HomeDashboard, ServerDashboard } from "../pages";
+import { GlobalError, Guest, HomeDashboard, NFTStore, ServerDashboard } from "../pages";
 import { AllFriendContent } from "../components/MainContent/AllFriendsContent";
 import { AddFriendContent } from "../components/MainContent/AddFriendContent";
 import { DirectMessage } from "../components/MainContent/DirectMessagingContent";
@@ -65,6 +65,10 @@ const Routes = () => {
 		{
 			path: '/verify-email-token',
 			element: <VerifyEmail/>,
+		},
+		{
+			path: '/nft-store',
+			element: <NFTStore/>
 		},
 		{
 			path: '/',

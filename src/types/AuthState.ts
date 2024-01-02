@@ -1,5 +1,5 @@
 type AuthState = {
-	isAuthenticated: boolean;
+	isAuthenticated?: boolean;
 	token: string | null,
 	refreshToken: string | null
 }

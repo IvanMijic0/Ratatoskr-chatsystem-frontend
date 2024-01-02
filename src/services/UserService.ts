@@ -1,7 +1,7 @@
 import { axiosInstance } from "../configuration";
-import { UserServiceProps } from "../types";
+import { UserInfo, UserServiceProps } from "../types";
 
-const fetchUsers = async ( query: string ): Promise<any[]> => {
+const fetchUsers = async ( query: string ): Promise<UserInfo[]> => {
 	try {
 		const response = await axiosInstance.get(`/user/search?username=${ query }`);
 		return response.data;
@@ -22,7 +22,7 @@ const fetchUserFriends = async ( { setAllUsers, setFilteredUsers }: UserServiceP
 	}
 };
 
-const fetchUserInformationForIds = async ( senderIds: string[] ): Promise<any[]> => {
+const fetchUserInformationForIds = async ( senderIds: string[] ): Promise<UserInfo[]> => {
 	try {
 		return await Promise.all(
 			senderIds.map(async ( senderId ) => {

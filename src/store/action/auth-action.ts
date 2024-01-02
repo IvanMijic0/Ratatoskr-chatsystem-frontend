@@ -1,6 +1,6 @@
 import { setIsAuthenticated, setTokens } from "../index.ts";
 import { axiosInstance } from "../../configuration";
-import { AppThunk, RootState } from "../../types";
+import { AppThunk, RootState, UserInfo } from "../../types";
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from "redux";
 import axios from 'axios';
@@ -17,14 +17,8 @@ const validateTokenAsync = (): AppThunk => {
 };
 
 const setAuthData = (
-	loginData?: { usernameOrEmail: string | null; password: string | null },
-	googleLoginData?: {
-		email: string;
-		firstName: string;
-		lastName: string;
-		googleId: string;
-		avatarImageUrl: string;
-	}
+	loginData?: { password: string; usernameOrEmail: string },
+	googleLoginData?: UserInfo | undefined
 ): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
 		try {
@@ -46,8 +40,26 @@ const setAuthData = (
 	};
 };
 
+const register = ( registerData: UserInfo ): AppThunk => {
+	return async () => {
+		try {
+			await axiosInstance.post('/auth/register', {
+				username: registerData.username,
+				email: registerData.email,
+				password: registerData.password
+			});
+
+			return Promise.resolve();
+		} catch (error: any) {
+			console.error('Registration Error:', error);
+			const errorMessage = error.response?.data?.statusText || 'Registration failed.';
+			return Promise.reject(errorMessage);
+		}
+	};
+};
+
 const triggerReload = () => {
 	window.location.reload();
 };
 
-export { validateTokenAsync, setAuthData };
+export { validateTokenAsync, setAuthData, register };

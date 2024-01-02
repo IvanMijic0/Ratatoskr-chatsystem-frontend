@@ -55,7 +55,7 @@ export {
 
 export { setUser, selectUser, setLoading } from "./slice/user-slice.ts";
 
-export { validateTokenAsync, setAuthData } from "./action/auth-action.ts";
+export { validateTokenAsync, setAuthData, register } from "./action/auth-action.ts";
 
 export { fetchChannelClustersData } from './action/channelClusters-action.ts';
 

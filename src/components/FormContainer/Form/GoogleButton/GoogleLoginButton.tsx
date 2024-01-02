@@ -58,16 +58,13 @@ const GoogleLoginButton = () => {
 
 				// I could probably add a better check
 				if ( userExistsResponse.status === 200 ) {
-					dispatch(setAuthData(
-						undefined,
-						{
-							email: googleUserData.email,
-							firstName: googleUserData.given_name,
-							lastName: googleUserData.family_name,
-							googleId: googleUserData.id,
-							avatarImageUrl: googleUserData.picture,
-						}
-					));
+					dispatch(setAuthData(undefined, {
+						email: googleUserData.email,
+						firstName: googleUserData.given_name,
+						lastName: googleUserData.family_name,
+						googleId: googleUserData.id,
+						avatarImageUrl: googleUserData.picture,
+					}));
 					dispatch(validateTokenAsync());
 				}
 

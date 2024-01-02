@@ -1,12 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { FC, useState } from "react";
-import axios from "axios";
 
 import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "../../../regex";
 import { RegisterFormInputs } from "./RegisterFormInputs";
 import { LoginFormInputs } from "./LoginFormInputs";
 import { useAppDispatch, useInput } from "../../../hooks";
-import { setAuthData } from "../../../store";
+import { register, setAuthData } from "../../../store";
 import { FormProps } from "../../../types";
 import { FormStatus } from "../../../enums";
 import classes from "./Form.module.css";
@@ -31,16 +30,12 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 	let loginFormIsValid: boolean = false;
 	let registerFormIsValid: boolean = false;
 
-	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) {
-		loginFormIsValid = true;
-	}
+	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) loginFormIsValid = true;
 
 	if ( registerUsernameValidation.isValid &&
 		registerEmailValidation.isValid &&
 		registerPasswordValidation.isValid &&
-		registerConfirmPasswordValidation.isValid ) {
-		registerFormIsValid = true;
-	}
+		registerConfirmPasswordValidation.isValid ) registerFormIsValid = true;
 
 	const loginHandler = async () => {
 		try {
@@ -60,11 +55,11 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 
 	const registerHandler = async () => {
 		try {
-			await axios.post(`auth/register`, {
+			dispatch(register({
 				username: registerUsernameValidation.value,
 				email: registerEmailValidation.value,
 				password: registerPasswordValidation.value
-			});
+			}));
 
 			setIsEmailVerificationSent(true);
 			return Promise.resolve();
@@ -72,7 +67,6 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 			console.error('Registration Error:', error);
 			const errorMessage = error.response?.data?.statusText || 'Registration failed.';
 			return Promise.reject(errorMessage);
-
 		}
 	};
 
