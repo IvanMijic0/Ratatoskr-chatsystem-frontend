@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from "react";
 
 import webSocketService from "../../services/WebSocketService.ts";
-import { useAppDispatch, useAppSelector, useSnackBar } from "../../hooks";
+import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
 import { fetchNotificationData, selectUser } from "../../store";
 import { axiosInstance } from "../../configuration";
 import { Notification } from "../../types";
 
 const WSNotifications = () => {
-	const { showSnackbar } = useSnackBar();
+	const { showSnackbar } = useSnackbar();
 
 	const { _id } = useAppSelector(selectUser);
 	const dispatch = useAppDispatch();

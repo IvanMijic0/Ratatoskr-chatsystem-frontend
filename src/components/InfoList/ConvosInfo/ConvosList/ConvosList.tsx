@@ -2,14 +2,10 @@ import { Button, Divider, List, Typography } from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 
 import { ConvoSearch } from "../ConvoSearch";
-import { useAppSelector } from "../../../../hooks";
-import { selectFriendInfoData } from "../../../../store";
 import classes from "./ConvosList.module.css";
 
 const ConvosList = () => {
-	const friendData = useAppSelector(selectFriendInfoData);
-
-	console.log(friendData);
+	const friendData = [];
 
 	return <List
 		className={ classes["friends-list"] }

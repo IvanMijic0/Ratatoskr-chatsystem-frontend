@@ -2,7 +2,7 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 import { CustomButton, CustomCircularProgressBar, CustomDialog } from "../../../UI";
-import { useDeleteChannels, useSnackBar } from "../../../../hooks";
+import { useDeleteChannels, useSnackbar } from "../../../../hooks";
 import { RemoveChannelDialogProps } from "../../../../types";
 import { RemovableChannels } from "../RemovableChannels";
 import classes from "./RemoveChannelDialog.module.css";
@@ -19,7 +19,7 @@ export const RemoveChannelDialog
 
 	const { mutate: mutateDeleteChannels, isLoading } = useDeleteChannels();
 	const { serverId } = useParams();
-	const { showSnackbar } = useSnackBar();
+	const { showSnackbar } = useSnackbar();
 
 	const handleSubmit = async ( event: { preventDefault: () => void; } ) => {
 		event.preventDefault();

@@ -1,9 +1,8 @@
 import { Divider, List, ListItem } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useAppDispatch, useChannelClusters } from "../../../../hooks";
-import { fetchChannelClustersData } from "../../../../store";
+import { useChannelClusters } from "../../../../hooks";
 import { ChannelClusterItem } from "../ChannelClusterItem";
 import { CustomCircularProgressBar } from "../../../UI";
 import useServer from "../../../../hooks/useServer.ts";
@@ -20,7 +19,6 @@ const ChannelClusters = () => {
 		isLoading: isChannelClusterDataLoading
 	} = useChannelClusters(serverId ?? '');
 
-	const dispatch = useAppDispatch();
 
 	const handleClickOpen = () => {
 		setChannelClusterFormOpen(true);
@@ -29,20 +27,6 @@ const ChannelClusters = () => {
 	const handleServerHeaderClose = async () => {
 		setChannelClusterFormOpen(false);
 	};
-
-	const fetchChannelClusterData = useCallback(() => {
-		dispatch(fetchChannelClustersData(serverId));
-	}, [dispatch, serverId]);
-
-	useEffect(() => {
-		try {
-			serverId && fetchChannelClusterData();
-		} catch (error) {
-			console.log("Failed to fetch channel info data " + error);
-			throw error;
-		}
-	}, [fetchChannelClusterData, serverId]);
-
 
 	return <List
 		className={ classes["channel-list"] }

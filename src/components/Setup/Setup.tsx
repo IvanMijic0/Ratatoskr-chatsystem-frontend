@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector, useSnackBar } from "../../hooks";
+import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
 import {
 	fetchNotificationData,
 	fetchUserSpecific,
@@ -13,7 +13,7 @@ import { WSNotifications } from "../WSAbstractions";
 export const Setup = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
 	const user = useAppSelector(selectUser);
-	const { SnackbarComponent } = useSnackBar();
+	const { SnackbarComponent } = useSnackbar();
 
 	const dispatch = useAppDispatch();
 

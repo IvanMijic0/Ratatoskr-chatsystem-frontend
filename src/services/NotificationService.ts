@@ -1,6 +1,14 @@
 import { axiosInstance } from "../configuration";
 import { NotificationServiceProps } from "../types";
 
+const getFriendNotification = async () => {
+	try {
+		return ( await axiosInstance.get('/notifications') ).data;
+	} catch (error) {
+		console.error('Error fetching notification data:', error);
+	}
+};
+
 const sendFriendRequestNotification = async ( { friendId, notification }: NotificationServiceProps ): Promise<void> => {
 	try {
 		await axiosInstance.post(`/notifications/${ friendId }`, notification);
@@ -19,4 +27,4 @@ const postUserNotification = async ( receiverId: string, body: Notification ): P
 	}
 };
 
-export default { sendFriendRequestNotification, postUserNotification };
+export default { getFriendNotification, sendFriendRequestNotification, postUserNotification };

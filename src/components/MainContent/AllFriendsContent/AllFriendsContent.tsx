@@ -1,27 +1,22 @@
 import { Box } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CustomAutoComplete, FriendItem } from "../../UI";
 import { InputChangeHandler, UserInfo } from "../../../types";
-import { axiosInstance } from "../../../configuration";
-import classes from './AllFriendsContent.module.css';
 import actionType from "../../../enums/ActionType.ts";
+import { useFriends } from "../../../hooks";
+import classes from './AllFriendsContent.module.css';
 
 export const AllFriendsContent = () => {
-	const [inputValue, setInputValue] = useState('');
-	const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
-	const [filteredUsers, setFilteredUsers] = useState<UserInfo[]>([]);
+	const { data: friendsData, isSuccess } = useFriends();
 
-	const fetchUsers = useCallback(async () => {
-		try {
-			const { data } = await axiosInstance.get('/user/friends');
-			setAllUsers(data);
-			setFilteredUsers(data);
-		} catch (error) {
-			console.error("Error fetching users:", error);
-			return [];
-		}
-	}, []);
+	const [inputValue, setInputValue] = useState('');
+	const [filteredUsers, setFilteredUsers] =
+		useState<UserInfo[] | undefined>([]);
+
+	useEffect(() => {
+		isSuccess && setFilteredUsers(friendsData);
+	}, [friendsData, isSuccess]);
 
 	const handleInputChange: InputChangeHandler = ( e ) => {
 		const inputValue = e.target.value.toLowerCase();
@@ -29,45 +24,34 @@ export const AllFriendsContent = () => {
 
 		const filtered =
 			inputValue === ''
-				? allUsers
-				: allUsers.filter(( user ) =>
+				? friendsData
+				: friendsData?.filter(( user ) =>
 					user.username.toLowerCase().includes(inputValue)
 				);
 
-		setFilteredUsers(filtered);
+		setFilteredUsers(filtered!);
 	};
 
-	useEffect(() => {
-		try {
-			fetchUsers();
-		} catch (error) {
-			console.log("Could not fetch users: " + error);
-			throw error;
-		}
-	}, [fetchUsers]);
-
-	return (
-		<Box className={ classes["content-container"] }>
-			<CustomAutoComplete
-				className={ classes.search }
-				options={ filteredUsers }
-				label="Friends"
-				value={ inputValue }
-				onInputChange={ handleInputChange }
-			/>
-			<Box className={ classes["friend-list-container"] }>
-				{ filteredUsers.map(( filteredUser ) => (
-					<FriendItem
-						key={ filteredUser._id }
-						friendId={ filteredUser._id }
-						friendUsername={ filteredUser.username }
-						friendAvatarIconUrl={ filteredUser.avatarUrl }
-						actionType={ actionType.START_CONVO }
-					/>
-				)) }
-			</Box>
+	return <Box className={ classes["content-container"] }>
+		<CustomAutoComplete
+			className={ classes.search }
+			options={ filteredUsers ?? [] }
+			label="Friends"
+			value={ inputValue }
+			onInputChange={ handleInputChange }
+		/>
+		<Box className={ classes["friend-list-container"] }>
+			{ isSuccess && filteredUsers?.map(( filteredUser ) => (
+				<FriendItem
+					key={ filteredUser._id }
+					friendId={ filteredUser._id }
+					friendUsername={ filteredUser.username }
+					friendAvatarIconUrl={ filteredUser.avatarImageUrl }
+					actionType={ actionType.START_CONVO }
+				/>
+			)) }
 		</Box>
-	);
+	</Box>;
 };
 
 export default AllFriendsContent;

@@ -15,3 +15,8 @@
     flex-direction: column;
     width: 90%;
 }
+
+.loading-bar {
+    display: flex;
+    justify-content: center;
+}

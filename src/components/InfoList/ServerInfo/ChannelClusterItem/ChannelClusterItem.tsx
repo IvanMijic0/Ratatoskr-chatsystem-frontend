@@ -1,17 +1,13 @@
 import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { MouseEvent, useState } from "react";
-
-import { fetchChannelClustersData } from "../../../../store";
 import { ChannelClusterOptionsButton } from "../ChannelClusterOptionsButton";
 import { Channel, ChannelCluster } from "../../../../types";
 import { RemoveChannelDialog } from "../RemoveChannelDialog";
 import { ChannelClusterMenu } from "../ChannelClusterMenu";
 import { AddChannelDialog } from "../AddChannelDialog";
-import { useAppDispatch } from "../../../../hooks";
 import { ChannelItem } from "../ChannelItem";
 import classes from "./ChannelClusterItem.module.css";
-import { useParams } from "react-router-dom";
 
 const ChannelClusterItem = ( { name, channels, id }: ChannelCluster ) => {
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -21,9 +17,6 @@ const ChannelClusterItem = ( { name, channels, id }: ChannelCluster ) => {
 	const [removableChannelIds, setRemovableChannelIds] = useState<string[]>([]);
 
 	const menuOpen = Boolean(anchorEl);
-
-	const dispatch = useAppDispatch();
-	const { serverId } = useParams();
 
 	const handleMenuOpen = ( event: MouseEvent<HTMLElement> ) => {
 		setAnchorEl(event.currentTarget);
@@ -54,8 +47,6 @@ const ChannelClusterItem = ( { name, channels, id }: ChannelCluster ) => {
 	};
 
 	const handleAddDialogClose = () => {
-		dispatch(fetchChannelClustersData(serverId));
-
 		setOpenAddDialog(false);
 		handleMenuClose();
 	};

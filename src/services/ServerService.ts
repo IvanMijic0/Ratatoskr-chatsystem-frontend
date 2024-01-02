@@ -79,8 +79,7 @@ const createServer = async ( formData: FormData ): Promise<void> => {
 
 const fetchServersSummary = async (): Promise<Server[]> => {
 	try {
-		const response = await axiosInstance.get('/server/summary');
-		return response.data;
+		return ( await axiosInstance.get('/server/summary') ).data;
 	} catch (error) {
 		console.error('Error fetching server summary data:', error);
 		throw error;
@@ -89,8 +88,7 @@ const fetchServersSummary = async (): Promise<Server[]> => {
 
 const fetchServerSummary = async ( serverId: string ): Promise<Server> => {
 	try {
-		const response = await axiosInstance.get(`/server/summary/${ serverId }`);
-		return response.data;
+		return ( await axiosInstance.get(`/server/summary/${ serverId }`) ).data;
 	} catch (error) {
 		console.error('Error fetching server summary data:', error);
 		throw error;
@@ -99,8 +97,7 @@ const fetchServerSummary = async ( serverId: string ): Promise<Server> => {
 
 const fetchChannelClusters = async ( serverId: string ): Promise<ChannelCluster[]> => {
 	try {
-		const response = await axiosInstance.get(`/server/channelClusters/${ serverId }`);
-		return response.data;
+		return ( await axiosInstance.get(`/server/channelClusters/${ serverId }`) ).data;
 	} catch (error) {
 		console.error("Error fetching channel clusters:", error);
 		throw error;

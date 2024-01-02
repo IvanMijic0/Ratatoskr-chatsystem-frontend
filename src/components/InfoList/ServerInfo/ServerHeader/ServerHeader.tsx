@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container, ListItem, ListItemText, MenuI
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, MouseEvent, useState } from "react";
 
-import { useCreateChannelCluster, useDeleteServer, useInput, useSnackBar } from "../../../../hooks";
+import { useCreateChannelCluster, useDeleteServer, useInput, useSnackbar } from "../../../../hooks";
 import { channelClusterTextField, errorChannelClusterTextField } from "../FormInputs";
 import { CustomButton, CustomDialog, CustomMenu } from "../../../UI";
 import { channelClusterNameRegex } from "../../../../regex";
@@ -15,7 +15,7 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 	const { mutate: mutateCreateChannelCluster, isLoading } = useCreateChannelCluster();
 	const { mutate: mutateDeleteServer } = useDeleteServer();
 	const channelClusterNameValidation = useInput(channelClusterNameRegex);
-	const { showSnackbar } = useSnackBar();
+	const { showSnackbar } = useSnackbar();
 
 	const { serverId } = useParams();
 	const navigate = useNavigate();

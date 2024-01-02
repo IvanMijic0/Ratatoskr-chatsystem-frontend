@@ -1,9 +1,9 @@
 import { Routes } from "./routes";
 import { Setup } from "./components/Setup";
-import { useSnackBar } from "./hooks";
+import { useSnackbar } from "./hooks";
 
 const App = () => {
-	const { SnackbarComponent } = useSnackBar();
+	const { SnackbarComponent } = useSnackbar();
 
 	return <>
 		{ SnackbarComponent }

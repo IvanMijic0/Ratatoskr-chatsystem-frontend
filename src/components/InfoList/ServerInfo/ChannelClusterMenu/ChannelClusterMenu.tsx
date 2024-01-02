@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { MenuItem } from "@mui/material";
 
-import { useDeleteChannelCluster, useSnackBar } from "../../../../hooks";
+import { useDeleteChannelCluster, useSnackbar } from "../../../../hooks";
 import { ChannelClusterMenuProps } from "../../../../types";
 import { CustomMenu } from "../../../UI";
 import classes from "./ChannelClusterMenu.module.css";
@@ -15,7 +15,7 @@ const ChannelClusterMenu
 			onClose,
 			clusterId
 		}: ChannelClusterMenuProps ) => {
-	const { showSnackbar } = useSnackBar();
+	const { showSnackbar } = useSnackbar();
 	const { mutate: mutateDeleteChannelCluster } = useDeleteChannelCluster();
 	const { serverId } = useParams();
 

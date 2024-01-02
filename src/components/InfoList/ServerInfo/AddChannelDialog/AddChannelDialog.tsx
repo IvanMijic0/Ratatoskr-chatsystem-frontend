@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FormEvent } from "react";
 
-import { useCreateChannel, useInput, useSnackBar } from "../../../../hooks";
+import { useCreateChannel, useInput, useSnackbar } from "../../../../hooks";
 import { channelTextField, errorChannelTextField } from "../FormInputs";
 import { AddChannelDialogProps } from "../../../../types";
 import { CustomButton, CustomDialog } from "../../../UI";
@@ -12,7 +12,7 @@ import classes from "./AddChannelDialog.module.css";
 const AddChannelDialog = ( { clusterId, open, onClose }: AddChannelDialogProps ) => {
 	const { mutate: mutateCreateChannel, isLoading } = useCreateChannel();
 	const channelNameValidation = useInput(channelNameRegex);
-	const { showSnackbar } = useSnackBar();
+	const { showSnackbar } = useSnackbar();
 	const { serverId } = useParams();
 
 	let dialogFormIsValid = false;

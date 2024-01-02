@@ -1,33 +1,29 @@
 import { axiosInstance } from "../configuration";
-import { UserInfo, UserServiceProps } from "../types";
+import { UserInfo } from "../types";
 
 const fetchUsers = async ( query: string ): Promise<UserInfo[]> => {
 	try {
-		const response = await axiosInstance.get(`/user/search?username=${ query }`);
-		return response.data;
+		return ( await axiosInstance.get(`/user/search?username=${ query }`) ).data;
 	} catch (error) {
 		console.error('Error fetching users:', error);
 		throw error;
 	}
 };
 
-const fetchUserFriends = async ( { setAllUsers, setFilteredUsers }: UserServiceProps ): Promise<void> => {
+const fetchUserFriends = async (): Promise<UserInfo[]> => {
 	try {
-		const { data } = await axiosInstance.get('/user/friends');
-		setAllUsers(data);
-		setFilteredUsers(data);
+		return ( await axiosInstance.get('/user/friends') ).data;
 	} catch (error) {
 		console.error('Error fetching user friends:', error);
 		throw error;
 	}
 };
 
-const fetchUserInformationForIds = async ( senderIds: string[] ): Promise<UserInfo[]> => {
+const fetchUserInformationForIds = async ( senderIds: ( string | undefined )[] ): Promise<UserInfo[]> => {
 	try {
 		return await Promise.all(
-			senderIds.map(async ( senderId ) => {
-				const response = await axiosInstance.get(`/user/${ senderId }`);
-				return response.data;
+			senderIds?.map(async ( senderId ) => {
+				return ( await axiosInstance.get(`/user/${ senderId }`) ).data;
 			})
 		);
 	} catch (error) {

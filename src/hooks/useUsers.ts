@@ -1,10 +1,10 @@
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
+
 import { UserService } from "../services";
 
-const useUsers = ( query: string ) => {
-	return useQuery(
-		['friend'],
-		() => UserService.fetchUsers(query),
+const useUsers = () => {
+	return useMutation(
+		( query: string ) => UserService.fetchUsers(query),
 	);
 };
 

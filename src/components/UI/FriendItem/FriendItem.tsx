@@ -6,14 +6,14 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { FC, useState } from "react";
 
 import webSocketService from "../../../services/WebSocketService.ts";
+import { useAppDispatch, useCreateFriendRequest } from "../../../hooks";
 import { FriendItemProps, Notification } from "../../../types";
-import { stringAvatar } from "../../../utils";
-import { NotificationType } from "../../../enums";
-import classes from "./FriendItem.module.css";
 import { axiosInstance } from "../../../configuration";
-import { useAppDispatch } from "../../../hooks";
 import { fetchNotificationData } from "../../../store";
+import { NotificationType } from "../../../enums";
+import { stringAvatar } from "../../../utils";
 import { CustomTooltip } from "../index.ts";
+import classes from "./FriendItem.module.css";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
@@ -27,6 +27,8 @@ const FriendItem: FC<FriendItemProps>
 		} ) => {
 
 	const [statusChangeText, setStatusChangeText] = useState('');
+
+	const { mutate: mutateCreateFriendRequest } = useCreateFriendRequest();
 
 	const dispatch = useAppDispatch();
 
@@ -87,10 +89,14 @@ const FriendItem: FC<FriendItemProps>
 			case 1: {
 				return <Box className={ classes['request-button-container'] }>
 					<IconButton className={ classes["approve-button"] } onClick={ confirmFriendRequestHandler }>
-						<CheckIcon className={ classes["approve-icon"] }/>
+						<CustomTooltip title="approve" placement="left-start">
+							<CheckIcon className={ classes["approve-icon"] }/>
+						</CustomTooltip>
 					</IconButton>
 					<IconButton className={ classes["clear-button"] } onClick={ clearFriendRequestHandler }>
-						<ClearIcon className={ classes["clear-icon"] }/>
+						<CustomTooltip title="decline" placement="right-start">
+							<ClearIcon className={ classes["clear-icon"] }/>
+						</CustomTooltip>
 					</IconButton>
 				</Box>;
 			}

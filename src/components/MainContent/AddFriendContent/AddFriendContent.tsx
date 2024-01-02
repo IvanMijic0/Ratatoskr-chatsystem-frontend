@@ -1,47 +1,45 @@
-import { FC, useEffect, useState } from "react";
-
-import _debounce from 'lodash.debounce';
+import { debounce, isEqual } from "lodash";
 import { Box } from "@mui/material";
-import { axiosInstance } from "../../../configuration";
-import { useAppSelector, useUsers } from "../../../hooks";
-import { selectUser } from "../../../store";
-import { InputChangeHandler, UserInfo } from "../../../types";
+import { FC, useState } from "react";
+
 import { CustomAutoComplete, FriendItem } from "../../UI";
-import classes from "./AddFriendContent.module.css";
+import { useAppSelector, useSnackbar, useUsers } from "../../../hooks";
+import { InputChangeHandler, UserInfo } from "../../../types";
+import { selectUser } from "../../../store";
 import { ActionType } from "../../../enums";
+import classes from "./AddFriendContent.module.css";
 
 const AddFriendContent: FC = () => {
 	const [filteredUsers, setFilteredUsers] = useState<UserInfo[]>([]);
 	const [inputValue, setInputValue] = useState('');
 
-	const { data: filteredUsersData } = useUsers('');
+	const { mutate: mutateFilterUsers } = useUsers();
 	const { _id, username } = useAppSelector(selectUser);
+	const { showSnackbar } = useSnackbar();
 
 	const fetchUsers = async ( query: string ) => {
-		try {
-			const response = await axiosInstance.get(`/user/search?username=${ query }`);
-			return response.data;
-		} catch (error) {
-			console.error("Error fetching users:", error);
-			return [];
-		}
+		mutateFilterUsers(query, {
+			onSuccess: data => {
+				if ( !isEqual(data, filteredUsers) ) {
+					setFilteredUsers(data);
+				}
+			},
+			onError: error => {
+				error instanceof Error && showSnackbar(error.message, 'error');
+			}
+		});
 	};
 
-	const debouncedFetchUsers = _debounce(async ( query: string ) => {
-		const users = await fetchUsers(query);
-		setFilteredUsers(users);
+	const debouncedFetchUsers = debounce(async ( query: string ) => {
+		await fetchUsers(query);
 	}, 300);
 
-	const handleInputChange: InputChangeHandler = ( e ) => {
-		setInputValue(e.target.value);
-		debouncedFetchUsers(e.target.value);
-	};
+	const handleInputChange: InputChangeHandler = async ( e ) => {
+		const inputValue = e.target.value;
 
-	useEffect(() => {
-		return () => {
-			debouncedFetchUsers.cancel();
-		};
-	}, []);
+		setInputValue(inputValue);
+		await debouncedFetchUsers(inputValue);
+	};
 
 	return <Box className={ classes["add-friend-container"] }>
 		<CustomAutoComplete
