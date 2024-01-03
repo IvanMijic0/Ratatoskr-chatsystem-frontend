@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
 import { AuthAction, NotificationAction, selectIsAuthenticated, selectUser, UserAction, } from "../../store";
+import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
 import { WSNotifications } from "../WSAbstractions";
+import { UnloadConfig } from "../../configuration";
 
 export const Setup = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -20,6 +21,7 @@ export const Setup = () => {
 	return <>
 		{ SnackbarComponent }
 		{ isAuthenticated && user && <WSNotifications/> }
+		{ isAuthenticated && user && <UnloadConfig/> }
 	</>;
 };
 

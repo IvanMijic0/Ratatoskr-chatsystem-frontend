@@ -2,23 +2,26 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 
-import { axiosInstance } from "../../configuration";
 import { AppThunk, Notification, RootState } from "../../types";
+import { NotificationService } from "../../services";
 
-const fetchNotificationData =
-	createAsyncThunk('notification/fetchNotificationData', async () => {
+const fetchNotificationData = createAsyncThunk(
+	'notifications/fetchNotificationData',
+	async () => {
 		try {
-			return ( await axiosInstance.get('/notifications') ).data;
+			return await NotificationService.getFriendNotification();
 		} catch (error) {
 			console.error('Error fetching notification data:', error);
+			throw error;
 		}
-	});
+	}
+);
+
 
 const clearNotificationData = (): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
 		try {
-			await axiosInstance.delete(`/notifications`);
-
+			await NotificationService.clearNotification();
 			dispatch(fetchNotificationData());
 		} catch (error) {
 			console.log("Could not clear friend request: ", error);
@@ -30,7 +33,7 @@ const clearNotificationData = (): AppThunk => {
 const postNotificationData = ( notification: Notification, friendId: string ): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
 		try {
-			await axiosInstance.post(`/notifications/${ friendId }`, notification);
+			await NotificationService.postUserNotification(friendId, notification);
 			dispatch(fetchNotificationData());
 		} catch (error) {
 			console.log("Could not post notification: ", error);

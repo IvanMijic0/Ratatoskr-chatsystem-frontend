@@ -4,10 +4,11 @@ type FriendItemProps = {
 	currentUserUsername?: string;
 	currentUserId?: string;
 	friendId?: string;
-	friendUsername: string;
+	friendUsername?: string;
 	friendAvatarIconUrl?: string;
 	actionType?: ActionType;
 	description?: string;
+	status?: string;
 }
 
 export default FriendItemProps;

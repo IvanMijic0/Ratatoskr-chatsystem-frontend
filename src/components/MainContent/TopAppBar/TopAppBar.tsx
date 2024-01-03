@@ -4,20 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { useAppSelector } from "../../../hooks";
-import { selectNotificatiosExists } from "../../../store";
-import { selectNotificationsLength } from "../../../store/slice/notification-slice.ts";
 import classes from "./TopAppBar.module.css";
+import { selectNotificationRequestData } from "../../../store/slice/notification-slice.ts";
 
 export const TopAppBar = () => {
 	const [invisible, setInvisible] = useState(false);
 
-	const notificationsExists = useAppSelector(selectNotificatiosExists);
-	const notificationsLength = useAppSelector(selectNotificationsLength);
+	const notificationRequestData = useAppSelector(selectNotificationRequestData);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		notificationsExists ? setInvisible(false) : setInvisible(true);
-	}, [notificationsExists]);
+		notificationRequestData.length > 0 ? setInvisible(false) : setInvisible(true);
+	}, [notificationRequestData.length]);
 
 	const onlineFriendsHandler = () => {
 		navigate("/home/online-friends");
@@ -59,7 +57,7 @@ export const TopAppBar = () => {
 						<Typography sx={ { textTransform: "none" } }>All</Typography>
 					</Button>
 					<Button className={ classes.option } onClick={ pendingFriendRequestsHandler }>
-						<Badge badgeContent={ notificationsLength } color="success" invisible={ invisible }>
+						<Badge badgeContent={ notificationRequestData.length } color="success" invisible={ invisible }>
 							<Typography sx={ { textTransform: "none" } }>Pending</Typography>
 						</Badge>
 					</Button>

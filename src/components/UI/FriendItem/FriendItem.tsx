@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, IconButton, Typography } from "@mui/material";
+import { Avatar, Badge, Box, Divider, IconButton, Typography } from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -6,13 +6,14 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { FC, useState } from "react";
 
 import { CustomTooltip, FriendMenuButton } from "../index.ts";
+import { NotificationAction, UserAction } from "../../../store";
 import { FriendItemProps, Notification } from "../../../types";
 import { webSocketService } from "../../../services";
-import { NotificationType } from "../../../enums";
-import { useAppDispatch } from "../../../hooks";
+import { NotificationType, UserStatus } from "../../../enums";
+import { useAppDispatch, useAppSelector, useSnackbar } from "../../../hooks";
 import { stringAvatar } from "../../../utils";
 import classes from "./FriendItem.module.css";
-import { NotificationAction, UserAction } from "../../../store";
+import { selectFriendStatusById } from "../../../store/slice/notification-slice.ts";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
@@ -24,10 +25,11 @@ const FriendItem: FC<FriendItemProps>
 			actionType,
 			description,
 		} ) => {
-
 	const [statusChangeText, setStatusChangeText] = useState('');
 
+	const { status } = useAppSelector(selectFriendStatusById(friendId!)) ?? {};
 	const dispatch = useAppDispatch();
+	const { showSnackbar } = useSnackbar();
 
 	const addFriendHandler = async () => {
 		const notification: Notification = {
@@ -47,11 +49,12 @@ const FriendItem: FC<FriendItemProps>
 		setStatusChangeText('sent');
 
 		// Do only if user is offline, fix later...
-		dispatch(NotificationAction.postNotificationData(notification, friendId!));
+		status === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 	};
 
 	const confirmFriendRequestHandler = async () => {
 		dispatch(UserAction.addFriend(friendId!));
+		showSnackbar("Friend added successfully!", "success");
 	};
 
 	const clearFriendRequestHandler = async () => {
@@ -89,7 +92,7 @@ const FriendItem: FC<FriendItemProps>
 							<ChatIcon className={ classes["friend-button-icon"] }/>
 						</CustomTooltip>
 					</IconButton>
-					<FriendMenuButton/>
+					<FriendMenuButton friendId={ friendId ?? '' }/>
 				</Box>;
 			}
 			default:
@@ -99,11 +102,14 @@ const FriendItem: FC<FriendItemProps>
 
 	return <>
 		<Box className={ classes["friend-button-container"] }>
-			<Avatar
-				{ ...stringAvatar(friendUsername) }
-				alt={ friendUsername }
-				src={ friendAvatarIconUrl }
-			/>
+			<Badge color={ status === UserStatus.ONLINE ? 'success' : 'error' } variant="dot">
+				<Avatar
+					{ ...stringAvatar(friendUsername ?? '') }
+					alt={ friendUsername }
+					src={ friendAvatarIconUrl }
+				/>
+			</Badge>
+
 			<Typography className={ classes["friend-username"] }>
 				{ `${ friendUsername } ${ description || '' }` }
 			</Typography>

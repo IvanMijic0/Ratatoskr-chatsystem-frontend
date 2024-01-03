@@ -1,43 +1,57 @@
-import { useCallback, useEffect } from "react";
+import { Fragment, useCallback, useEffect } from "react";
 
-import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
+import { useAppDispatch, useAppSelector, useCreateNotification, useSnackbar } from "../../hooks";
 import webSocketService from "../../services/WebSocketService.ts";
-import { NotificationAction, selectUser } from "../../store";
+import { selectUser, setUserStatus } from "../../store";
 import { Notification } from "../../types";
+import { NotificationType, UserStatus } from "../../enums";
 
 const WSNotifications = () => {
 	const { showSnackbar } = useSnackbar();
 
-	const { _id } = useAppSelector(selectUser);
+	const { _id, username } = useAppSelector(selectUser);
+	const { mutate: mutatePostNotification } = useCreateNotification();
 	const dispatch = useAppDispatch();
 
 	const onUserNotificationReceive = useCallback(async ( message: { body: string } ) => {
 		const body: Notification = JSON.parse(message.body);
 		showSnackbar(body.content, "info");
 
-		dispatch(NotificationAction.postNotificationData(body, body.receiverId!));
-	}, [dispatch, showSnackbar]);
+		//dispatch(NotificationAction.postNotificationData(body, body.receiverId!));
+	}, [showSnackbar]);
+
 
 	const onConnected = useCallback(() => {
 		console.log("WS Notifications connected successfully");
-		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
-	}, [_id, onUserNotificationReceive]);
 
-	const onError = () => {
-		console.error("Could not connect to WS Notifications. Please refresh this page and try again!");
-	};
+		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
+		webSocketService.send('/notifications/onlineStatus', {}, `${ _id }:${ username }:online`);
+
+		mutatePostNotification({
+			userId: _id,
+			notification: { notificationType: NotificationType.USER_STATUS_CHANGED, content: UserStatus.ONLINE }
+		});
+		dispatch(setUserStatus(UserStatus.ONLINE));
+	}, [_id, dispatch, mutatePostNotification, onUserNotificationReceive, username]);
+
+
 	useEffect(() => {
-		const timeoutId = setTimeout(() => {
-			webSocketService.connect(onConnected, onError);
-		}, 1000);
+		const establishConnection = async () => {
+			await webSocketService.connect(onConnected);
+		};
+
+		try {
+			establishConnection();
+		} catch (e) {
+			console.log(e);
+		}
 
 		return () => {
-			clearTimeout(timeoutId);
 			webSocketService.disconnect();
 		};
 	}, [onConnected]);
 
-	return <> </>;
+	return <Fragment/>;
 };
 
 export default WSNotifications;

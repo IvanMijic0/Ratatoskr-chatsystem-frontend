@@ -6,7 +6,6 @@ const useServers = () => {
 	return useQuery(
 		"servers",
 		() => ServerService.fetchServersSummary(),
-		{}
 	);
 };
 

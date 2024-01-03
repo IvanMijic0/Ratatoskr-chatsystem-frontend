@@ -2,11 +2,11 @@ import { useQuery } from "react-query";
 
 import { NotificationService } from "../services";
 
-const useFriendNotification = () => {
+const useNotification = () => {
 	return useQuery(
-		['friendNotification'],
+		['notification'],
 		() => NotificationService.getFriendNotification()
 	);
 };
 
-export default useFriendNotification;
+export default useNotification;

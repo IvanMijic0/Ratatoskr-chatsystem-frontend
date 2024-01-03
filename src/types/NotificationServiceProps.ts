@@ -1,5 +1,7 @@
+import Notification from './Notification';
+
 type NotificationServiceProps = {
-	friendId: string;
+	userId: string;
 	notification: Notification;
 }
 

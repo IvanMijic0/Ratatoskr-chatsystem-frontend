@@ -1,5 +1,5 @@
 import { axiosInstance } from "../configuration";
-import { NotificationServiceProps } from "../types";
+import { Notification, NotificationServiceProps } from "../types";
 
 const getFriendNotification = async () => {
 	try {
@@ -9,9 +9,17 @@ const getFriendNotification = async () => {
 	}
 };
 
-const sendFriendRequestNotification = async ( { friendId, notification }: NotificationServiceProps ): Promise<void> => {
+const getNotificationByUserIds = async ( userIds: string[] ) => {
 	try {
-		await axiosInstance.post(`/notifications/${ friendId }`, notification);
+		return ( await axiosInstance.post(`/notifications/usersStatus`, userIds) ).data;
+	} catch (error) {
+		console.error('Error fetching notification data:', error);
+	}
+};
+
+const sendFriendRequestNotification = async ( { userId, notification }: NotificationServiceProps ): Promise<void> => {
+	try {
+		await axiosInstance.post(`/notifications/${ userId }`, notification);
 	} catch (error) {
 		console.error('Error sending friend request notification:', error);
 		throw error;
@@ -27,4 +35,19 @@ const postUserNotification = async ( receiverId: string, body: Notification ): P
 	}
 };
 
-export default { getFriendNotification, sendFriendRequestNotification, postUserNotification };
+const clearNotification = async (): Promise<void> => {
+	try {
+		await axiosInstance.delete(`/notifications`);
+	} catch (error) {
+		console.log("Could not clear friend request: ", error);
+		throw error;
+	}
+};
+
+export default {
+	getFriendNotification,
+	sendFriendNotification: sendFriendRequestNotification,
+	postUserNotification,
+	getNotificationByUserIds,
+	clearNotification
+};

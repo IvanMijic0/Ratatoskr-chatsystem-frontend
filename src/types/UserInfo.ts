@@ -6,6 +6,7 @@ type UserInfo = {
 	lastName?: string;
 	fullName?: string;
 	email?: string;
+	status?: string;
 	avatarImageUrl?: string;
 	googleId?: string;
 	password?: string;

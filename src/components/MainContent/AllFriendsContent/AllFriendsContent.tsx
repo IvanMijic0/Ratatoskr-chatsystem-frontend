@@ -8,15 +8,16 @@ import { useFriends } from "../../../hooks";
 import classes from './AllFriendsContent.module.css';
 
 export const AllFriendsContent = () => {
-	const { data: friendsData, isSuccess } = useFriends();
+	const { data: friendsData, } = useFriends();
 
 	const [inputValue, setInputValue] = useState('');
 	const [filteredUsers, setFilteredUsers] =
 		useState<UserInfo[] | undefined>([]);
 
+
 	useEffect(() => {
-		isSuccess && setFilteredUsers(friendsData);
-	}, [friendsData, isSuccess]);
+		setFilteredUsers(friendsData);
+	}, [friendsData]);
 
 	const handleInputChange: InputChangeHandler = ( e ) => {
 		const inputValue = e.target.value.toLowerCase();
@@ -26,7 +27,7 @@ export const AllFriendsContent = () => {
 			inputValue === ''
 				? friendsData
 				: friendsData?.filter(( user ) =>
-					user.username.toLowerCase().includes(inputValue)
+					user?.username?.toLowerCase().includes(inputValue)
 				);
 
 		setFilteredUsers(filtered!);
@@ -41,7 +42,7 @@ export const AllFriendsContent = () => {
 			onInputChange={ handleInputChange }
 		/>
 		<Box className={ classes["friend-list-container"] }>
-			{ isSuccess && filteredUsers?.map(( filteredUser ) => (
+			{ friendsData && friendsData?.length > 0 && filteredUsers?.map(filteredUser =>
 				<FriendItem
 					key={ filteredUser._id }
 					friendId={ filteredUser._id }
@@ -49,7 +50,7 @@ export const AllFriendsContent = () => {
 					friendAvatarIconUrl={ filteredUser.avatarImageUrl }
 					actionType={ actionType.START_CONVO }
 				/>
-			)) }
+			) }
 		</Box>
 	</Box>;
 };

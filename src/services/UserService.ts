@@ -41,13 +41,28 @@ const confirmFriendRequest = async ( friendId: string ): Promise<void> => {
 	}
 };
 
-const clearFriendRequests = async (): Promise<void> => {
+const fetchUserSpecific = async () => {
 	try {
-		await axiosInstance.delete(`/notifications`);
+		return ( await axiosInstance.get(`/user/specific`) ).data;
 	} catch (error) {
-		console.log('Could not clear friend requests:', error);
+		console.error('Error fetching user specific data:', error);
+	}
+};
+
+const deleteFriend = async ( friendId: string ): Promise<void> => {
+	try {
+		await axiosInstance.delete(`/user/delete-friend/${ friendId }`);
+	} catch (error) {
+		console.log('Could not delete friend:', error);
 		throw error;
 	}
 };
 
-export default { fetchUsers, fetchUserFriends, fetchUserInformationForIds, confirmFriendRequest, clearFriendRequests };
+export default {
+	fetchUserInformationForIds,
+	confirmFriendRequest,
+	fetchUserSpecific,
+	fetchUserFriends,
+	deleteFriend,
+	fetchUsers
+};

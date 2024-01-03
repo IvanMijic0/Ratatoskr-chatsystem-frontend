@@ -1,17 +1,18 @@
-import { setIsAuthenticated, setTokens } from "../index.ts";
-import { axiosInstance } from "../../configuration";
 import { AppThunk, RootState, UserInfo } from "../../types";
+import { AuthService } from "../../services";
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from "redux";
-import axios from 'axios';
+import { setIsAuthenticated } from "../slice/auth-slice.ts";
 
 const validateTokenAsync = (): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
 		try {
-			await axiosInstance.post('/auth/validateToken');
+			await AuthService.validateToken();
 			dispatch(setIsAuthenticated(true));
 		} catch (error) {
 			dispatch(setIsAuthenticated(false));
+			console.error('Authentication Error:', error);
+			throw error;
 		}
 	};
 };
@@ -22,44 +23,19 @@ const setAuthData = (
 ): AppThunk => {
 	return async ( dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
 		try {
-			const {
-				data: { token, refreshToken },
-			} = await axios.post(
-				`http://localhost:8080/api/v1/auth/${ loginData != undefined ? 'login' : 'loginWithGoogle' }`,
-				loginData != undefined ? loginData : googleLoginData
-			);
-
-			dispatch(setTokens({ token, refreshToken }));
-
-			triggerReload();
-		} catch (error: any) {
+			await AuthService.setAuthData(loginData, googleLoginData, dispatch);
+		} catch (error) {
 			console.error('Authentication Error:', error);
-			const errorMessage = error.response?.data?.statusText || 'Authentication failed.';
-			throw new Error(errorMessage);
+			throw error;
 		}
 	};
 };
 
 const register = ( registerData: UserInfo ): AppThunk => {
 	return async () => {
-		try {
-			await axiosInstance.post('/auth/register', {
-				username: registerData.username,
-				email: registerData.email,
-				password: registerData.password
-			});
-
-			return Promise.resolve();
-		} catch (error: any) {
-			console.error('Registration Error:', error);
-			const errorMessage = error.response?.data?.statusText || 'Registration failed.';
-			return Promise.reject(errorMessage);
-		}
+		await AuthService.register(registerData);
 	};
 };
 
-const triggerReload = () => {
-	window.location.reload();
-};
 
 export default { validateTokenAsync, setAuthData, register };

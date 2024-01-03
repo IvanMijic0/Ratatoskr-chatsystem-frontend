@@ -5,13 +5,16 @@ export {
 } from "./slice/auth-slice.ts";
 
 export {
-	selectNotificationsData,
-	selectNotificationsError,
-	selectNotificationsStatus,
-	selectNotificatiosExists
+	selectNotificationData,
+	selectNotificationExists,
+	selectNotificationLength,
+	selectUserStatus,
+	selectFriendStatus,
+	setUserStatus,
+	setFriendStatus,
 } from "./slice/notification-slice.ts";
 
-export { setUser, selectUser, setLoading } from "./slice/user-slice.ts";
+export { setUser, selectUser } from "./slice/user-slice.ts";
 
 export { default as AuthAction } from "./action/auth-action.ts";
 

@@ -1,0 +1,24 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search {
+    margin-top: 1rem;
+    width: 90%;
+}
+
+.friend-list-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.info-text {
+    color: rgba(141, 141, 141, 0.7);
+    font-size: .8rem;
+    margin-left: 1rem;
+    margin-bottom: 1.5rem;
+}

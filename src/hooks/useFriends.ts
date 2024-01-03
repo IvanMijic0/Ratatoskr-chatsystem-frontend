@@ -5,7 +5,7 @@ import { UserService } from "../services";
 const useFriends = () => {
 	return useQuery(
 		['friends'],
-		() => UserService.fetchUserFriends()
+		() => UserService.fetchUserFriends(), {}
 	);
 };
 
