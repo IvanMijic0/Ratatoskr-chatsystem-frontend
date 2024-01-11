@@ -45,7 +45,7 @@ interface NFTStoreCardProps {
     };
 }
 
-function NFTStoreCard({ nft }: NFTStoreCardProps) {
+function NFTShopCard({ nft }: NFTStoreCardProps) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -110,4 +110,4 @@ function NFTStoreCard({ nft }: NFTStoreCardProps) {
     );
 }
 
-export default NFTStoreCard;
+export default NFTShopCard;
