@@ -18,11 +18,32 @@ interface NFTData {
 	attributes: NFTAttribute[];
 }
 
-
-
 function NFTShop() {
 	const [NFT, setNFTs] = useState<NFTData[]>([]);
+	const [contract, setContract] = useState<ethers.Contract | null>(null);
+	const [userAddress, setUserAddress] = useState<string>('');
+	useEffect(() => {
+		const initEthereum = async () => {
+			if (window.ethereum) {
+				try {
+					await window.ethereum.request({ method: 'eth_requestAccounts' });
+					const provider = new ethers.BrowserProvider(window.ethereum);
+					const signer = provider.getSigner();
+					const userAddress = await (await signer).getAddress();
+					const contract = new ethers.Contract(nftAddress, ABI, signer);
 
+					setUserAddress(userAddress);
+					setContract(contract);
+				} catch (error) {
+					console.error('Error initializing Ethereum:', error);
+				}
+			} else {
+				console.error('Ethereum object not found, please install MetaMask.');
+			}
+		};
+
+		initEthereum();
+	}, []);
 	useEffect(() => {
 		const fetchNFTs = async () => {
 			try {
@@ -40,6 +61,8 @@ function NFTShop() {
 					const contract = new ethers.Contract(nftAddress, ABI, signer);
 
 					const userAddress = await (await signer).getAddress();
+					console.log('userAddress', userAddress)
+
 					const nftTokenIds = await contract.getUserNFTs(userAddress);
 
 					const nftData = await Promise.all(nftTokenIds.map(async (tokenId: any | ethers.Overrides) => {
@@ -63,7 +86,7 @@ function NFTShop() {
 		<Box className={classes.background} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
 			<Grid container spacing={3} sx={{ textAlign: 'center' }}>
 				<Grid container={true} item={true} xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-					<AddNewNft />
+					<AddNewNft contract={contract} account={userAddress} />
 				</Grid>
 				<Grid container={true} item={true} xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
 					{NFT.map((nft, index) => (
