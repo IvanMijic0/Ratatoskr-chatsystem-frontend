@@ -4,6 +4,7 @@ import { AuthAction, NotificationAction, selectIsAuthenticated, selectUser, User
 import { useAppDispatch, useAppSelector, useSnackbar } from "../../hooks";
 import { WSNotifications } from "../WSAbstractions";
 import { UnloadConfig } from "../../configuration";
+import { CheckMetaMask } from "../CheckMetaMask";
 
 export const Setup = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -22,6 +23,7 @@ export const Setup = () => {
 		{ SnackbarComponent }
 		{ isAuthenticated && user && <WSNotifications/> }
 		{ isAuthenticated && user && <UnloadConfig/> }
+		{ isAuthenticated && user && <CheckMetaMask/> }
 	</>;
 };
 

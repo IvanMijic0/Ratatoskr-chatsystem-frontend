@@ -38,6 +38,24 @@ const setAuthData = async (
 	}
 };
 
+const metaMaskLogin = async ( metaMaskAddress: string, dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
+	try {
+		const {
+			data: { token, refreshToken },
+		} = await axios.post(
+			`http://localhost:8080/api/v1/auth/meta-mask-login/${ metaMaskAddress }`,
+		);
+
+		dispatch(setTokens({ token, refreshToken }));
+
+		triggerReload();
+	} catch (error: any) {
+		console.error('Authentication Error:', error);
+		const errorMessage = error.response?.data?.statusText || 'Authentication failed.';
+		throw new Error(errorMessage);
+	}
+};
+
 const register = async ( registerData: UserInfo ) => {
 	try {
 		await axiosInstance.post('/auth/register', {
@@ -58,4 +76,4 @@ const triggerReload = () => {
 	window.location.reload();
 };
 
-export default { validateToken, setAuthData, register };
+export default { validateToken, setAuthData, register, metaMaskLogin };

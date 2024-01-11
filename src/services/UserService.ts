@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { axiosInstance } from "../configuration";
 import { UserInfo } from "../types";
 
@@ -58,11 +60,32 @@ const deleteFriend = async ( friendId: string ): Promise<void> => {
 	}
 };
 
+const checkIfMetaMaskAddressExists = async ( metaMaskAddress: string ): Promise<boolean> => {
+	try {
+		return ( await axios.get(`http://localhost:8080/api/v1/user/exists/${ metaMaskAddress }`) ).data;
+	} catch (error) {
+		console.error('Error checking if MetaMask address exists:', error);
+		throw error;
+	}
+};
+
+const setMetaMaskAddress = async ( metaMaskAddress: string ): Promise<void> => {
+	try {
+		await axiosInstance.post(`/user/set-meta-mask?metaMaskAddress=${ metaMaskAddress }`);
+	} catch (error) {
+		console.error('Error setting MetaMask address:', error);
+		throw error;
+	}
+};
+
+
 export default {
 	fetchUserInformationForIds,
 	confirmFriendRequest,
 	fetchUserSpecific,
 	fetchUserFriends,
 	deleteFriend,
-	fetchUsers
+	fetchUsers,
+	checkIfMetaMaskAddressExists,
+	setMetaMaskAddress
 };
