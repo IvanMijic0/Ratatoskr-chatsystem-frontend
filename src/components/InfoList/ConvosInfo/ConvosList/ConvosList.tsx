@@ -10,8 +10,7 @@ const ConvosList = () => {
 	return <List
 		className={ classes["friends-list"] }
 		aria-labelledby="nested-list-subheader"
-		dense
-	>
+		dense>
 		<ConvoSearch/>
 		<Button
 			className={ classes["add-friend-button"] }
