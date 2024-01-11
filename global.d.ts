@@ -3,6 +3,8 @@ export {};
 declare global {
 	interface Window {
 		stompClient;
+		ethereum: any;
+		provider: any;
 	}
 }
 
