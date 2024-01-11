@@ -3,9 +3,15 @@ import PeopleIcon from '@mui/icons-material/People';
 
 import { ConvoSearch } from "../ConvoSearch";
 import classes from "./ConvosList.module.css";
+import { useNavigate } from "react-router-dom";
 
 const ConvosList = () => {
 	const friendData = [];
+	const navigate = useNavigate();
+
+	const friendsButtonHandler = () => {
+		navigate('/home/online-friends');
+	};
 
 	return <List
 		className={ classes["friends-list"] }
@@ -16,7 +22,8 @@ const ConvosList = () => {
 			className={ classes["add-friend-button"] }
 			variant="text"
 			sx={ { textTransform: "none" } }
-			startIcon={ <PeopleIcon className={ classes["add-friend-icon"] }/> }>
+			startIcon={ <PeopleIcon className={ classes["add-friend-icon"] }/> }
+			onClick={ friendsButtonHandler }>
 			Friends
 		</Button>
 		<Divider className={ classes.divider } variant="middle" flexItem/>

@@ -6,13 +6,13 @@ import classes from "../ServersList/ServersList.module.css";
 
 const HomeServerButton = () => {
 	const location = useLocation();
-	const currentUrl = location.pathname.slice(1);
-	const isSelected = currentUrl === "home";
+	const currentUrl = location.pathname;
+	const isSelected = currentUrl.startsWith("/home");
 
 	const navigate = useNavigate();
 
 	const handleClick = () => {
-		navigate("/home");
+		navigate("/home/online-friends");
 	};
 
 	return (

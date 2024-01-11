@@ -1,4 +1,5 @@
 export { default as useGetNotificationByUserIds } from "./useGetNotificationByUserIds.ts";
+export { default as useCreateUserNotification } from "./useCreateUserNotification.ts";
 export { default as useCreateChannelCluster } from "./useCreateChannelCluster.ts";
 export { default as useDeleteChannelCluster } from "./useDeleteChannelCluster.ts";
 export { default as useCreateNotification } from "./useCreateNotification.ts";

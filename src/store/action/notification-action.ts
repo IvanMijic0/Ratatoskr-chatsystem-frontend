@@ -9,7 +9,7 @@ const fetchNotificationData = createAsyncThunk(
 	'notifications/fetchNotificationData',
 	async () => {
 		try {
-			return await NotificationService.getFriendNotification();
+			return await NotificationService.getUserNotification();
 		} catch (error) {
 			console.error('Error fetching notification data:', error);
 			throw error;

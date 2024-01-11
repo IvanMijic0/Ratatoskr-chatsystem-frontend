@@ -9,7 +9,6 @@ class WebSocketService {
 	constructor( private serverUrl: string ) {
 	}
 
-
 	connect( onConnect: () => void = () => {
 	}, onError: () => void = () => {
 	} ): Promise<void> {
@@ -50,6 +49,7 @@ class WebSocketService {
 
 	public subscribe( channel: string, callback: ( message: Stomp.Message ) => void ): void {
 		if ( this.stompClient && this.stompClient.connected ) {
+			console.log('Subscribing to channel:', channel);
 			this.stompClient.subscribe(channel, callback);
 		}
 	}

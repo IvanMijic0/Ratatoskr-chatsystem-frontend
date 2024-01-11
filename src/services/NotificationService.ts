@@ -1,7 +1,7 @@
 import { axiosInstance } from "../configuration";
 import { Notification, NotificationServiceProps } from "../types";
 
-const getFriendNotification = async () => {
+const getUserNotification = async () => {
 	try {
 		return ( await axiosInstance.get('/notifications') ).data;
 	} catch (error) {
@@ -26,6 +26,15 @@ const sendFriendRequestNotification = async ( { userId, notification }: Notifica
 	}
 };
 
+const saveUserNotification = async ( body: Notification ): Promise<void> => {
+	try {
+		await axiosInstance.post(`/notifications`, body);
+	} catch (error) {
+		console.error('Error posting user notification:', error);
+		throw error;
+	}
+};
+
 const postUserNotification = async ( receiverId: string, body: Notification ): Promise<void> => {
 	try {
 		await axiosInstance.post(`/notifications/${ receiverId }`, body);
@@ -45,9 +54,10 @@ const clearNotification = async (): Promise<void> => {
 };
 
 export default {
-	getFriendNotification,
-	sendFriendNotification: sendFriendRequestNotification,
+	getUserNotification,
+	sendFriendRequestNotification,
 	postUserNotification,
 	getNotificationByUserIds,
+	saveUserNotification,
 	clearNotification
 };

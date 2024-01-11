@@ -17,7 +17,7 @@ const Routes = () => {
 	const routerConfig: RouteObject[] = [
 		{
 			path: '/guest',
-			element: isAuthenticated ? <Navigate to="/home"/> : <Guest/>,
+			element: isAuthenticated ? <Navigate to="/home/add-friend"/> : <Guest/>,
 			index: true,
 		},
 		{

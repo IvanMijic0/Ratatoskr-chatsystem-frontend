@@ -10,10 +10,9 @@ import { NotificationAction, UserAction } from "../../../store";
 import { FriendItemProps, Notification } from "../../../types";
 import { webSocketService } from "../../../services";
 import { NotificationType, UserStatus } from "../../../enums";
-import { useAppDispatch, useAppSelector, useSnackbar } from "../../../hooks";
+import { useAppDispatch, useSnackbar } from "../../../hooks";
 import { stringAvatar } from "../../../utils";
 import classes from "./FriendItem.module.css";
-import { selectFriendStatusById } from "../../../store/slice/notification-slice.ts";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
@@ -24,10 +23,10 @@ const FriendItem: FC<FriendItemProps>
 			friendAvatarIconUrl,
 			actionType,
 			description,
+			status: friendStatus
 		} ) => {
 	const [statusChangeText, setStatusChangeText] = useState('');
 
-	const { status } = useAppSelector(selectFriendStatusById(friendId!)) ?? {};
 	const dispatch = useAppDispatch();
 	const { showSnackbar } = useSnackbar();
 
@@ -48,8 +47,7 @@ const FriendItem: FC<FriendItemProps>
 
 		setStatusChangeText('sent');
 
-		// Do only if user is offline, fix later...
-		status === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
+		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 	};
 
 	const confirmFriendRequestHandler = async () => {
@@ -102,7 +100,10 @@ const FriendItem: FC<FriendItemProps>
 
 	return <>
 		<Box className={ classes["friend-button-container"] }>
-			<Badge color={ status === UserStatus.ONLINE ? 'success' : 'error' } variant="dot">
+			<Badge
+				color={ friendStatus ? "success" : "error" }
+				variant="dot"
+				invisible={ friendStatus !== UserStatus.ONLINE }>
 				<Avatar
 					{ ...stringAvatar(friendUsername ?? '') }
 					alt={ friendUsername }

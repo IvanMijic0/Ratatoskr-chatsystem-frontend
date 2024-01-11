@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
+import { Notification } from "../types";
 
 import { NotificationService } from "../services";
-import { NotificationServiceProps } from "../types";
 
-const UseCreateNotification = () => {
+const UseCreateUserNotification = () => {
 	const queryClient = useQueryClient();
 	return useMutation(
-		( { userId, notification }: NotificationServiceProps ) =>
-			NotificationService.sendFriendRequestNotification({ userId, notification }), {
+		( notification: Notification ) =>
+			NotificationService.saveUserNotification(notification), {
 			onSuccess: async () => {
 				try {
 					await queryClient.invalidateQueries(["notification"]);
@@ -20,4 +20,4 @@ const UseCreateNotification = () => {
 	);
 };
 
-export default UseCreateNotification;
+export default UseCreateUserNotification;

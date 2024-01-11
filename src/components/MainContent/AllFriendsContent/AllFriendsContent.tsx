@@ -49,6 +49,7 @@ export const AllFriendsContent = () => {
 					friendUsername={ filteredUser.username }
 					friendAvatarIconUrl={ filteredUser.avatarImageUrl }
 					actionType={ actionType.START_CONVO }
+					status={ filteredUser.status }
 				/>
 			) }
 		</Box>

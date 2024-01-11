@@ -21,10 +21,7 @@ const notificationSlice = createSlice({
 			state,
 			action: { payload: { id: string; username: string; status: string } }
 		) => {
-			const convertedStatus =
-				action.payload.status === "online"
-					? UserStatus.ONLINE
-					: UserStatus.OFFLINE;
+			const convertedStatus = action.payload.status.toUpperCase() as UserStatus;
 
 			const updatedStatus = {
 				id: action.payload.id,
@@ -35,7 +32,7 @@ const notificationSlice = createSlice({
 			state.friendStatus = state.friendStatus || [];
 
 			const existingFriendIndex = state.friendStatus.findIndex(
-				( friend ) => friend.id === action.payload.id
+				friend => friend.id === action.payload.id
 			);
 
 			if ( existingFriendIndex !== -1 ) {
