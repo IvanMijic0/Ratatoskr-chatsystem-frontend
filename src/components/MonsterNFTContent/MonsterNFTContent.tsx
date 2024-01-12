@@ -57,6 +57,10 @@ export const MonsterNFTContent = ( { monsterData }: { monsterData: any } ) => {
 
 					<Box className={ classes.content }>
 						<Typography>{ monsterData[currentIndex].name }</Typography>
+
+						<Typography
+							className={ classes.desc }>{ monsterData[currentIndex].description }</Typography>
+
 						{ monsterData[currentIndex].attributes && (
 							<ul>
 								{ monsterData[currentIndex].attributes.type && (
@@ -74,7 +78,6 @@ export const MonsterNFTContent = ( { monsterData }: { monsterData: any } ) => {
 								<li>HP: { monsterData[currentIndex].attributes.hp }</li>
 								<li>Attack: { monsterData[currentIndex].attributes.attack }</li>
 								<li>Defense: { monsterData[currentIndex].attributes.defense }</li>
-								<li>Special Ability: { monsterData[currentIndex].attributes.specialAbility }</li>
 								<li>Generation: { monsterData[currentIndex].attributes.generation }</li>
 							</ul>
 						) }
