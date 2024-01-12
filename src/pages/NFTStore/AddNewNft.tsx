@@ -31,8 +31,8 @@ const initialAttributes: Attribute[] = [
 const style = {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center', // выравнивание элементов по центру по горизонтали
-    justifyContent: 'center', // выравнивание элементов по центру по вертикали
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -42,7 +42,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-    overflowY: 'auto' // в случае, если содержимое будет больше высоты экрана
+    overflowY: 'auto'
 };
 
 
@@ -95,7 +95,7 @@ const AddNewNft: React.FC<Props> = ({ contract, account, handleClose }) => {
         });
         console.log('pinJSONToIPFS response', response)
 
-        return response.data.IpfsHash; // This is the CID of the metadata
+        return response.data.IpfsHash;
     };
 
     const mintNFT = async (imgCID: string, numberOfMonsterTokens: number) => {
@@ -109,12 +109,11 @@ const AddNewNft: React.FC<Props> = ({ contract, account, handleClose }) => {
             name,
             description,
             `ipfs://${imgCID}`,
-            formattedAttributes, // Use the formatted attributes here
-            numberOfMonsterTokens, // Additional parameter
+            formattedAttributes,
+            numberOfMonsterTokens,
             { from: currentAccount }
         );
 
-        // Wait for the transaction to be mined
         await transaction.wait();
     };
 
@@ -198,7 +197,7 @@ const AddNewNft: React.FC<Props> = ({ contract, account, handleClose }) => {
                             value={attribute.value.toString()}
                             onChange={(e) => handleAttributeChange(index, e.target.value)}
                             required
-                            sx={{flexBasis: 'calc(50% - 20px)'}} // Adjust basis to allocate space for two columns
+                            sx={{flexBasis: 'calc(50% - 20px)'}}
                         />
                     ))}
                     <TextField

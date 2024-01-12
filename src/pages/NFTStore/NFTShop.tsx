@@ -23,11 +23,10 @@ const style = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: 400, // Adjust the width as needed
+	width: 400,
 	bgcolor: 'background.paper',
 	boxShadow: 24,
 	p: 4,
-	// Add more styling here as needed
 };
 
 
@@ -51,7 +50,7 @@ function NFTShop() {
 					await provider.send('eth_requestAccounts', []);
 					const signer = provider.getSigner();
 					const userAddress = await (await signer).getAddress();
-					console.log(ABI); // Add this line to check if ABI is an array
+					console.log(ABI);
 					const contract = new ethers.Contract(nftAddress.nftAddress, ABI, await signer);
 					const tokenContract = new ethers.Contract(monsterTokenAddress.monsterTokenAddress, monsterTokenABI, await signer);
 
@@ -75,10 +74,23 @@ function NFTShop() {
 				if (contract) {
 					const rawNFTData = await contract.getAllTokenMetadata();
 					console.log('Raw NFT Data:', rawNFTData);
-					const formattedNFTData = rawNFTData.map((nft: { name: any; description: any; price: any; image: any; type: any; element: any; rarity: any; level: any; hp: any; attack: any; defense: any; specialAbility: any; generation: any; owner: any; }) => {
-						const attributesArray = nft[5];
+
+					const hasNonEmptyValues = (nft) => {
+						if (nft.name || nft.description || nft.image) {
+							return true;
+						}
+
+						if (Array.isArray(nft.attributes) && nft.attributes.length > 0) {
+							return true;
+						}
+						return false;
+					};
+					const formattedNFTData = rawNFTData
+						.filter(nft => hasNonEmptyValues(nft))
+						.map((nft: { name: any; description: any; price: any; image: any; type: any; element: any; rarity: any; level: any; hp: any; attack: any; defense: any; specialAbility: any; generation: any; owner: any; }) => {
+						const attributesArray = nft[3];
 						return {
-							id: typeof nft[0] === 'string' && nft[0].endsWith('n') ? Number(nft[0]) : Number(nft[0]),
+							// id: typeof nft[0] === 'string' && nft[0].endsWith('n') ? Number(nft[0]) : Number(nft[0]),
 							name: nft.name,
 							description: nft.description,
 							image: nft.image,
@@ -86,7 +98,7 @@ function NFTShop() {
 								trait_type: attr[0],
 								value: attr[1]
 							})),
-							price: typeof nft[3] === 'string' && nft[3].endsWith('n') ? Number(nft[3]) : Number(nft[3]), // Convert price to integer
+							// price: typeof nft[3] === 'string' && nft[3].endsWith('n') ? Number(nft[3]) : Number(nft[3]),
 						};
 					});
 					console.log('Formatted NFT Data:', formattedNFTData)
