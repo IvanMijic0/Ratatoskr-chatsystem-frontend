@@ -1,13 +1,13 @@
 import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-import classes from "./DescriptionPane.module.css";
 import { MonsterNFTContent } from "../MonsterNFTContent";
 import { CustomButton, CustomCircularProgressBar, CustomTooltip } from "../UI";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { ABI, nftAddress } from "../../pages/NFTStore/utils";
+import classes from "./DescriptionPane.module.css";
 
 export const DescriptionPane = () => {
 	const navigate = useNavigate();
@@ -61,10 +61,6 @@ export const DescriptionPane = () => {
 		navigate("/nft-store");
 	};
 
-	const sellButtonHandler = () => {
-		console.log("Sell button clicked.");
-	};
-
 	const refreshButtonHandler = async () => {
 		if ( window.signer ) {
 			await fetchData();
@@ -107,15 +103,7 @@ export const DescriptionPane = () => {
 						<CustomButton onClick={ storeButtonHandler }>Store</CustomButton>
 					</Box>
 				</CustomTooltip>
-				{
-					monsterData.length === 0
-						? null
-						: <CustomTooltip title="Sell Monster.">
-							<Box className={ classes.actions }>
-								<CustomButton onClick={ sellButtonHandler }>Sell</CustomButton>
-							</Box>
-						</CustomTooltip>
-				}
+
 				<CustomTooltip title="Refetch Monster Data.">
 					<Box className={ classes.actions }>
 						<CustomButton onClick={ refreshButtonHandler }>
