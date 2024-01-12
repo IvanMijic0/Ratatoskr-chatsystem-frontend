@@ -9,10 +9,22 @@ import { ethers } from "ethers";
 import { ABI, nftAddress } from "../../pages/NFTStore/utils";
 import classes from "./DescriptionPane.module.css";
 
+// Put them in types later
+
+type MonsterAttribute = {
+	[key: string]: string;
+}
+
+type Monster = {
+	name: string;
+	description: string;
+	image: string;
+	attributes: MonsterAttribute;
+}
+
 export const DescriptionPane = () => {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
-
 	const [monsterData, setMonsterData] = useState<any[]>([]);
 
 	const fetchData = async () => {
@@ -20,26 +32,18 @@ export const DescriptionPane = () => {
 			setIsLoading(true);
 
 			const contract = new ethers.Contract(nftAddress, ABI, window.signer);
-			const res = await contract.getAllTokenMetadata();
-			console.log(res);
+			const res: [string, string, string, [string, string][]][] = await contract.getUserNFTs(
+				window.signer.getAddress()
+			);
 
-			const monstersMetadata = res.map(( result: any ) => ( {
-				name: result[0],
-				description: result[1],
-				tokenId: result[2],
-				image: result[3],
-				attributes: {
-					type: result[4][0][1],
-					element: result[4][1][1],
-					rarity: result[4][2][1],
-					level: result[4][3][1],
-					hp: result[4][4][1],
-					attack: result[4][5][1],
-					defense: result[4][6][1],
-					specialAbility: result[4][7][1],
-					generation: result[4][8][1],
-					owner: result[4][9][1],
-				},
+			const monstersMetadata: Monster[] = res.map(( [name, description, image, attributes] ) => ( {
+				name,
+				description,
+				image,
+				attributes: attributes.reduce(( acc, [key, value] ) => {
+					acc[key.toLowerCase()] = value;
+					return acc;
+				}, {} as MonsterAttribute),
 			} ));
 
 			setMonsterData(monstersMetadata);

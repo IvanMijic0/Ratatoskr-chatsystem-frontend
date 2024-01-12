@@ -1,9 +1,5 @@
 const ABI = [{
-	"inputs": [{
-		"internalType": "address",
-		"name": "initialOwner",
-		"type": "address"
-	}, { "internalType": "address", "name": "_monsterTokenAddress", "type": "address" }],
+	"inputs": [{ "internalType": "address", "name": "initialOwner", "type": "address" }],
 	"stateMutability": "nonpayable",
 	"type": "constructor"
 }, {
@@ -100,13 +96,75 @@ const ABI = [{
 			"name": "value",
 			"type": "string"
 		}], "indexed": false, "internalType": "struct MonsterNFT.Trait[]", "name": "attributes", "type": "tuple[]"
-	}, { "indexed": false, "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+	}],
 	"name": "MetadataSet",
 	"type": "event"
 }, {
 	"anonymous": false,
 	"inputs": [{ "indexed": false, "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
 	"name": "MetadataUpdate",
+	"type": "event"
+}, {
+	"anonymous": false,
+	"inputs": [{ "indexed": true, "internalType": "address", "name": "buyer", "type": "address" }, {
+		"indexed": false,
+		"internalType": "uint256",
+		"name": "tokenId",
+		"type": "uint256"
+	}, { "indexed": false, "internalType": "string", "name": "name", "type": "string" }, {
+		"indexed": false,
+		"internalType": "string",
+		"name": "description",
+		"type": "string"
+	}, {
+		"indexed": false,
+		"internalType": "string",
+		"name": "image",
+		"type": "string"
+	}, {
+		"components": [{ "internalType": "string", "name": "traitType", "type": "string" }, {
+			"internalType": "string",
+			"name": "value",
+			"type": "string"
+		}], "indexed": false, "internalType": "struct MonsterNFT.Trait[]", "name": "attributes", "type": "tuple[]"
+	}],
+	"name": "NFTMinted",
+	"type": "event"
+}, {
+	"anonymous": false,
+	"inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, {
+		"indexed": true,
+		"internalType": "address",
+		"name": "to",
+		"type": "address"
+	}, { "indexed": false, "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+	"name": "NFTTransferred",
+	"type": "event"
+}, {
+	"anonymous": false,
+	"inputs": [{
+		"indexed": false,
+		"internalType": "uint256",
+		"name": "tokenId",
+		"type": "uint256"
+	}, { "indexed": false, "internalType": "string", "name": "name", "type": "string" }, {
+		"indexed": false,
+		"internalType": "string",
+		"name": "description",
+		"type": "string"
+	}, {
+		"indexed": false,
+		"internalType": "string",
+		"name": "image",
+		"type": "string"
+	}, {
+		"components": [{ "internalType": "string", "name": "traitType", "type": "string" }, {
+			"internalType": "string",
+			"name": "value",
+			"type": "string"
+		}], "indexed": false, "internalType": "struct MonsterNFT.Trait[]", "name": "attributes", "type": "tuple[]"
+	}],
+	"name": "NFTUpdated",
 	"type": "event"
 }, {
 	"anonymous": false,
@@ -155,10 +213,10 @@ const ABI = [{
 			"name": "name",
 			"type": "string"
 		}, { "internalType": "string", "name": "description", "type": "string" }, {
-			"internalType": "uint256",
-			"name": "numberOfMonsterTokens",
-			"type": "uint256"
-		}, { "internalType": "string", "name": "image", "type": "string" }, {
+			"internalType": "string",
+			"name": "image",
+			"type": "string"
+		}, {
 			"components": [{
 				"internalType": "string",
 				"name": "traitType",
@@ -167,7 +225,10 @@ const ABI = [{
 			"internalType": "struct MonsterNFT.Trait[]",
 			"name": "attributes",
 			"type": "tuple[]"
-		}], "internalType": "struct MonsterNFT.NftMetadata[]", "name": "", "type": "tuple[]"
+		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		"internalType": "struct MonsterNFT.NftMetadata[]",
+		"name": "",
+		"type": "tuple[]"
 	}],
 	"stateMutability": "view",
 	"type": "function"
@@ -192,10 +253,10 @@ const ABI = [{
 			"name": "name",
 			"type": "string"
 		}, { "internalType": "string", "name": "description", "type": "string" }, {
-			"internalType": "uint256",
-			"name": "numberOfMonsterTokens",
-			"type": "uint256"
-		}, { "internalType": "string", "name": "image", "type": "string" }, {
+			"internalType": "string",
+			"name": "image",
+			"type": "string"
+		}, {
 			"components": [{
 				"internalType": "string",
 				"name": "traitType",
@@ -204,7 +265,10 @@ const ABI = [{
 			"internalType": "struct MonsterNFT.Trait[]",
 			"name": "attributes",
 			"type": "tuple[]"
-		}], "internalType": "struct MonsterNFT.NftMetadata", "name": "", "type": "tuple"
+		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		"internalType": "struct MonsterNFT.NftMetadata",
+		"name": "",
+		"type": "tuple"
 	}],
 	"stateMutability": "view",
 	"type": "function"
@@ -231,7 +295,29 @@ const ABI = [{
 }, {
 	"inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
 	"name": "getUserNFTs",
-	"outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }],
+	"outputs": [{
+		"components": [{
+			"internalType": "string",
+			"name": "name",
+			"type": "string"
+		}, { "internalType": "string", "name": "description", "type": "string" }, {
+			"internalType": "string",
+			"name": "image",
+			"type": "string"
+		}, {
+			"components": [{
+				"internalType": "string",
+				"name": "traitType",
+				"type": "string"
+			}, { "internalType": "string", "name": "value", "type": "string" }],
+			"internalType": "struct MonsterNFT.Trait[]",
+			"name": "attributes",
+			"type": "tuple[]"
+		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		"internalType": "struct MonsterNFT.NftMetadata[]",
+		"name": "",
+		"type": "tuple[]"
+	}],
 	"stateMutability": "view",
 	"type": "function"
 }, {
@@ -265,17 +351,7 @@ const ABI = [{
 			"name": "value",
 			"type": "string"
 		}], "internalType": "struct MonsterNFT.Trait[]", "name": "_monsterAttributes", "type": "tuple[]"
-	}, { "internalType": "uint256", "name": "_numberOfMonsterTokens", "type": "uint256" }],
-	"name": "mintNFT",
-	"outputs": [],
-	"stateMutability": "nonpayable",
-	"type": "function"
-}, {
-	"inputs": [],
-	"name": "monsterTokenContract",
-	"outputs": [{ "internalType": "contract MonsterToken", "name": "", "type": "address" }],
-	"stateMutability": "view",
-	"type": "function"
+	}], "name": "mintNFT", "outputs": [], "stateMutability": "nonpayable", "type": "function"
 }, {
 	"inputs": [],
 	"name": "name",
@@ -361,15 +437,11 @@ const ABI = [{
 	"stateMutability": "nonpayable",
 	"type": "function"
 }, {
-	"inputs": [{ "internalType": "address", "name": "_buyer", "type": "address" }, {
+	"inputs": [{ "internalType": "address payable", "name": "_buyer", "type": "address" }, {
 		"internalType": "uint256",
 		"name": "_tokenId",
 		"type": "uint256"
-	}, { "internalType": "uint256", "name": "_numberOfMonsterTokens", "type": "uint256" }],
-	"name": "transferNFTWithMonsterTokens",
-	"outputs": [],
-	"stateMutability": "nonpayable",
-	"type": "function"
+	}], "name": "transferNFTWithEther", "outputs": [], "stateMutability": "payable", "type": "function"
 }, {
 	"inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
 	"name": "transferOwnership",
@@ -391,10 +463,7 @@ const ABI = [{
 			"name": "value",
 			"type": "string"
 		}], "internalType": "struct MonsterNFT.Trait[]", "name": "_monsterAttributes", "type": "tuple[]"
-	}, { "internalType": "uint256", "name": "_numberOfMonsterTokens", "type": "uint256" }],
-	"name": "updateTokenMetadata",
-	"outputs": [],
-	"stateMutability": "nonpayable",
-	"type": "function"
+	}], "name": "updateTokenMetadata", "outputs": [], "stateMutability": "nonpayable", "type": "function"
 }];
+
 export default ABI;
