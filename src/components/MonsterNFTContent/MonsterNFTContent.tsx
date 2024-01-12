@@ -1,58 +1,18 @@
-import { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { ABI, nftAddress } from "../../pages/NFTStore/utils";
-
-import classes from "./MonsterNFTContent.module.css";
+import { useState } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
+
 import { CustomTooltip } from "../UI";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import classes from "./MonsterNFTContent.module.css";
 
-export const MonsterNFTContent = () => {
-	const [monsterData, setMonsterData] = useState<any[]>([]);
+export const MonsterNFTContent = ( { monsterData }: { monsterData: any } ) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
 	const convertIpfsUriToUrl = ( ipfsUri: string ) => {
 		const gatewayPrefix = "https://ipfs.io/ipfs/";
 		return ipfsUri.replace(/^ipfs:\/\//, gatewayPrefix);
 	};
-
-	const fetchData = async () => {
-		try {
-			const contract = new ethers.Contract(nftAddress, ABI, window.signer);
-			const res = await contract.getAllTokenMetadata();
-			console.log(res);
-
-			const monstersMetadata = res.map(( result: any ) => ( {
-				name: result[0],
-				description: result[1],
-				tokenId: result[2],
-				image: result[3],
-				attributes: {
-					type: result[4][0][1],
-					element: result[4][1][1],
-					rarity: result[4][2][1],
-					level: result[4][3][1],
-					hp: result[4][4][1],
-					attack: result[4][5][1],
-					defense: result[4][6][1],
-					specialAbility: result[4][7][1],
-					generation: result[4][8][1],
-					owner: result[4][9][1],
-				},
-			} ));
-
-			setMonsterData(monstersMetadata);
-		} catch (error) {
-			console.error("Error fetching monsters data:", error);
-		}
-	};
-
-	useEffect(() => {
-		if ( window.signer ) {
-			fetchData().then(() => console.log("Fetched data"));
-		}
-	}, [monsterData.length]);
 
 	const handleNext = () => {
 		setCurrentIndex(prevIndex =>
@@ -76,8 +36,7 @@ export const MonsterNFTContent = () => {
 
 					<CustomTooltip
 						title={ monsterData[currentIndex].description }
-						placement="top"
-					>
+						placement="top">
 						{ monsterData[currentIndex].image && (
 							<img
 								className={ classes.image }
