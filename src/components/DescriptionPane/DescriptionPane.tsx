@@ -92,19 +92,31 @@ export const DescriptionPane = () => {
 			</Box>
 			: <>
 				<Box className={ classes['content-container'] }>
-					<MonsterNFTContent monsterData={ monsterData }/>
+					<Typography className={ classes.title } variant="h4">
+						Your Monsters
+					</Typography>
+					{
+						monsterData.length === 0
+							? <Typography className={ classes['no-monster'] }>No Monster Data found, maybe try
+								refetching?</Typography>
+							: <MonsterNFTContent monsterData={ monsterData }/>
+					}
 				</Box>
 				<CustomTooltip title="Go to NFT store." placement="top">
 					<Box className={ classes.actions }>
 						<CustomButton onClick={ storeButtonHandler }>Store</CustomButton>
 					</Box>
 				</CustomTooltip>
-				<CustomTooltip title="Sell Monster.">
-					<Box className={ classes.actions }>
-						<CustomButton onClick={ sellButtonHandler }>Sell</CustomButton>
-					</Box>
-				</CustomTooltip>
-				<CustomTooltip title="Sell Monster.">
+				{
+					monsterData.length === 0
+						? null
+						: <CustomTooltip title="Sell Monster.">
+							<Box className={ classes.actions }>
+								<CustomButton onClick={ sellButtonHandler }>Sell</CustomButton>
+							</Box>
+						</CustomTooltip>
+				}
+				<CustomTooltip title="Refetch Monster Data.">
 					<Box className={ classes.actions }>
 						<CustomButton onClick={ refreshButtonHandler }>
 							<RefreshIcon/>

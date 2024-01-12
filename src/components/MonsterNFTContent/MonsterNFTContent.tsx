@@ -28,9 +28,7 @@ export const MonsterNFTContent = ( { monsterData }: { monsterData: any } ) => {
 
 	return (
 		<Box>
-			<Typography className={ classes.title } variant="h4">
-				Your Monsters
-			</Typography>
+
 			{ monsterData.length > 0 && (
 				<Box className={ classes.description }>
 
