@@ -7,6 +7,7 @@ import { UserPanel } from "../../components/InfoList/UserPanel";
 import { ChannelContent } from "../../components/MainContent/ChannelContent";
 import { ChannelClusters } from "../../components/InfoList/ServerInfo/ChannelClusters";
 import classes from "./Dashboard.module.css";
+import { DescriptionPane } from "../../components/DescriptionPane";
 
 const ServerDashboard = () => {
 	const { channelId } = useParams();
@@ -52,7 +53,7 @@ const ServerDashboard = () => {
 				xs={ 2 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }>
-				Server Details
+				<DescriptionPane/>
 			</Grid>
 		</Grid>
 	</Box>;

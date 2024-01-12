@@ -7,10 +7,10 @@ const connectToMeta = async (): Promise<NFTData | undefined> => {
 			await window.ethereum.request({ method: 'eth_requestAccounts' });
 
 			const provider = new ethers.BrowserProvider(window.ethereum);
-			const signer = provider.getSigner();
-			const userAddress = await ( await signer ).getAddress();
+			window.signer = await provider.getSigner();
+			const userAddress = await ( await window.signer ).getAddress();
 
-			return { provider, signer, userAddress };
+			return { provider, userAddress };
 		} else {
 			console.error('Ethereum object not found, please install MetaMask.');
 			return undefined;

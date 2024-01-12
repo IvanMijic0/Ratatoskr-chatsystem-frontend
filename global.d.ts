@@ -4,6 +4,7 @@ declare global {
 	interface Window {
 		stompClient;
 		ethereum: any;
+		signer: any;
 		provider: any;
 	}
 }
