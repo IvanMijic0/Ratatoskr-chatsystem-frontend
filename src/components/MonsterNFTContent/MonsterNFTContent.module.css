@@ -21,7 +21,7 @@
     align-items: center;
     font-size: 1rem;
     font-weight: 380;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .title {
@@ -33,7 +33,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .button {
