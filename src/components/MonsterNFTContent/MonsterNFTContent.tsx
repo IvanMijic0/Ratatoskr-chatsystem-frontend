@@ -9,10 +9,13 @@ import classes from "./MonsterNFTContent.module.css";
 export const MonsterNFTContent = ( { monsterData }: { monsterData: any } ) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
-	const convertIpfsUriToUrl = ( ipfsUri: string ) => {
+	const convertIpfsUriToUrl = ( ipfsUri: string ): string => {
 		const gatewayPrefix = "https://ipfs.io/ipfs/";
-		return ipfsUri.replace(/^ipfs:\/\//, gatewayPrefix);
+		const modifiedUri = ipfsUri.replace(/ipfs:\/\/?/i, '').trim(); // Remove 'ipfs://' and trim spaces
+
+		return gatewayPrefix + modifiedUri;
 	};
+
 
 	const handleNext = () => {
 		setCurrentIndex(prevIndex =>
