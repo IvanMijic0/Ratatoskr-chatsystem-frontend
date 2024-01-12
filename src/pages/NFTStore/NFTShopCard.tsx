@@ -78,6 +78,8 @@ function NFTShopCard({ contract, account, tokenContract, nft }: NFTStoreCardProp
     };
 
     const buyNFT = async (id) => {
+        console.log('buy func account ', account)
+        console.log('buy func nft.price ', nft.price)
         try {
             const transaction = await contract.buyNFT(id, {
                 from: account,
