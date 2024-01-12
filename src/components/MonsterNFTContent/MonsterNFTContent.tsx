@@ -55,13 +55,13 @@ export const MonsterNFTContent = () => {
 	}, [monsterData.length]);
 
 	const handleNext = () => {
-		setCurrentIndex(( prevIndex ) =>
+		setCurrentIndex(prevIndex =>
 			prevIndex === monsterData.length - 1 ? 0 : prevIndex + 1
 		);
 	};
 
 	const handlePrev = () => {
-		setCurrentIndex(( prevIndex ) =>
+		setCurrentIndex(prevIndex =>
 			prevIndex === 0 ? monsterData.length - 1 : prevIndex - 1
 		);
 	};
@@ -120,7 +120,6 @@ export const MonsterNFTContent = () => {
 						) }
 					</Box>
 				</Box>
-
 			) }
 		</Box>
 	);
