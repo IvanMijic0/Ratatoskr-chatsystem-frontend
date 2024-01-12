@@ -225,7 +225,7 @@ const ABI = [{
 			"internalType": "struct MonsterNFT.Trait[]",
 			"name": "attributes",
 			"type": "tuple[]"
-		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		}, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
 		"internalType": "struct MonsterNFT.NftMetadata[]",
 		"name": "",
 		"type": "tuple[]"
@@ -265,7 +265,7 @@ const ABI = [{
 			"internalType": "struct MonsterNFT.Trait[]",
 			"name": "attributes",
 			"type": "tuple[]"
-		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		}, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
 		"internalType": "struct MonsterNFT.NftMetadata",
 		"name": "",
 		"type": "tuple"
@@ -313,7 +313,7 @@ const ABI = [{
 			"internalType": "struct MonsterNFT.Trait[]",
 			"name": "attributes",
 			"type": "tuple[]"
-		}, { "internalType": "uint256", "name": "numberOfMonsterTokens", "type": "uint256" }],
+		}, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
 		"internalType": "struct MonsterNFT.NftMetadata[]",
 		"name": "",
 		"type": "tuple[]"
