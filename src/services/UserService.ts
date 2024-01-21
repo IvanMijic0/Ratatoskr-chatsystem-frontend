@@ -23,7 +23,7 @@ const fetchAllUsers = async (): Promise<UserInfo[]> => {
 
 const updateUser = async ( userId: string, userInfo: UserInfo ): Promise<void> => {
 	try {
-		await axiosInstance.put(`/user/${ userId }`, userInfo);
+		await axiosInstance.patch(`/user/${ userId }`, userInfo);
 	} catch (error) {
 		console.error('Error updating user:', error);
 		throw error;
@@ -96,7 +96,7 @@ const getDirectMessagings = async (): Promise<ChatMessage[]> => {
 	}
 };
 
-const createDirectMessaging = async ( friendId: string ): Promise<void> => {
+const createDirectMessagings = async ( friendId: string ): Promise<void> => {
 	try {
 		await axiosInstance.post(`/user/directmessagings/${ friendId }`);
 	} catch (error) {
@@ -105,7 +105,7 @@ const createDirectMessaging = async ( friendId: string ): Promise<void> => {
 	}
 };
 
-const deleteDirectMessaging = async ( directMessagingId: string ): Promise<void> => {
+const removeDirectMessagings = async ( directMessagingId: string ): Promise<void> => {
 	try {
 		await axiosInstance.delete(`/user/directmessagings/${ directMessagingId }`);
 	} catch (error) {
@@ -143,8 +143,8 @@ export default {
 	deleteFriend,
 	fetchUsers,
 	getDirectMessagings,
-	createDirectMessaging,
-	deleteDirectMessaging,
+	createDirectMessagings,
+	removeDirectMessagings,
 	checkIfMetaMaskAddressExists,
 	setMetaMaskAddress
 };

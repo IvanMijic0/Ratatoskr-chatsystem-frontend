@@ -63,7 +63,23 @@ const FriendItem: FC<FriendItemProps>
 	const startConversationHandler = async () => {
 		console.log('Convo started');
 
-		
+		const notification: Notification = {
+			notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
+			date: new Date().toISOString(),
+			senderId: currentUserId,
+			receiverId: friendId,
+			content: `${ currentUserUsername } sent you a direct-message request!`,
+		};
+
+		webSocketService.send(
+			`/app/notifications/${ friendId }/friendRequest.send`,
+			{},
+			notification
+		);
+
+		setStatusChangeText('sent');
+
+		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 	};
 
 	const actions = () => {

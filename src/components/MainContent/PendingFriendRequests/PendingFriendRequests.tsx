@@ -7,8 +7,6 @@ import classes from "./PendingFriendRequests.module.css";
 import { selectNotificationRequestData } from "../../../store/slice/notification-slice.ts";
 
 const PendingFriendRequests = () => {
-	//const [pendingFriendRequestsUI, setPendingFriendRequestsUI] = useState<UserInfo[]>([]);
-
 	const pendingFriendRequests: Notification[] = useAppSelector(selectNotificationRequestData);
 
 	const senderIds = pendingFriendRequests?.map(( notification ) => notification.senderId);
