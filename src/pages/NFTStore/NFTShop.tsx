@@ -68,10 +68,19 @@ function NFTShop() {
 		initEthereum();
 	}, []);
 
+
 	useEffect(() => {
 		const fetchNFTs = async () => {
 			try {
 				if ( contract ) {
+					const onMetadataSet = () => {
+						setUpdateTrigger(prev => !prev);
+					};
+					contract.on('MetadataSet', onMetadataSet);
+					return () => {
+						contract.off('MetadataSet', onMetadataSet);
+					};
+
 					const rawNFTData = await contract.getAllTokenMetadata();
 					console.log('Raw NFT Data:', rawNFTData);
 
@@ -148,10 +157,17 @@ function NFTShop() {
 				</Grid>
 				<Grid container item xs={ 12 } sx={ { display: 'flex', justifyContent: 'center' } }>
 					{ NFTs.map(( nft, index ) => (
-						<Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }
-							  sx={ { p: 2, display: 'flex', justifyContent: 'center' } }>
-							<NFTShopCard nft={ nft } contract={ contract }
-										 account={ userAddress }/>
+						<Grid
+							item
+							xs={ 12 }
+							sm={ 6 }
+							md={ 4 }
+							key={ index }
+							sx={ { p: 2, display: 'flex', justifyContent: 'center' } }>
+							<NFTShopCard
+								nft={ nft }
+								contract={ contract }
+								account={ userAddress }/>
 						</Grid>
 					)) }
 				</Grid>

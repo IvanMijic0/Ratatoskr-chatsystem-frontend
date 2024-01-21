@@ -19,7 +19,6 @@ const ChannelClusters = () => {
 		isLoading: isChannelClusterDataLoading
 	} = useChannelClusters(serverId ?? '');
 
-
 	const handleClickOpen = () => {
 		setChannelClusterFormOpen(true);
 	};

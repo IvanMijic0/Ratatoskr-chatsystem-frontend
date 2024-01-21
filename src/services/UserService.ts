@@ -1,13 +1,40 @@
 import axios from "axios";
 
 import { axiosInstance } from "../configuration";
-import { UserInfo } from "../types";
+import { ChatMessage, UserInfo } from "../types";
 
 const fetchUsers = async ( query: string ): Promise<UserInfo[]> => {
 	try {
 		return ( await axiosInstance.get(`/user/search?username=${ query }`) ).data;
 	} catch (error) {
 		console.error('Error fetching users:', error);
+		throw error;
+	}
+};
+
+const fetchAllUsers = async (): Promise<UserInfo[]> => {
+	try {
+		return ( await axiosInstance.get('/user') ).data;
+	} catch (error) {
+		console.error('Error fetching all users:', error);
+		throw error;
+	}
+};
+
+const updateUser = async ( userId: string, userInfo: UserInfo ): Promise<void> => {
+	try {
+		await axiosInstance.put(`/user/${ userId }`, userInfo);
+	} catch (error) {
+		console.error('Error updating user:', error);
+		throw error;
+	}
+};
+
+const removeUser = async ( userId: string ): Promise<void> => {
+	try {
+		await axiosInstance.delete(`/user/${ userId }`);
+	} catch (error) {
+		console.error('Error removing user:', error);
 		throw error;
 	}
 };
@@ -60,6 +87,33 @@ const deleteFriend = async ( friendId: string ): Promise<void> => {
 	}
 };
 
+const getDirectMessagings = async (): Promise<ChatMessage[]> => {
+	try {
+		return ( await axiosInstance.get(`/user/directmessagings`) ).data;
+	} catch (error) {
+		console.log('Could not get direct messagings:', error);
+		throw error;
+	}
+};
+
+const createDirectMessaging = async ( friendId: string ): Promise<void> => {
+	try {
+		await axiosInstance.post(`/user/directmessagings/${ friendId }`);
+	} catch (error) {
+		console.log('Could not create direct messaging:', error);
+		throw error;
+	}
+};
+
+const deleteDirectMessaging = async ( directMessagingId: string ): Promise<void> => {
+	try {
+		await axiosInstance.delete(`/user/directmessagings/${ directMessagingId }`);
+	} catch (error) {
+		console.log('Could not delete direct messaging:', error);
+		throw error;
+	}
+};
+
 const checkIfMetaMaskAddressExists = async ( metaMaskAddress: string ): Promise<boolean> => {
 	try {
 		return ( await axios.get(`http://localhost:8080/api/v1/user/exists/${ metaMaskAddress }`) ).data;
@@ -78,14 +132,19 @@ const setMetaMaskAddress = async ( metaMaskAddress: string ): Promise<void> => {
 	}
 };
 
-
 export default {
+	fetchAllUsers,
+	updateUser,
+	removeUser,
 	fetchUserInformationForIds,
 	confirmFriendRequest,
 	fetchUserSpecific,
 	fetchUserFriends,
 	deleteFriend,
 	fetchUsers,
+	getDirectMessagings,
+	createDirectMessaging,
+	deleteDirectMessaging,
 	checkIfMetaMaskAddressExists,
 	setMetaMaskAddress
 };

@@ -14,7 +14,6 @@ export const AllFriendsContent = () => {
 	const [filteredUsers, setFilteredUsers] =
 		useState<UserInfo[] | undefined>([]);
 
-
 	useEffect(() => {
 		setFilteredUsers(friendsData);
 	}, [friendsData]);

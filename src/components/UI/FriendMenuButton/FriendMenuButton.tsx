@@ -20,6 +20,8 @@ const FriendMenuButton = ( { friendId }: { friendId: string } ) => {
 	};
 	const startVideoCallHandler = () => {
 		setAnchorEl(null);
+
+		console.log('Video call started with '.concat(friendId));
 	};
 
 	const removeFriendHandler = () => {

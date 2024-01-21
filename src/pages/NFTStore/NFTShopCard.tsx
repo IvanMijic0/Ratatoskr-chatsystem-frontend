@@ -16,6 +16,7 @@ interface ExpandMoreProps extends IconButtonProps {
 	'aria-expanded': boolean;
 }
 
+
 function ExpandMore( props: ExpandMoreProps ) {
 	const { expand, onClick, 'aria-expanded': ariaExpanded } = props;
 	return (

@@ -30,6 +30,7 @@ const FriendItem: FC<FriendItemProps>
 	const dispatch = useAppDispatch();
 	const { showSnackbar } = useSnackbar();
 
+	// TODO - Do not forget to secure ws
 	const addFriendHandler = async () => {
 		const notification: Notification = {
 			notificationType: NotificationType.FRIEND_REQUEST,
@@ -60,6 +61,9 @@ const FriendItem: FC<FriendItemProps>
 	};
 
 	const startConversationHandler = async () => {
+		console.log('Convo started');
+
+		
 	};
 
 	const actions = () => {

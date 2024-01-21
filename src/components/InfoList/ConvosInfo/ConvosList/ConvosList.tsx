@@ -1,9 +1,9 @@
 import { Button, Divider, List, Typography } from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
+import { useNavigate } from "react-router-dom";
 
 import { ConvoSearch } from "../ConvoSearch";
 import classes from "./ConvosList.module.css";
-import { useNavigate } from "react-router-dom";
 
 const ConvosList = () => {
 	const friendData = [];

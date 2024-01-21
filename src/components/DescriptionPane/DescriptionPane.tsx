@@ -1,31 +1,19 @@
 import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 import RefreshIcon from '@mui/icons-material/Refresh';
-
-import { MonsterNFTContent } from "../MonsterNFTContent";
-import { CustomButton, CustomCircularProgressBar, CustomTooltip } from "../UI";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+
+import { MonsterNFTContent } from "../MonsterNFTContent";
+import { CustomButton, CustomCircularProgressBar, CustomTooltip } from "../UI";
 import { ABI, nftAddress } from "../../pages/NFTStore/utils";
+import { Monster, MonsterAttribute } from "../../types";
 import classes from "./DescriptionPane.module.css";
 
-// Put them in types later
-
-type MonsterAttribute = {
-	[key: string]: string;
-}
-
-type Monster = {
-	name: string;
-	description: string;
-	image: string;
-	attributes: MonsterAttribute;
-}
-
 export const DescriptionPane = () => {
-	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [monsterData, setMonsterData] = useState<any[]>([]);
+	const navigate = useNavigate();
 
 	const fetchData = async () => {
 		try {
@@ -55,11 +43,8 @@ export const DescriptionPane = () => {
 	};
 
 	useEffect(() => {
-		if ( window.signer ) {
-			fetchData().then(() => console.log("Fetched data"));
-		}
+		window.signer && fetchData().then(() => console.log("Fetched data"));
 	}, [monsterData.length]);
-
 
 	const storeButtonHandler = () => {
 		navigate("/nft-store");

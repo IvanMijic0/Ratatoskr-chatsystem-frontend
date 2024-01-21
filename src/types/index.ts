@@ -43,3 +43,5 @@ export type { default as SnackbarContextProps } from './SnackbarContextProps.ts'
 export type { default as ChannelClusterMenuProps } from './ChannelClusterMenuProps.ts';
 export type { default as AddChannelDialogProps } from './AddChannelDialogProps.ts';
 export type { default as NFTData } from './NFTData.ts';
+export type { default as MonsterAttribute } from './MonsterAttribute.ts';
+export type { default as Monster } from './Monster.ts';

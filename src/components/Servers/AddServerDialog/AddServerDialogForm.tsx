@@ -4,9 +4,9 @@ import { ChangeEvent, FC, FormEvent, SyntheticEvent, useState } from "react";
 
 import { CustomButton, CustomCircularProgressBar, CustomDialog, CustomTooltip } from "../../UI";
 import { errorServerNameTextField, serverNameTextField } from "../ServerFormInputs";
+import { useCreateServer, useInput } from "../../../hooks";
 import { AddServerDialogFormProps } from "../../../types";
 import { serverNameRegex } from "../../../regex";
-import { useCreateServer, useInput } from "../../../hooks";
 import classes from "./AddServerDialogForm.module.css";
 
 const AddServerDialogForm: FC<AddServerDialogFormProps> = ( { open, onClose } ) => {
