@@ -1,4 +1,5 @@
 export { default as useGetNotificationByUserIds } from "./useGetNotificationByUserIds.ts";
+export { default as useDirectMessagingsSummary } from "./useDirectMessagingsSummary.ts";
 export { default as useCreateDirectMessagings } from "./useCreateDirectMessagings.ts";
 export { default as useDeleteDirectMessagings } from "./useDeleteDirectMessagings.ts";
 export { default as useCreateUserNotification } from "./useCreateUserNotification.ts";

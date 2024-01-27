@@ -7,10 +7,10 @@ import { FC, useState } from "react";
 
 import { CustomTooltip, FriendMenuButton } from "../index.ts";
 import { NotificationAction, UserAction } from "../../../store";
-import { FriendItemProps, Notification } from "../../../types";
+import { ChatMessage, FriendItemProps, Notification } from "../../../types";
 import { webSocketService } from "../../../services";
-import { NotificationType, UserStatus } from "../../../enums";
-import { useAppDispatch, useSnackbar } from "../../../hooks";
+import { MessageType, NotificationType, UserStatus } from "../../../enums";
+import { useAppDispatch, useCreateDirectMessagings, useSnackbar } from "../../../hooks";
 import { stringAvatar } from "../../../utils";
 import classes from "./FriendItem.module.css";
 
@@ -27,6 +27,7 @@ const FriendItem: FC<FriendItemProps>
 		} ) => {
 	const [statusChangeText, setStatusChangeText] = useState('');
 
+	const { mutate } = useCreateDirectMessagings();
 	const dispatch = useAppDispatch();
 	const { showSnackbar } = useSnackbar();
 
@@ -49,6 +50,7 @@ const FriendItem: FC<FriendItemProps>
 		setStatusChangeText('sent');
 
 		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
+
 	};
 
 	const confirmFriendRequestHandler = async () => {
@@ -61,14 +63,14 @@ const FriendItem: FC<FriendItemProps>
 	};
 
 	const startConversationHandler = async () => {
-		console.log('Convo started');
+		console.log('start conversation');
 
 		const notification: Notification = {
 			notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
 			date: new Date().toISOString(),
 			senderId: currentUserId,
 			receiverId: friendId,
-			content: `${ currentUserUsername } sent you a direct-message request!`,
+			content: `${ currentUserUsername } started direct-messaging you!`,
 		};
 
 		webSocketService.send(
@@ -77,9 +79,19 @@ const FriendItem: FC<FriendItemProps>
 			notification
 		);
 
-		setStatusChangeText('sent');
+		setStatusChangeText('direct-message request sent');
 
 		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
+
+		const directMessage: ChatMessage[] = [{
+			senderName: currentUserUsername ?? '',
+			receiverName: friendUsername ?? '',
+			content: `${ currentUserUsername } started direct-messaging you!`,
+			date: new Date().toISOString(),
+			type: MessageType.JOIN,
+		}];
+
+		friendId && mutate({ friendId, directMessage });
 	};
 
 	const actions = () => {

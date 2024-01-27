@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { CustomAutoComplete, FriendItem } from "../../UI";
 import { InputChangeHandler, UserInfo } from "../../../types";
 import actionType from "../../../enums/ActionType.ts";
-import { useFriends } from "../../../hooks";
+import { useAppSelector, useFriends } from "../../../hooks";
+import { selectUser } from "../../../store";
 import classes from './AllFriendsContent.module.css';
 
 export const AllFriendsContent = () => {
@@ -13,6 +14,8 @@ export const AllFriendsContent = () => {
 	const [inputValue, setInputValue] = useState('');
 	const [filteredUsers, setFilteredUsers] =
 		useState<UserInfo[] | undefined>([]);
+
+	const { _id, username } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		setFilteredUsers(friendsData);
@@ -48,6 +51,8 @@ export const AllFriendsContent = () => {
 					friendUsername={ filteredUser.username }
 					friendAvatarIconUrl={ filteredUser.avatarImageUrl }
 					actionType={ actionType.START_CONVO }
+					currentUserUsername={ username! }
+					currentUserId={ _id! }
 					status={ filteredUser.status }
 				/>
 			) }

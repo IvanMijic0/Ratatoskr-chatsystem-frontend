@@ -4,7 +4,7 @@ type ChatMessage = {
 	content: string;
 	date: string | null;
 	type: string;
-	sender: string;
+	sender?: string;
 };
 
 export default ChatMessage;

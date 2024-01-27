@@ -27,3 +27,8 @@
 .description {
     margin-top: .5rem;
 }
+
+.direct-message {
+    color: whitesmoke;
+    font-size: .8rem;
+}

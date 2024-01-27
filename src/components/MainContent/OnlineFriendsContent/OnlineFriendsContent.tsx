@@ -7,7 +7,7 @@ import { CustomAutoComplete, FriendItem } from "../../UI";
 import actionType from "../../../enums/ActionType.ts";
 import { UserStatus } from "../../../enums";
 import classes from './OnlineFriendsContent.module.css';
-import { selectFriendStatus } from "../../../store";
+import { selectFriendStatus, selectUser } from "../../../store";
 
 const OnlineFriendsContent = () => {
 	const [filteredUsers, setFilteredUsers] = useState<UserInfo[] | undefined>([]);
@@ -16,6 +16,7 @@ const OnlineFriendsContent = () => {
 	const { mutate } = useGetNotificationByUserIds();
 	const friendStatus = useAppSelector(selectFriendStatus);
 	const { data: friendsData } = useFriends();
+	const { _id, username } = useAppSelector(selectUser);
 
 	const updateFriendsData = useCallback(( data: { [x: string]: any } ) => {
 		if ( !friendsData || friendsData.length === 0 ) return [];
@@ -92,6 +93,8 @@ const OnlineFriendsContent = () => {
 						friendAvatarIconUrl={ filteredUser.avatarImageUrl }
 						actionType={ actionType.START_CONVO }
 						status={ filteredUser.status }
+						currentUserId={ _id }
+						currentUserUsername={ username }
 					/>
 				) }
 		</Box>

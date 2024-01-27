@@ -96,9 +96,19 @@ const getDirectMessagings = async (): Promise<ChatMessage[]> => {
 	}
 };
 
-const createDirectMessagings = async ( friendId: string ): Promise<void> => {
+const getDirectMessagingsSummary = async (): Promise<ChatMessage[]> => {
 	try {
-		await axiosInstance.post(`/user/directmessagings/${ friendId }`);
+		return ( await axiosInstance.get(`/user/directmessagings/summary`) ).data;
+	} catch (error) {
+		console.log('Could not get direct messagings summary:', error);
+		throw error;
+	}
+};
+
+const createDirectMessagings = async ( friendId: string, chatMessages: ChatMessage[] ): Promise<void> => {
+	console.log('directMessaging:', chatMessages);
+	try {
+		await axiosInstance.post(`/user/directmessagings/${ friendId }`, chatMessages);
 	} catch (error) {
 		console.log('Could not create direct messaging:', error);
 		throw error;
@@ -139,6 +149,7 @@ export default {
 	fetchUserInformationForIds,
 	confirmFriendRequest,
 	fetchUserSpecific,
+	getDirectMessagingsSummary,
 	fetchUserFriends,
 	deleteFriend,
 	fetchUsers,
