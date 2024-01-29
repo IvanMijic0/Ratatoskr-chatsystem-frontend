@@ -3,7 +3,6 @@ import axios from "axios";
 import { axiosInstance } from "../configuration";
 import { ChatMessage, UserInfo } from "../types";
 import DirectMessageSummary from "../types/DirectMessageSummary.ts";
-import DirectMessaging from "../types/DirectMessage.ts";
 
 const fetchUsers = async ( query: string ): Promise<UserInfo[]> => {
 	try {
@@ -107,15 +106,28 @@ const getDirectMessagings = async (): Promise<ChatMessage[]> => {
 	}
 };
 
-const getDirectMessagingsById = async ( directMessagingId: string | undefined ): Promise<DirectMessaging> => {
+const getDirectMessagingsById = async (
+	directMessagingId: string | undefined,
+	page: number = 1,
+	pageSize: number = 30
+): Promise<{ content: ChatMessage[]; totalPages: number }> => {
 	try {
-		return directMessagingId && ( await axiosInstance.get(`/user/directmessagings/${ directMessagingId }`) ).data;
+		const response = await axiosInstance.get(`/user/directmessagings/${ directMessagingId }`, {
+			params: {
+				page,
+				pageSize,
+			},
+		});
+
+		const { content, totalPages } = response.data;
+
+		return { content, totalPages };
 	} catch (error) {
 		console.log('Could not get direct messagings by id:', error);
 		throw error;
 	}
-
 };
+
 
 const getDirectMessagingsSummary = async (): Promise<DirectMessageSummary[]> => {
 	try {
