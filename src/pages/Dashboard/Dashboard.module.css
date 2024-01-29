@@ -1,0 +1,10 @@
+.grid {
+    height: 100vh;
+}
+
+.grid-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}

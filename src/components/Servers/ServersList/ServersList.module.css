@@ -1,0 +1,103 @@
+.stack {
+    padding-top: .5rem;
+}
+
+.scrollable-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #72767d #2f3136;
+}
+
+.scrollableContainer::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 3px;
+}
+
+.tooltip {
+    font-weight: bold;
+}
+
+.homepage-avatar {
+    width: 3.5vw;
+    height: 3.5vw;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.homepage-avatar:hover {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.homepage-avatar.selected {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar {
+    width: 3.5vw;
+    height: 3.5vw;
+    transition: border-radius 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.avatar:hover {
+    border-radius: 30%;
+}
+
+.avatar.selected {
+    border-radius: 30%;
+}
+
+.avatar-dot {
+    color: whitesmoke;
+    width: .4rem;
+    height: .4rem;
+    background-color: whitesmoke;
+    transition: width 0.3s ease;
+    border-radius: 50%;
+}
+
+.avatar-dot:hover {
+    border-radius: 20%;
+    width: 1.5rem;
+}
+
+.avatar-dot.selected {
+    border-radius: 20%;
+    width: 1.5rem;
+}
+
+.add-icon {
+    background-color: #183232;
+    width: 3.5vw;
+    height: 3.5vw;
+    transition: border-radius 0.3s ease;
+    cursor: pointer;
+}
+
+.add-icon:hover {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.add-icon.selected {
+    border-radius: 30%;
+    background-color: #0A7878;
+}
+
+.divider {
+    background-color: #424242;
+}

@@ -1,0 +1,42 @@
+.channel-list {
+    background-color: transparent;
+    width: 100%;
+    height: 95%;
+}
+
+.channel-name-divider {
+    background-color: #3f4548;
+    margin-bottom: .8rem;
+}
+
+.server-header-button {
+    width: 100%;
+}
+
+.menu-item {
+    color: whitesmoke;
+}
+
+.menu-item-del {
+    color: #dc4747;
+}
+
+.channel-icon {
+    font-size: 1.3rem;
+    color: rgba(245, 245, 245, 0.54);
+}
+
+.action-button-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.action-button {
+    color: whitesmoke;
+}
