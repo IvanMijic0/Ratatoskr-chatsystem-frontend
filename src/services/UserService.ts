@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { axiosInstance } from "../configuration";
 import { ChatMessage, UserInfo } from "../types";
+import DirectMessageSummary from "../types/DirectMessageSummary.ts";
+import DirectMessaging from "../types/DirectMessage.ts";
 
 const fetchUsers = async ( query: string ): Promise<UserInfo[]> => {
 	try {
@@ -61,6 +63,15 @@ const fetchUserInformationForIds = async ( senderIds: ( string | undefined )[] )
 	}
 };
 
+const fetchUserFriend = async ( friendId: string | undefined ): Promise<UserInfo> => {
+	try {
+		return friendId && ( await axiosInstance.get(`/user/${ friendId }`) ).data;
+	} catch (error) {
+		console.error('Error fetching user friend:', error);
+		throw error;
+	}
+};
+
 const confirmFriendRequest = async ( friendId: string ): Promise<void> => {
 	try {
 		await axiosInstance.post(`/user/add-friend/${ friendId }`);
@@ -96,7 +107,17 @@ const getDirectMessagings = async (): Promise<ChatMessage[]> => {
 	}
 };
 
-const getDirectMessagingsSummary = async (): Promise<ChatMessage[]> => {
+const getDirectMessagingsById = async ( directMessagingId: string | undefined ): Promise<DirectMessaging> => {
+	try {
+		return directMessagingId && ( await axiosInstance.get(`/user/directmessagings/${ directMessagingId }`) ).data;
+	} catch (error) {
+		console.log('Could not get direct messagings by id:', error);
+		throw error;
+	}
+
+};
+
+const getDirectMessagingsSummary = async (): Promise<DirectMessageSummary[]> => {
 	try {
 		return ( await axiosInstance.get(`/user/directmessagings/summary`) ).data;
 	} catch (error) {
@@ -106,11 +127,19 @@ const getDirectMessagingsSummary = async (): Promise<ChatMessage[]> => {
 };
 
 const createDirectMessagings = async ( friendId: string, chatMessages: ChatMessage[] ): Promise<void> => {
-	console.log('directMessaging:', chatMessages);
 	try {
 		await axiosInstance.post(`/user/directmessagings/${ friendId }`, chatMessages);
 	} catch (error) {
 		console.log('Could not create direct messaging:', error);
+		throw error;
+	}
+};
+
+const updateDirectMessagings = async ( directMessagingId: string, chatMessages: ChatMessage ): Promise<void> => {
+	try {
+		await axiosInstance.put(`/user/directmessagings/update/${ directMessagingId }`, chatMessages);
+	} catch (error) {
+		console.log('Could not update direct messaging:', error);
 		throw error;
 	}
 };
@@ -150,7 +179,10 @@ export default {
 	confirmFriendRequest,
 	fetchUserSpecific,
 	getDirectMessagingsSummary,
+	getDirectMessagingsById,
+	updateDirectMessagings,
 	fetchUserFriends,
+	fetchUserFriend,
 	deleteFriend,
 	fetchUsers,
 	getDirectMessagings,

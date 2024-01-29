@@ -6,7 +6,7 @@ import { ReactQueryWrapperProps } from "../../types";
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			retry: 2,
+			retry: 3,
 			refetchOnWindowFocus: false,
 		},
 	},

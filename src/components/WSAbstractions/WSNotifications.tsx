@@ -16,16 +16,15 @@ const WSNotifications = () => {
 	const queryClient = useQueryClient();
 
 	const onUserNotificationReceive = useCallback(async ( message: { body: string } ) => {
+		//await queryClient.invalidateQueries('directMessagings');
 		const body: Notification = JSON.parse(message.body);
-		showSnackbar(body.content, "info");
 
+		showSnackbar(body.content, "info");
 		dispatch(NotificationAction.postNotificationData(body, body.receiverId!));
-	}, [dispatch, showSnackbar]);
+	}, [dispatch, queryClient, showSnackbar]);
 
 	const onUserOnlineStatusChange = useCallback(async ( data: { body: string } ) => {
 		const body = JSON.parse(data.body);
-
-		console.log(body);
 
 		await queryClient.invalidateQueries('friends');
 

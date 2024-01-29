@@ -1,31 +1,50 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useAppSelector } from "../../../hooks";
-import { selectUser } from "../../../store";
-import { Box, Typography } from "@mui/material";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { Avatar, Box, Typography } from "@mui/material";
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
+import { useParams } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+
 import webSocketService from "../../../services/WebSocketService.ts";
+import { CustomButton, CustomCircularProgressBar, CustomTextField, CustomTooltip } from "../../UI";
+import { useAppSelector, useDirectMessagingsById, useUpdateDirectMessagings } from "../../../hooks";
+import { selectUser } from "../../../store";
 import { ChatMessage } from "../../../types";
-import { CustomButton, CustomTextField } from "../../UI";
+import useFriend from "../../../hooks/useFriend.ts";
+import { stringAvatar } from "../../../utils";
 import classes from "./DirectMessage.module.css";
 
 const DirectMessage = () => {
-	const [messages, setMessages] = useState<ChatMessage[]>([]);
+	const [isEmojiMenuOpen, setIsEmojiMenuOpen] = useState(false);
 	const [message, setMessage] = useState("");
+	const emojiContainerRef = useRef<HTMLDivElement | null>(null);
 
-	const { username } = useAppSelector(selectUser);
+	const { directMessagingId, friendId } = useParams();
+	const { data } = useFriend(friendId);
+	const { _id, username } = useAppSelector(selectUser);
 
-	const onPublicMessageReceive = ( payload: { body: string } ) => {
-		setMessages(( prevMessages ) => [...prevMessages, JSON.parse(payload.body)]);
+	const { data: directMessageData, isLoading } = useDirectMessagingsById(directMessagingId);
+	const { mutate: mutateCreateDirectMessaging } = useUpdateDirectMessagings(directMessagingId ?? '');
+
+
+	const [oldMessages, setOldMessages] =
+		useState<ChatMessage[]>([]);
+
+	const onPrivateMessageReceive = ( payload: { body: string } ) => {
+		setOldMessages(prevState => [...prevState, JSON.parse(payload.body)]);
+
+		directMessagingId && mutateCreateDirectMessaging({ directMessagingId, chatMessages: JSON.parse(payload.body) });
 	};
 
 	const onConnected = () => {
 		console.log("WebSocket connected successfully");
-		webSocketService.subscribe('/chatroom/public', onPublicMessageReceive);
-		webSocketService.send('/app/chat.addUser', {}, { sender: username, type: 'JOIN' });
+		directMessagingId && webSocketService.subscribe(`/chat/${ directMessagingId }`, onPrivateMessageReceive);
 	};
 
 	const onError = () => {
 		console.error("Could not connect to WebSocket. Please refresh this page and try again!");
 	};
+
 
 	useEffect(() => {
 		webSocketService.connect(onConnected, onError);
@@ -33,42 +52,117 @@ const DirectMessage = () => {
 		return () => webSocketService.disconnect();
 	}, []);
 
-	const handleMessageChange = ( e: ChangeEvent<HTMLInputElement> ) => {
-		setMessage(e.target.value);
-	};
+	useEffect(() => {
+		setOldMessages(directMessageData?.messages ?? []);
+	}, [directMessageData?.messages]);
 
-	const sendPublicMessage = ( e: FormEvent ) => {
+	useEffect(() => {
+		document.addEventListener('click', handleClickOutside);
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
+
+	const sendPrivateMessage = ( e: FormEvent ) => {
 		e.preventDefault();
 		const messageContent = message.trim();
 		if ( messageContent && webSocketService ) {
-			const chatMessage = {
-				sender: username,
+			const chatMessage: ChatMessage = {
+				senderId: _id as string,
+				senderName: username,
+				receiverName: data?.username,
 				content: messageContent,
+				date: new Date().toISOString(),
 				type: 'MESSAGE',
 			};
-			webSocketService.send('/app/chat.sendMessage', {}, chatMessage);
+
+			webSocketService.send(`/app/chat/${ directMessagingId }/sendPrivateMessage`, {}, chatMessage);
 			setMessage('');
 		}
 	};
 
-	return (
-		<Box className={ classes["chat-container"] }>
-			<Typography variant="h4">Testing</Typography>
-			<Box className={ classes["messages-container"] }>
-				{ messages.map(( msg, index ) => (
-					<Typography key={ index }>{ msg.content }</Typography>
-				)) }
-			</Box>
-			<form className={ classes.form } onSubmit={ sendPublicMessage }>
+	const emojiMenuHandler = () => {
+		setIsEmojiMenuOpen(prevState => !prevState);
+	};
+
+	const handleClickOutside = ( event: MouseEvent ) => {
+		if ( emojiContainerRef.current && !emojiContainerRef.current.contains(event.target as Node) ) {
+			setIsEmojiMenuOpen(false);
+		}
+	};
+
+	const handleMessageChange = ( e: ChangeEvent<HTMLInputElement> ) => {
+		setMessage(e.target.value);
+	};
+
+	return <Box className={ classes["chat-container"] }>
+		<Box className={ classes["messages-container"] }>
+			{ isLoading
+				? <Box className={ classes.loading }>
+					<CustomCircularProgressBar/>
+				</Box>
+				: oldMessages.map(( msg, index ) => data
+						&& <Box key={ index } className={ classes['msg-content'] }>
+							{ msg.senderId === _id ? <Box className={ classes.sent }>
+									<Box className={ classes['msg-sent'] }>
+										<Typography>{ msg.content }</Typography>
+									</Box>
+									<CustomTooltip
+										title={ msg.date && new Date(msg.date).toLocaleString() }
+										placement="top">
+										<Avatar { ...stringAvatar(data?.username ?? '') }
+												alt={ data?.username }
+												src={ data?.avatarImageUrl }
+										/>
+									</CustomTooltip>
+								</Box>
+								: <Box className={ classes.received }>
+									<CustomTooltip
+										title={ msg.date && new Date(msg.date).toLocaleString() }
+										placement="top">
+										<Avatar { ...stringAvatar(data?.username ?? '') }
+												alt={ data?.username }
+												src={ data?.avatarImageUrl }
+										/>
+									</CustomTooltip>
+									<Box className={ classes['msg-received'] }>
+										<Typography>{ msg.content }</Typography>
+									</Box>
+								</Box>
+							}
+                  </Box>
+				) }
+		</Box>
+		<form className={ classes.form } onSubmit={ sendPrivateMessage }>
+			<Box className={ classes['input-field'] }>
 				<CustomTextField
 					type="text"
 					label="Message"
 					value={ message }
+					size="small"
+					fullWidth
+					variant="outlined"
 					onChange={ handleMessageChange }
 				/>
+			</Box>
+			<Box className={ classes.button } ref={ emojiContainerRef }>
+				<Box className={ classes['emoji-container'] }>
+					{ isEmojiMenuOpen &&
+                      <EmojiPicker
+                        width={ 350 }
+                        height={ 400 }
+                        onEmojiClick={ emojiObject => setMessage(message + emojiObject.emoji) }
+                        theme={ Theme.DARK }
+                        emojiStyle={ EmojiStyle.NATIVE }
+                        lazyLoadEmojis={ true }/>
+					}
+				</Box>
+				<IconButton onClick={ emojiMenuHandler }>
+					<EmojiEmotionsIcon className={ classes['emoji-icon'] }/>
+				</IconButton>
 				<CustomButton type="submit">Send</CustomButton>
-			</form>
-		</Box>
-	);
+			</Box>
+		</form>
+	</Box>;
 };
 export default DirectMessage;

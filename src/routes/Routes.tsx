@@ -46,7 +46,7 @@ const Routes = () => {
 					element: <AddFriendContent/>
 				},
 				{
-					path: 'direct-messaging',
+					path: 'direct-messaging/:directMessagingId/:friendId',
 					element: <DirectMessage/>
 				}
 			]

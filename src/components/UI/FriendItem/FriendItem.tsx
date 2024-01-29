@@ -23,7 +23,7 @@ const FriendItem: FC<FriendItemProps>
 			friendAvatarIconUrl,
 			actionType,
 			description,
-			status: friendStatus
+			status: friendStatus,
 		} ) => {
 	const [statusChangeText, setStatusChangeText] = useState('');
 
@@ -63,8 +63,6 @@ const FriendItem: FC<FriendItemProps>
 	};
 
 	const startConversationHandler = async () => {
-		console.log('start conversation');
-
 		const notification: Notification = {
 			notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
 			date: new Date().toISOString(),
@@ -79,14 +77,15 @@ const FriendItem: FC<FriendItemProps>
 			notification
 		);
 
-		setStatusChangeText('direct-message request sent');
-
 		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 
+		setStatusChangeText('direct-messaging started');
+
 		const directMessage: ChatMessage[] = [{
+			senderId: currentUserId ?? '',
 			senderName: currentUserUsername ?? '',
 			receiverName: friendUsername ?? '',
-			content: `${ currentUserUsername } started direct-messaging you!`,
+			content: `${ currentUserUsername } started this direct-message!`,
 			date: new Date().toISOString(),
 			type: MessageType.JOIN,
 		}];

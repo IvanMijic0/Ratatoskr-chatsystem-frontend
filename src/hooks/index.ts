@@ -10,6 +10,8 @@ export { default as useDirectMessagings } from "./useDirectMessagings.ts";
 export { default as useFriendRequestsUI } from "./useFriendRequestsUI.ts";
 export { default as useVisibilityUnload } from "./useVisibilityUnload.ts";
 export { default as useVisibilityEffect } from "./useVisibilityEffect.ts";
+export { default as useUpdateDirectMessagings } from "./useUpdateDirectMessagings";
+export { default as useDirectMessagingsById } from "./useDirectMessaginsById";
 export { default as useChannelClusters } from "./useChannelClusters.ts";
 export { default as useDeleteChannels } from "./useDeleteChannels.ts";
 export { default as useCreateChannel } from "./useCreateChannel.ts";

@@ -26,9 +26,9 @@ const HomeDashboard = () => {
 			<Grid
 				className={ classes["grid-info"] }
 				item
-				lg={ 1.5 }
-				sm={ 1.5 }
-				xs={ 1.5 }
+				lg={ 1.8 }
+				sm={ 1.8 }
+				xs={ 1.8 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }>
 				<ConvosList/>
@@ -37,9 +37,9 @@ const HomeDashboard = () => {
 			<Grid
 				className={ classes.grid }
 				item
-				lg={ 7.8 }
-				sm={ 7.8 }
-				xs={ 7.8 }
+				lg={ 7.5 }
+				sm={ 7.5 }
+				xs={ 7.5 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#0A1717" } }>
 				<TopAppBar/>

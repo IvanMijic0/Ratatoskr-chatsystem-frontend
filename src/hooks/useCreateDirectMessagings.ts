@@ -12,7 +12,7 @@ const useCreateDirectMessagings = () => {
 		} ) => UserService.createDirectMessagings(friendId, directMessage), {
 			onSuccess: async () => {
 				try {
-					await queryClient.invalidateQueries('directMessagings');
+					await queryClient.invalidateQueries('directMessagingsSummary');
 				} catch (error) {
 					console.error('Error creating direct messaging:', error);
 					throw error;

@@ -4,7 +4,10 @@ import { UserService } from "../services";
 const useDirectMessagings = () => {
 	return useQuery(
 		['directMessagings'],
-		() => UserService.getDirectMessagings()
+		() => UserService.getDirectMessagings(), {
+			refetchOnMount: true,
+			refetchOnReconnect: true,
+		}
 	);
 };
 
