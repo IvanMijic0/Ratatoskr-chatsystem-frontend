@@ -1,24 +1,53 @@
-import { Box, Button, CircularProgress, Container, ListItem, ListItemText, MenuItem } from "@mui/material";
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Container,
+	List,
+	ListItem,
+	ListItemText,
+	MenuItem,
+	Typography
+} from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, MouseEvent, useState } from "react";
 
-import { useCreateChannelCluster, useDeleteServer, useInput, useSnackbar } from "../../../../hooks";
+import {
+	useAllMembersInServer,
+	useAppSelector,
+	useCreateChannelCluster,
+	useCreateMembersToServer,
+	useDeleteServer,
+	useFriends,
+	useInput,
+	useSnackbar
+} from "../../../../hooks";
 import { channelClusterTextField, errorChannelClusterTextField } from "../FormInputs";
-import { CustomButton, CustomDialog, CustomMenu } from "../../../UI";
+import { CustomButton, CustomDialog, CustomMenu, FriendItem } from "../../../UI";
 import { channelClusterNameRegex } from "../../../../regex";
-import { ServerHeaderProps } from "../../../../types";
+import { ServerHeaderProps, UserInfo } from "../../../../types";
 import classes from "../ChannelClusters/ChannelsClusters.module.css";
+import { selectUser } from "../../../../store";
 
-const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) => {
+const ServerHeader = ( { onClose, primary, ownerId, open, onClick }: ServerHeaderProps ) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const [openAddFriendDialog, setOpenAddFriendDialog] = useState(false);
 
 	const { mutate: mutateCreateChannelCluster, isLoading } = useCreateChannelCluster();
-	const { mutate: mutateDeleteServer } = useDeleteServer();
 	const channelClusterNameValidation = useInput(channelClusterNameRegex);
+	const { mutate: mutateDeleteServer } = useDeleteServer();
+	const { data: friendsData } = useFriends();
+	const { _id } = useAppSelector(selectUser);
 	const { showSnackbar } = useSnackbar();
 
 	const { serverId } = useParams();
+
 	const navigate = useNavigate();
+	const { data: memberData } = useAllMembersInServer(serverId ?? '');
+	const { mutate: mutateAddFriendAsMember } =
+		useCreateMembersToServer({ serverId: serverId ?? '' });
+
+	const filteredFriends = friendsData && friendsData.filter(( friend ) => !memberData?.some(( member: UserInfo ) => member._id === friend._id));
 
 	const openMenu = Boolean(anchorEl);
 	let dialogFormIsValid = false;
@@ -29,9 +58,17 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 		setAnchorEl(event.currentTarget);
 	};
 
+	const handleAddFriendDialogOpen = () => {
+		setOpenAddFriendDialog(true);
+	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 		channelClusterNameValidation.reset();
+	};
+
+	const handleAddFriendDialogClose = () => {
+		setOpenAddFriendDialog(false);
 	};
 
 	const handleSubmit = async ( event: FormEvent<HTMLFormElement> ) => {
@@ -69,6 +106,32 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 		});
 	};
 
+	const handleAddFriendAsServerMember = ( userId: string | undefined ) => {
+		console.log("clicked");
+		serverId && userId && mutateAddFriendAsMember({ serverId, userId });
+	};
+
+	const friendsListContent = filteredFriends && filteredFriends?.length > 0
+		? <List className={ classes['friends-list'] }>
+			{ filteredFriends.map(friend => <ListItem key={ friend._id }>
+					<Button
+						onClick={ () => {
+							handleAddFriendAsServerMember(friend._id);
+							handleClose();
+						} }>
+						<FriendItem
+							friendId={ friend._id }
+							friendUsername={ friend.username }
+							friendAvatarIconUrl={ friend.avatarImageUrl }
+						/>
+					</Button>
+				</ListItem>
+			) }
+		</List>
+		: <Typography className={ classes["menu-item"] }>
+			No friends available to add...
+		</Typography>;
+
 	const channelClustersDialogContent = <Container className={ classes['Form-content'] }>
 		{ !channelClusterNameValidation.hasError
 			? channelClusterTextField(
@@ -95,13 +158,13 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 
 	return <ListItem>
 		<Button
+			disabled={ ownerId !== _id }
 			className={ classes["server-header-button"] }
 			id="basic-button"
 			aria-controls={ openMenu ? 'basic-menu' : undefined }
 			aria-haspopup="true"
 			aria-expanded={ openMenu ? 'true' : undefined }
-			onClick={ handleClick }
-		>
+			onClick={ handleClick }>
 			<ListItemText
 				primary={ primary }
 				primaryTypographyProps={ { left: 0, fontSize: "1rem", fontWeight: "bold", color: "whitesmoke" } }
@@ -120,6 +183,14 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 				} }>
 				Add Cluster
 			</MenuItem>
+			<MenuItem
+				className={ classes["menu-item"] }
+				onClick={ () => {
+					handleAddFriendDialogOpen();
+					handleClose();
+				} }>
+				Add friend
+			</MenuItem>
 			<MenuItem className={ classes["menu-item-del"] } onClick={ handleDeleteServer }>
 				Delete Server
 			</MenuItem>
@@ -133,6 +204,14 @@ const ServerHeader = ( { onClose, primary, open, onClick }: ServerHeaderProps ) 
 			customContent={ channelClustersDialogContent }
 			handleSubmit={ handleSubmit }
 		/>
+
+		<CustomDialog
+			open={ openAddFriendDialog }
+			onClose={ handleAddFriendDialogClose }
+			title="Add Friend to Server:"
+			customContent={ friendsListContent }
+		/>
+
 	</ListItem>;
 };
 

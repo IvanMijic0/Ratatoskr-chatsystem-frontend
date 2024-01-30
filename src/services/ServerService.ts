@@ -1,5 +1,13 @@
 import { axiosInstance } from "../configuration";
-import { ChannelCluster, ChannelClusterServiceProps, ChannelServiceProps, Server } from "../types";
+import {
+	Channel,
+	ChannelCluster,
+	ChannelClusterServiceProps,
+	ChannelServiceProps,
+	ChatMessage,
+	Server,
+	UserInfo
+} from "../types";
 
 const createChannel = async ( { serverId, channelClusterId, channelName }: ChannelServiceProps ): Promise<void> => {
 	try {
@@ -77,6 +85,24 @@ const createServer = async ( formData: FormData ): Promise<void> => {
 	}
 };
 
+const getClusterChannelById = async ( serverId: string, clusterId: string, channelId: string ): Promise<ChatMessage[]> => {
+	try {
+		return ( await axiosInstance.get(`/server/channel/${ serverId }/${ clusterId }/${ channelId }`) ).data;
+	} catch (error) {
+		console.error('Error fetching channel:', error);
+		throw error;
+	}
+};
+
+const updateChannelMessage = async ( serverId: string, clusterId: string, channelId: string, message: ChatMessage ): Promise<void> => {
+	try {
+		await axiosInstance.put(`/server/channel/${ serverId }/${ clusterId }/${ channelId }/message`, message);
+	} catch (error) {
+		console.error('Error updating channel message:', error);
+		throw error;
+	}
+};
+
 const fetchServersSummary = async (): Promise<Server[]> => {
 	try {
 		return ( await axiosInstance.get('/server/summary') ).data;
@@ -104,11 +130,44 @@ const fetchChannelClusters = async ( serverId: string ): Promise<ChannelCluster[
 	}
 };
 
+
+const addMemberToServer = async ( serverId: string, userId: string ): Promise<void> => {
+	try {
+		await axiosInstance.post(`/server/${ serverId }/members/${ userId }`);
+	} catch (error) {
+		console.error('Error adding member to server:', error);
+		throw error;
+	}
+};
+
+const getAllMembersInServer = async ( serverId: string ): Promise<UserInfo[]> => {
+	try {
+		return ( await axiosInstance.get(`/server/${ serverId }/members`) ).data;
+	} catch (error) {
+		console.error('Error fetching all members in server:', error);
+		throw error;
+	}
+};
+
+const getChannel = async ( serverId: string, clusterId: string, channelId: string ): Promise<Channel> => {
+	try {
+		return ( await axiosInstance.get(`/server/channel/${ serverId }/${ clusterId }/${ channelId }`) ).data;
+	} catch (error) {
+		console.error('Error fetching channel data:', error);
+		throw error;
+	}
+};
+
 export default {
 	createChannel,
 	deleteChannelCluster,
+	addMemberToServer,
+	getChannel,
+	getAllMembersInServer,
 	deleteChannels,
 	createChannelCluster,
+	getClusterChannelById,
+	updateChannelMessage,
 	deleteServer,
 	createServer,
 	fetchServersSummary,

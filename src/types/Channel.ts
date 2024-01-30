@@ -1,7 +1,7 @@
 type Channel = {
 	id: string;
 	name: string;
-	chatMessage?: [];
+	messages?: [];
 }
 
 export default Channel;

@@ -22,7 +22,7 @@ const DirectMessage = () => {
 
 	const { directMessagingId, friendId } = useParams();
 	const { data } = useFriend(friendId);
-	const { _id, username } = useAppSelector(selectUser);
+	const { _id, username, avatarUrl } = useAppSelector(selectUser);
 
 	const {
 		data: directMessageData,
@@ -30,38 +30,38 @@ const DirectMessage = () => {
 		fetchNextPage,
 		hasNextPage
 	} = useDirectMessagingsById(directMessagingId);
+
+
 	const { mutate: mutateCreateDirectMessaging } = useUpdateDirectMessagings(directMessagingId ?? '');
 
 	const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
 
 	const onPrivateMessageReceive = ( payload: { body: string } ) => {
 		setOldMessages(( prevState ) => [...prevState, JSON.parse(payload.body)]);
-		directMessagingId &&
-		mutateCreateDirectMessaging({ directMessagingId, chatMessages: JSON.parse(payload.body) });
+		console.log(payload.body);
 	};
 
-	const onConnected = () => {
+	const onConnected = useCallback(() => {
 		console.log("WebSocket connected successfully");
 		directMessagingId &&
 		webSocketService.subscribe(`/chat/${ directMessagingId }`, onPrivateMessageReceive);
-	};
+	}, [directMessagingId]);
 
 	const onError = () => {
 		console.error("Could not connect to WebSocket. Please refresh this page and try again!");
 	};
 
 	useEffect(() => {
-		webSocketService.connect(onConnected, onError);
+		webSocketService.connect(onConnected, onError).then();
 
 		return () => webSocketService.disconnect();
-	}, []);
+	}, [onConnected]);
 
 	useEffect(() => {
 		setOldMessages(
 			directMessageData?.pages.flatMap(( page ) => page.content) ?? []
 		);
 	}, [directMessageData]);
-
 
 	useEffect(() => {
 		document.addEventListener('click', handleClickOutside);
@@ -75,7 +75,7 @@ const DirectMessage = () => {
 		if ( messagesContainer ) {
 			const { scrollTop, scrollHeight, clientHeight } = messagesContainer;
 			if ( scrollTop + clientHeight === scrollHeight && hasNextPage ) {
-				fetchNextPage();
+				fetchNextPage().then();
 			}
 		}
 	}, [fetchNextPage, hasNextPage]);
@@ -108,6 +108,8 @@ const DirectMessage = () => {
 
 			webSocketService.send(`/app/chat/${ directMessagingId }/sendPrivateMessage`, {}, chatMessage);
 			setMessage('');
+
+			directMessagingId && mutateCreateDirectMessaging({ directMessagingId, chatMessages: chatMessage });
 		}
 	};
 
@@ -138,12 +140,12 @@ const DirectMessage = () => {
 									<Typography>{ msg.content }</Typography>
 								</Box>
 								<CustomTooltip
-									title={ msg.date && new Date(msg.date).toLocaleString() }
+									title={ username }
 									placement="top">
 									<Avatar
-										{ ...stringAvatar(data?.username ?? '') }
-										alt={ data?.username }
-										src={ data?.avatarImageUrl }/>
+										{ ...stringAvatar(username ?? '') }
+										alt={ username }
+										src={ avatarUrl }/>
 								</CustomTooltip>
 							</Box>
 							: <Box className={ classes.received }>

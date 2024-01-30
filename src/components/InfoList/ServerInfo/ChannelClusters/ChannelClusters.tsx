@@ -23,7 +23,7 @@ const ChannelClusters = () => {
 		setChannelClusterFormOpen(true);
 	};
 
-	const handleServerHeaderClose = async () => {
+	const handleServerHeaderClose = () => {
 		setChannelClusterFormOpen(false);
 	};
 
@@ -39,6 +39,7 @@ const ChannelClusters = () => {
 			: <ServerHeader
 				primary={ serverData?.name ?? '' }
 				onClick={ handleClickOpen }
+				ownerId={ serverData?.ownerId ?? '' }
 				open={ channelClusterFormOpen }
 				onClose={ handleServerHeaderClose }
 			/>
@@ -54,6 +55,7 @@ const ChannelClusters = () => {
 				<ChannelClusterItem
 					key={ channelCluster.id }
 					id={ channelCluster.id }
+					ownerId={ serverData?.ownerId ?? '' }
 					name={ channelCluster.name }
 					channels={ channelCluster.channels }
 				/>

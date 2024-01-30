@@ -5,7 +5,9 @@ import { ServerService } from "../services";
 const useServers = () => {
 	return useQuery(
 		"servers",
-		() => ServerService.fetchServersSummary(),
+		() => ServerService.fetchServersSummary(), {
+			refetchOnMount: true
+		}
 	);
 };
 

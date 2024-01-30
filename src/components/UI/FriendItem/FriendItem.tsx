@@ -50,7 +50,6 @@ const FriendItem: FC<FriendItemProps>
 		setStatusChangeText('sent');
 
 		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
-
 	};
 
 	const confirmFriendRequestHandler = async () => {

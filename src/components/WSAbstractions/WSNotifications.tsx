@@ -1,10 +1,10 @@
 import { Fragment, useCallback, useEffect } from "react";
 
 import { useAppDispatch, useAppSelector, useCreateNotification, useSnackbar } from "../../hooks";
-import webSocketService from "../../services/WebSocketService.ts";
 import { NotificationAction, selectUser, setFriendStatus, setUserStatus } from "../../store";
-import { Notification } from "../../types";
+import webSocketService from "../../services/WebSocketService.ts";
 import { NotificationType, UserStatus } from "../../enums";
+import { Notification } from "../../types";
 import { useQueryClient } from "react-query";
 
 const WSNotifications = () => {
@@ -16,7 +16,9 @@ const WSNotifications = () => {
 	const queryClient = useQueryClient();
 
 	const onUserNotificationReceive = useCallback(async ( message: { body: string } ) => {
-		//await queryClient.invalidateQueries('directMessagings');
+		console.log("WS Notification received");
+
+		await queryClient.invalidateQueries('directMessagings');
 		const body: Notification = JSON.parse(message.body);
 
 		showSnackbar(body.content, "info");
@@ -57,12 +59,13 @@ const WSNotifications = () => {
 		try {
 			establishConnection().then();
 		} catch (e) {
+			window.location.reload();
 			console.log(e);
 		}
 
-		return () => {
-			webSocketService.disconnect();
-		};
+		// return () => {
+		// 	webSocketService.disconnect();
+		// };
 	}, [onConnected]);
 
 	return <Fragment/>;

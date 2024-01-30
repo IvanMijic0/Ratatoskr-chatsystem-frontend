@@ -1,20 +1,25 @@
 import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { MouseEvent, useState } from "react";
+
 import { ChannelClusterOptionsButton } from "../ChannelClusterOptionsButton";
 import { Channel, ChannelCluster } from "../../../../types";
 import { RemoveChannelDialog } from "../RemoveChannelDialog";
 import { ChannelClusterMenu } from "../ChannelClusterMenu";
 import { AddChannelDialog } from "../AddChannelDialog";
 import { ChannelItem } from "../ChannelItem";
+import { useAppSelector } from "../../../../hooks";
+import { selectUser } from "../../../../store";
 import classes from "./ChannelClusterItem.module.css";
 
-const ChannelClusterItem = ( { name, channels, id }: ChannelCluster ) => {
+const ChannelClusterItem = ( { name, channels, ownerId, id }: ChannelCluster ) => {
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 	const [expand, setExpand] = useState(false);
 	const [openAddDialog, setOpenAddDialog] = useState(false);
 	const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
 	const [removableChannelIds, setRemovableChannelIds] = useState<string[]>([]);
+
+	const { _id } = useAppSelector(selectUser);
 
 	const menuOpen = Boolean(anchorEl);
 
@@ -59,7 +64,7 @@ const ChannelClusterItem = ( { name, channels, id }: ChannelCluster ) => {
 						<ExpandMore className={ classes["channel-icon"] }/> }
 					<ListItemText primary={ name }/>
 				</ListItemButton>
-				<ChannelClusterOptionsButton handleMenuOpen={ handleMenuOpen }/>
+				<ChannelClusterOptionsButton disabled={ ownerId !== _id } handleMenuOpen={ handleMenuOpen }/>
 				<ChannelClusterMenu
 					anchorEl={ anchorEl }
 					open={ menuOpen }
