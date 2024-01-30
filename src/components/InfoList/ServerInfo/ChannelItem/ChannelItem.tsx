@@ -11,6 +11,7 @@ const ChannelItem = ( { id, name, clusterId, }: Channel & { clusterId: string } 
 
 	const handleClick = () => {
 		navigate(`/servers/${ serverId }/${ clusterId }/${ id }`);
+
 	};
 
 	return <Box className={ classes["channel-actions-container"] }>
