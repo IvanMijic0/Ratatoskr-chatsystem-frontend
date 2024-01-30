@@ -1,5 +1,4 @@
-import { Avatar, Badge, Box, IconButton, Paper, Typography } from "@mui/material";
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Avatar, Badge, Box, Paper, Typography } from "@mui/material";
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks";
@@ -28,9 +27,9 @@ const UserPanel = () => {
 					<Typography className={ classes['full-name'] }>{ userInfo.fullName }</Typography>
 				</CustomTooltip>
 			</Box>
-			<IconButton className={ classes['icon-button'] }>
-				<SettingsIcon className={ classes.icon }/>
-			</IconButton>
+			{/*<IconButton className={ classes['icon-button'] }>*/ }
+			{/*	<SettingsIcon className={ classes.icon }/>*/ }
+			{/*</IconButton>*/ }
 		</Box>
 	</Paper>;
 };

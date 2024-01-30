@@ -7,7 +7,7 @@ import { TopAppBar } from "../../components/MainContent/TopAppBar";
 import { UserPanel } from "../../components/InfoList/UserPanel";
 import { Outlet } from "react-router-dom";
 import classes from './Dashboard.module.css';
-import { DescriptionPane } from "../../components/DescriptionPane";
+import { HomeDescriptionPane } from "../../components/DescriptionPane";
 
 // TODO: make this responsive, when you get time
 const HomeDashboard = () => {
@@ -53,7 +53,7 @@ const HomeDashboard = () => {
 				xs={ 2 }
 				zeroMinWidth
 				sx={ { backgroundColor: "#252A2E" } }>
-				<DescriptionPane/>
+				<HomeDescriptionPane/>
 			</Grid>
 		</Grid>
 	</Box>;

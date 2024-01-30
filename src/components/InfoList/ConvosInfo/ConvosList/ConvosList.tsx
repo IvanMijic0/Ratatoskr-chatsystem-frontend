@@ -1,16 +1,14 @@
 import { Box, Button, Divider, List } from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 import { useAppSelector, useDirectMessagingsSummary, useFriends } from "../../../../hooks";
 import { CustomCircularProgressBar, FriendItem } from "../../../UI";
 import { selectUser } from "../../../../store";
-import { ConvoSearch } from "../ConvoSearch";
 import classes from "./ConvosList.module.css";
-import { useQueryClient } from "react-query";
 
 const ConvosList = () => {
-
 	const { data: convoData, isLoading } = useDirectMessagingsSummary();
 	const queryClient = useQueryClient();
 	const { data: friendsData } = useFriends();
@@ -53,7 +51,6 @@ const ConvosList = () => {
 
 
 	return <List className={ classes["friends-list"] } aria-labelledby="nested-list-subheader" dense>
-		<ConvoSearch/>
 		<Button
 			className={ classes["add-friend-button"] }
 			variant="text"
