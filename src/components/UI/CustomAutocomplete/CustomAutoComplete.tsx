@@ -9,7 +9,6 @@ const CustomAutoComplete: FC<CustomAutocompleteProps>
 	= ( {
 			onInputChange,
 			value,
-			placeHolder,
 			options,
 			label,
 			...props
@@ -19,11 +18,9 @@ const CustomAutoComplete: FC<CustomAutocompleteProps>
 		disablePortal={ props.disablePortal }
 		id={ props.id }
 		options={ options }
-		getOptionLabel={ ( option ) => ( typeof option === 'object' ? option.username : option ) }
 		popupIcon={ <ArrowDropDownIcon sx={ { color: 'whitesmoke' } }/> }
 		clearIcon={ <ClearIcon sx={ { color: 'whitesmoke', fontSize: '1.2rem' } }/> }
 		noOptionsText={ <Typography>No options</Typography> }
-		placeholder={ placeHolder }
 		renderInput={ ( params ) => <TextField
 			{ ...params }
 			value={ value }

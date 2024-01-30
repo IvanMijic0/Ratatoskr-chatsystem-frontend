@@ -148,7 +148,7 @@ const DirectMessage = () => {
 										src={ avatarUrl }/>
 								</CustomTooltip>
 							</Box>
-							: <Box className={ classes.received }>
+							: <Box className={ classes.received } key={ index }>
 								<CustomTooltip
 									title={ msg.date && new Date(msg.date).toLocaleString() }
 									placement="top">

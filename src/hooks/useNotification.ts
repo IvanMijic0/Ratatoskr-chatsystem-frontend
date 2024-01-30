@@ -5,7 +5,7 @@ import { NotificationService } from "../services";
 const useNotification = () => {
 	return useQuery(
 		['notification'],
-		() => NotificationService.getFriendNotification()
+		() => NotificationService.getUserNotification()
 	);
 };
 

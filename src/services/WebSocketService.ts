@@ -30,7 +30,7 @@ class WebSocketService {
 						onConnect(); // Call onConnect callback
 						resolve();
 					},
-					( error ) => {
+					( error: any ) => {
 						console.error('WebSocket connection failed:', error);
 						onError(); // Call onError callback
 						reject(error);

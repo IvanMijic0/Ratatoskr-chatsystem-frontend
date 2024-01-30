@@ -6,7 +6,6 @@ import CustomTooltip from "../../../UI/CustomTooltip.tsx";
 import { LoginFormProps } from "../../../../types";
 import { CustomButton } from "../../../UI";
 import { GoogleLoginButton } from "../GoogleButton";
-import { MetaButton } from "../MetaButton";
 import classes from "./LoginFormInputs.module.css";
 
 const LoginFormInputs: FC<LoginFormProps> = ( props ) => {
@@ -28,7 +27,6 @@ const LoginFormInputs: FC<LoginFormProps> = ( props ) => {
 		</CustomTooltip>
 		<Box className={ classes['auth-buttons'] }>
 			<GoogleLoginButton/>
-			<MetaButton/>
 		</Box>
 	</>;
 };

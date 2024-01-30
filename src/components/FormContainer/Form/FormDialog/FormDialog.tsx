@@ -58,17 +58,17 @@ const FormDialog: FC<FormDialogProps> = ( props ) => {
 	};
 
 	const registerContent = <>
-		<DialogContentText className={ classes['Form-text'] }>
+		<DialogContentText className={ classes['Form-text'] } sx={ { color: "whitesmoke" } }>
 			You have successfully registered to the Ratatoskr Chating System.
 			Please login manually or with google account again in order to enter the application.
 		</DialogContentText>
-		<DialogContentText className={ classes['Form-text'] }>
+		<DialogContentText className={ classes['Form-text'] } sx={ { color: "whitesmoke" } }>
 			Refreshing page in { seconds }
 		</DialogContentText>
 	</>;
 
 	const loginContent = <>
-		<DialogContentText className={ classes['Form-text'] }>
+		<DialogContentText className={ classes['Form-text'] } sx={ { color: "whitesmoke" } }>
 			We have noticed that you are not registered to this website.
 			To continue logging in via Google, please enter your registration password.
 		</DialogContentText>
