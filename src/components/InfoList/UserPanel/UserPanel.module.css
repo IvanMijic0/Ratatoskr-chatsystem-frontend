@@ -14,16 +14,27 @@
 .user-details-container {
     display: flex;
     flex-direction: column;
-}
-
-.username {
-    margin-left: .5rem;
-    color: whitesmoke;
+    justify-content: center;
 }
 
 .full-name {
+    margin-left: .8rem;
+    color: whitesmoke;
+    white-space: nowrap;
+}
+
+.username {
     white-space: nowrap;
     font-size: .5rem;
     margin-left: .5rem;
     color: #bdbdbd;
+}
+
+.icon-button {
+    margin-left: auto;
+    color: #9d9c9c;
+}
+
+.icon {
+    font-size: 1.2rem;
 }

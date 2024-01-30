@@ -40,3 +40,21 @@
 .action-button {
     color: whitesmoke;
 }
+
+.server-loading-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.channel-cluster-loading-bar {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.friends-list {
+    overflow: scroll;
+    max-height: 40vh;
+}

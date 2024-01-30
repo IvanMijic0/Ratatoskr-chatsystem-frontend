@@ -1,0 +1,1 @@
+export { default as PendingFriendRequests } from './PendingFriendRequests.tsx';

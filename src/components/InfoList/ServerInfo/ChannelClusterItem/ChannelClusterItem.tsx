@@ -1,47 +1,29 @@
 import { Box, Collapse, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { MouseEvent, useState } from "react";
 
-import { fetchChannelClustersData, setCurrentChannelCluster } from "../../../../Store";
 import { ChannelClusterOptionsButton } from "../ChannelClusterOptionsButton";
+import { Channel, ChannelCluster } from "../../../../types";
 import { RemoveChannelDialog } from "../RemoveChannelDialog";
 import { ChannelClusterMenu } from "../ChannelClusterMenu";
 import { AddChannelDialog } from "../AddChannelDialog";
 import { ChannelItem } from "../ChannelItem";
-import { useAppDispatch } from "../../../../hooks";
+import { useAppSelector } from "../../../../hooks";
+import { selectUser } from "../../../../store";
 import classes from "./ChannelClusterItem.module.css";
 
-const ChannelClusterItem = ( props: {
-	channelClusterName: string;
-	channelClusterId: string;
-	channels: { name: string; id: string; }[];
-	serverId: string | null;
-} ) => {
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+const ChannelClusterItem = ( { name, channels, ownerId, id }: ChannelCluster ) => {
+	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 	const [expand, setExpand] = useState(false);
 	const [openAddDialog, setOpenAddDialog] = useState(false);
 	const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
 	const [removableChannelIds, setRemovableChannelIds] = useState<string[]>([]);
 
-	const { clusterId } = useParams();
-	const dispatch = useAppDispatch();
+	const { _id } = useAppSelector(selectUser);
 
 	const menuOpen = Boolean(anchorEl);
 
-	useEffect(() => {
-		dispatch(setCurrentChannelCluster({
-			clusterName: props.channelClusterName,
-			clusterId: props.channelClusterId
-		}));
-		clusterId === props.channelClusterId && setExpand(true);
-	}, [clusterId, dispatch, props.channelClusterId, props.channelClusterName]);
-
-	const handleMenuOpen = ( event: MouseEvent<HTMLButtonElement> ) => {
-		dispatch(setCurrentChannelCluster({
-			clusterName: props.channelClusterName,
-			clusterId: props.channelClusterId
-		}));
+	const handleMenuOpen = ( event: MouseEvent<HTMLElement> ) => {
 		setAnchorEl(event.currentTarget);
 	};
 
@@ -50,18 +32,10 @@ const ChannelClusterItem = ( props: {
 	};
 
 	const handleClusterExpand = () => {
-		dispatch(setCurrentChannelCluster({
-			clusterName: props.channelClusterName,
-			clusterId: props.channelClusterId
-		}));
 		setExpand(!expand);
 	};
 
 	const handleAddDialogOpen = () => {
-		dispatch(setCurrentChannelCluster({
-			clusterName: props.channelClusterName,
-			clusterId: props.channelClusterId
-		}));
 		setOpenAddDialog(true);
 		handleMenuClose();
 	};
@@ -78,7 +52,6 @@ const ChannelClusterItem = ( props: {
 	};
 
 	const handleAddDialogClose = () => {
-		dispatch(fetchChannelClustersData(props.serverId));
 		setOpenAddDialog(false);
 		handleMenuClose();
 	};
@@ -89,34 +62,41 @@ const ChannelClusterItem = ( props: {
 				<ListItemButton className={ classes['channel-button'] } onClick={ handleClusterExpand }>
 					{ expand ? <ExpandLess className={ classes["channel-icon"] }/> :
 						<ExpandMore className={ classes["channel-icon"] }/> }
-					<ListItemText primary={ props.channelClusterName }/>
+					<ListItemText primary={ name }/>
 				</ListItemButton>
-				<ChannelClusterOptionsButton handleMenuOpen={ handleMenuOpen }/>
+				<ChannelClusterOptionsButton disabled={ ownerId !== _id } handleMenuOpen={ handleMenuOpen }/>
 				<ChannelClusterMenu
 					anchorEl={ anchorEl }
 					open={ menuOpen }
 					onClose={ handleMenuClose }
 					onAddDialogCLick={ handleAddDialogOpen }
-					onRemoveChannelDialogClick={ handleRemoveDialogOpen }/>
+					onRemoveChannelDialogClick={ handleRemoveDialogOpen }
+					clusterId={ id }/>
 			</ListItem>
 		</Box>
 
-		<AddChannelDialog open={ openAddDialog } onClose={ handleAddDialogClose }/>
+		<AddChannelDialog
+			open={ openAddDialog }
+			onClose={ handleAddDialogClose }
+			clusterId={ id }/>
+
 		<RemoveChannelDialog
 			open={ openRemoveDialog }
 			onClose={ handleRemoveDialogClose }
-			channels={ props.channels.slice(1) }
+			channels={ channels?.slice(1) }
 			removableChannelIds={ removableChannelIds }
+			clusterId={ id }
 			onRemovableChannelIds={ setRemovableChannelIds }
 		/>
 
 		<Collapse in={ expand } timeout="auto" unmountOnExit>
-			<List component="div" disablePadding dense>
-				{ props.channels.map(( channel: { name: string; id: string; } ) =>
+			<List disablePadding dense>
+				{ channels?.map(( channel: Channel ) =>
 					<ChannelItem
 						key={ channel.id }
-						channelId={ channel.id }
-						channelName={ channel.name }
+						id={ channel.id }
+						clusterId={ id }
+						name={ channel.name }
 					/>)
 				}
 			</List>

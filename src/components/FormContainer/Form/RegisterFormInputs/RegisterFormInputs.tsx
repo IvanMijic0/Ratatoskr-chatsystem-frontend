@@ -10,7 +10,7 @@ import {
 	passwordTextField,
 	usernameTextField
 } from "../Shared";
-import { RegisterFormProps } from "../../../../Types";
+import { RegisterFormProps } from "../../../../types";
 import classes from "./RegisterFormInputs.module.css";
 
 const RegisterFormInputs: FC<RegisterFormProps> = ( props ) => {

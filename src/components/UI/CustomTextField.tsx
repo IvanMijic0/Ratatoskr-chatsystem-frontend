@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { CustomTextFieldProps, HelperTextStyles } from "../../Types";
+import { CustomTextFieldProps, HelperTextStyles } from "../../types";
 import { FC } from "react";
 
 const CustomTextField: FC<CustomTextFieldProps> = ( props ) => {
@@ -11,22 +11,22 @@ const CustomTextField: FC<CustomTextFieldProps> = ( props ) => {
 		},
 		'&:hover fieldset': {
 			borderColor: error ? 'pink!important' : 'whitesmoke!important',
-			borderWidth: error ? '2px' : '2px',
+			borderWidth: error ? '1px' : '1px',
 		},
 		'&:focus-within fieldset, &:focus-visible fieldset': {
 			borderColor: error ? 'pink!important' : 'whitesmoke!important',
-			borderWidth: error ? '3px' : '3px',
+			borderWidth: error ? '1.1px' : '1.1px',
 		},
 	};
 
 	const labelSx = {
 		color: error ? 'pink!important' : 'lightGray!important',
-		fontSize: '1.2rem',
+		fontSize: '1rem',
 	};
 
 	const inputPropsSx = {
 		color: error ? 'pink' : 'whitesmoke',
-		fontSize: '1.5rem',
+		fontSize: '1.2rem',
 	};
 
 	const helperTextSx: HelperTextStyles = {

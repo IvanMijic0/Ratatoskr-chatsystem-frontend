@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 import CustomTooltip from "./CustomTooltip.tsx";
-import CustomButtonProps from "../../Types/CustomButtonProps.ts";
+import CustomButtonProps from "../../types/CustomButtonProps.ts";
 
 const CustomButton: React.FC<CustomButtonProps>
 	= ( {
@@ -14,8 +14,8 @@ const CustomButton: React.FC<CustomButtonProps>
 	const buttonComponent = <Button
 		{ ...otherProps }
 		sx={ {
-			width: "5rem",
-			height: "2rem",
+			width: "6rem",
+			height: "3rem",
 			backgroundColor: "#557385",
 			color: "white",
 			"&:hover": {

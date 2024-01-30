@@ -4,7 +4,7 @@ import { Box, DialogContentText } from "@mui/material";
 
 import { errorPasswordTextField, passwordTextField } from "../Shared";
 import { CustomButton, CustomDialog, CustomTextField, CustomTooltip } from "../../../UI";
-import { FormDialogProps } from "../../../../Types";
+import { FormDialogProps } from "../../../../types";
 import classes from "./FormDialog.module.css";
 
 const FormDialog: FC<FormDialogProps> = ( props ) => {

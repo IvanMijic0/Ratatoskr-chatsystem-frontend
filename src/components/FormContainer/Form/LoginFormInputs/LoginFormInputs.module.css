@@ -6,6 +6,8 @@
     cursor: pointer;
 }
 
-.google-button {
+.auth-buttons {
+    display: flex;
+    flex-direction: row;
     margin-top: 1rem;
 }

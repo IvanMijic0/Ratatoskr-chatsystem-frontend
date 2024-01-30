@@ -1,0 +1,52 @@
+.image {
+    width: 10vw;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 380;
+    margin-top: 1rem;
+}
+
+.desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 380;
+    margin-top: 1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 380;
+    margin-top: 1rem;
+}
+
+.title {
+    margin-bottom: 3rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.button {
+    color: #c0c0c0;
+}

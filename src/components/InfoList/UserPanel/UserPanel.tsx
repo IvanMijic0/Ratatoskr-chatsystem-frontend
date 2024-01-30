@@ -1,26 +1,35 @@
-import { Avatar, Box, Paper, Typography } from "@mui/material";
+import { Avatar, Badge, Box, Paper, Typography } from "@mui/material";
+import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetchUserSpecific, selectUser } from "../../../Store";
-import { useEffect } from "react";
+import { selectUser, selectUserStatus, UserAction } from "../../../store";
 import { stringAvatar } from "../../../utils";
+import { UserStatus } from "../../../enums";
+import { CustomTooltip } from "../../UI";
 import classes from "./UserPanel.module.css";
 
 const UserPanel = () => {
 	const userInfo = useAppSelector(selectUser);
+	const userStatus = useAppSelector(selectUserStatus);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchUserSpecific());
+		dispatch(UserAction.fetchUserSpecific());
 	}, [dispatch]);
 
 	return <Paper className={ classes["user-panel"] }>
 		<Box className={ classes["user-options-container"] }>
-			<Avatar  { ...stringAvatar(userInfo.fullName) } src={ userInfo.avatarUrl } alt={ userInfo.fullName }/>
+			<Badge color={ userStatus === UserStatus.ONLINE ? 'success' : 'error' } variant="dot">
+				<Avatar  { ...stringAvatar(userInfo.fullName) } src={ userInfo.avatarUrl } alt={ userInfo.fullName }/>
+			</Badge>
 			<Box className={ classes["user-details-container"] }>
-				<Typography className={ classes.username }>{ userInfo.fullName }</Typography>
-				<Typography className={ classes["full-name"] }>{ userInfo.username }</Typography>
+				<CustomTooltip title={ userInfo.username } placement="top-start">
+					<Typography className={ classes['full-name'] }>{ userInfo.fullName }</Typography>
+				</CustomTooltip>
 			</Box>
+			{/*<IconButton className={ classes['icon-button'] }>*/ }
+			{/*	<SettingsIcon className={ classes.icon }/>*/ }
+			{/*</IconButton>*/ }
 		</Box>
 	</Paper>;
 };

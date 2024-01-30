@@ -30,16 +30,14 @@ const FormContainer = () => {
 				className={ classes['bottom-action-button'] }
 				showTooltip
 				tooltipTitle="Login"
-				onClick={ loginButtonHandler }
-			>
+				onClick={ loginButtonHandler }>
 				<LoginIcon className={ classes['bottom-action-logo'] }/>
 			</CustomCircularButton>
 			<CustomCircularButton
 				className={ classes['bottom-action-button'] }
 				showTooltip
 				tooltipTitle="Register"
-				onClick={ registerButtonHandler }
-			>
+				onClick={ registerButtonHandler }>
 				<PersonAdd className={ classes['bottom-action-logo'] }/>
 			</CustomCircularButton>
 		</Box>

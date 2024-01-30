@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Menu from '@mui/material/Menu';
 
-import { CustomMenuProps } from "../../Types";
+import { CustomMenuProps } from "../../types";
 
 const CustomMenu: FC<CustomMenuProps> = ( { children, anchorEl, open, onClose, ...menuProps } ) => {
 	return <Menu

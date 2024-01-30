@@ -1,22 +1,108 @@
 .chat-container {
-    position: absolute;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    bottom: 0;
-    left: 38%;
+    justify-content: center;
 }
 
 .messages-container {
-    margin-bottom: 5rem;
-    border: 1px solid #0A7878;
-    width: 100%;
-    height: 60vh;
+    width: 97%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: scroll;
+    height: 80vh;
+    padding-top: 1rem;
     padding-left: 2rem;
-    padding-top: 2rem;
 }
 
 .form {
+    width: 65%;
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: .5rem;
+    bottom: 0;
+}
+
+.button {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-field {
+    width: 80%;
+    border-radius: 5px;
+    padding-left: .5rem;
+}
+
+.msg-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 98%;
+}
+
+.received {
+    display: flex;
+    flex-direction: row;
+    padding: .5rem .8rem;
+    border-radius: 5px;
+    overflow: auto;
+    margin-right: auto;
+}
+
+.msg-received {
+    margin-left: .5rem;
+    padding: .5rem .8rem;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: #0c6060;
+    color: white;
+    word-wrap: break-word;
+}
+
+.sent {
+    display: flex;
+    flex-direction: row;
+    padding: .5rem .8rem;
+    border-radius: 5px;
+    overflow: auto;
+    margin-left: auto;
+}
+
+.msg-sent {
+    padding: .5rem .8rem;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: #252A2E;
+    color: white;
+    word-wrap: break-word;
+    margin-right: .5rem;
+}
+
+.emoji-container {
+    position: absolute;
+    right: 0;
+    bottom: 130%;
+    z-index: 1;
+}
+
+.emoji-icon {
+    position: relative;
+    color: whitesmoke;
+}
+
+.loading {
+    width: 100%;
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }

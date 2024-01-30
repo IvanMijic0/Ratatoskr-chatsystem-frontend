@@ -1,15 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import { FC, useState } from "react";
-import axios from "axios";
 
-import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "../../../Regex";
+import { emailRegex, passwordRegex, usernameOrEmailRegex, usernameRegex } from "../../../regex";
 import { RegisterFormInputs } from "./RegisterFormInputs";
 import { LoginFormInputs } from "./LoginFormInputs";
 import { useAppDispatch, useInput } from "../../../hooks";
-import { setAuthData } from "../../../Store";
-import { FormProps } from "../../../Types";
+import { FormProps } from "../../../types";
 import { FormStatus } from "../../../enums";
 import classes from "./Form.module.css";
+import { AuthAction } from "../../../store";
 
 const Form: FC<FormProps> = ( { isLogin } ) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
@@ -31,22 +30,18 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 	let loginFormIsValid: boolean = false;
 	let registerFormIsValid: boolean = false;
 
-	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) {
-		loginFormIsValid = true;
-	}
+	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) loginFormIsValid = true;
 
 	if ( registerUsernameValidation.isValid &&
 		registerEmailValidation.isValid &&
 		registerPasswordValidation.isValid &&
-		registerConfirmPasswordValidation.isValid ) {
-		registerFormIsValid = true;
-	}
+		registerConfirmPasswordValidation.isValid ) registerFormIsValid = true;
 
 	const loginHandler = async () => {
 		try {
-			dispatch(setAuthData({
-				usernameOrEmail: loginEmailValidation.value,
-				password: loginPasswordValidation.value
+			dispatch(AuthAction.setAuthData({
+				usernameOrEmail: loginEmailValidation?.value,
+				password: loginPasswordValidation?.value
 			}, undefined));
 
 			return Promise.resolve();
@@ -60,11 +55,11 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 
 	const registerHandler = async () => {
 		try {
-			await axios.post(`auth/register`, {
+			dispatch(AuthAction.register({
 				username: registerUsernameValidation.value,
 				email: registerEmailValidation.value,
 				password: registerPasswordValidation.value
-			});
+			}));
 
 			setIsEmailVerificationSent(true);
 			return Promise.resolve();
@@ -72,7 +67,6 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 			console.error('Registration Error:', error);
 			const errorMessage = error.response?.data?.statusText || 'Registration failed.';
 			return Promise.reject(errorMessage);
-
 		}
 	};
 

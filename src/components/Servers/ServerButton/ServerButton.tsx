@@ -1,34 +1,36 @@
 import { Avatar, Box, Button } from "@mui/material";
 import CustomTooltip from "../../UI/CustomTooltip.tsx";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectServerInfoByServerId, setCurrentServerInfo } from "../../../Store";
+
 import { stringAvatar } from "../../../utils";
+import { useQueryClient } from "react-query";
+import { Server } from "../../../types";
 import classes from "../ServersList/ServersList.module.css";
 
-const ServerButton = ( { serverId, serverName, avatarIconUrl }: {
-	serverId: string;
-	serverName: string;
-	avatarIconUrl: string;
-} ) => {
-	const dispatch = useAppDispatch();
+const ServerButton = ( { id, firstClusterId, firstChannelId, name, avatarIconUrl }: Server ) => {
 	const { serverId: selectedServerId } = useParams();
-	const isSelected = selectedServerId === serverId;
-	const { firstClusterId, firstChannelId } = useAppSelector(selectServerInfoByServerId(serverId))[0];
+	const queryClient = useQueryClient();
+	const isSelected = selectedServerId === id;
 	const navigate = useNavigate();
 
-	const handleClick = () => {
-		dispatch(setCurrentServerInfo({ serverName, serverId }));
-		navigate(`/servers/${ serverId }/${ firstClusterId }/${ firstChannelId }`);
+	const handleClick = async () => {
+		navigate(`/servers/${ id }/${ firstClusterId }/${ firstChannelId }`);
+		try {
+			await queryClient.invalidateQueries(['server', id]);
+			await queryClient.invalidateQueries(['channelClusters', id]);
+		} catch (error) {
+			console.log("Failed to fetch server data " + error);
+			throw error;
+		}
 	};
 
 	return <Box className={ classes["avatar-container"] }>
 		<Button onClick={ handleClick }>
-			<CustomTooltip title={ serverName } placement="right">
+			<CustomTooltip title={ name } placement="right">
 				<Avatar
-					{ ...stringAvatar(serverName) }
+					{ ...stringAvatar(name) }
 					className={ `${ classes.avatar } ${ isSelected ? classes.selected : '' }` }
-					alt={ serverName }
+					alt={ name }
 					src={ avatarIconUrl }
 				/>
 			</CustomTooltip>

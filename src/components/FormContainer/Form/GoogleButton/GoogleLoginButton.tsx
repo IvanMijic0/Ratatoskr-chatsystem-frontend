@@ -1,15 +1,15 @@
-import { Box } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import { useEffect, useState } from "react";
+import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Box } from '@mui/material';
 import axios from 'axios';
 
-import { fetchGoogleUserInfo } from "../../../../Configuration/axios-instance.ts";
 import { useAppDispatch, useInput } from "../../../../hooks";
-import { setAuthData, validateTokenAsync } from "../../../../Store";
-import { passwordRegex } from "../../../../Regex";
-import { GoogleUserData } from "../../../../Types";
+import { GoogleService } from "../../../../services";
+import { GoogleUserData } from "../../../../types";
+import { passwordRegex } from "../../../../regex";
+import { AuthAction } from "../../../../store";
 import { CustomButton } from "../../../UI";
 import { FormDialog } from "../FormDialog";
 import classes from "./GoogleLoginButton.module.css";
@@ -48,7 +48,7 @@ const GoogleLoginButton = () => {
 				if ( accessToken === null ) {
 					return;
 				}
-				const { data: googleUserData } = await fetchGoogleUserInfo(accessToken);
+				const { data: googleUserData } = await GoogleService.fetchGoogleUserInfo(accessToken);
 
 				setUser(googleUserData);
 
@@ -58,17 +58,14 @@ const GoogleLoginButton = () => {
 
 				// I could probably add a better check
 				if ( userExistsResponse.status === 200 ) {
-					dispatch(setAuthData(
-						undefined,
-						{
-							email: googleUserData.email,
-							firstName: googleUserData.given_name,
-							lastName: googleUserData.family_name,
-							googleId: googleUserData.id,
-							avatarImageUrl: googleUserData.picture,
-						}
-					));
-					dispatch(validateTokenAsync());
+					dispatch(AuthAction.setAuthData(undefined, {
+						email: googleUserData.email,
+						firstName: googleUserData.given_name,
+						lastName: googleUserData.family_name,
+						googleId: googleUserData.id,
+						avatarImageUrl: googleUserData.picture,
+					}));
+					dispatch(AuthAction.validateTokenAsync());
 				}
 
 				console.log('Google user info:', googleUserData);
@@ -90,8 +87,7 @@ const GoogleLoginButton = () => {
 				onClick={ () => googleLogin() }
 				showTooltip
 				tooltipTitle="Login with your google account."
-				tooltipPlacement="bottom"
-			>
+				tooltipPlacement="bottom">
 				<GoogleIcon className={ classes['google-button-icon'] }/>
 			</CustomButton>
 		</Box>

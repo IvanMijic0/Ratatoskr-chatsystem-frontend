@@ -1,31 +1,74 @@
-import { useEffect } from "react";
-import webSocketService from "../../Services/WebSocketService.ts";
-import { useAppSelector } from "../../hooks";
-import { selectUser } from "../../Store";
+import { Fragment, useCallback, useEffect } from "react";
+
+import { useAppDispatch, useAppSelector, useCreateNotification, useSnackbar } from "../../hooks";
+import { NotificationAction, selectUser, setFriendStatus, setUserStatus } from "../../store";
+import webSocketService from "../../services/WebSocketService.ts";
+import { NotificationType, UserStatus } from "../../enums";
+import { Notification } from "../../types";
+import { useQueryClient } from "react-query";
 
 const WSNotifications = () => {
-	const { _id } = useAppSelector(selectUser);
+	const { showSnackbar } = useSnackbar();
 
-	const onUserNotificationReceive = ( payload: { body: string } ) => {
-		//console.log(payload.body);
-	};
+	const { mutate: mutatePostNotification } = useCreateNotification();
+	const { _id, username } = useAppSelector(selectUser);
+	const dispatch = useAppDispatch();
+	const queryClient = useQueryClient();
 
-	const onConnected = () => {
+	const onUserNotificationReceive = useCallback(async ( message: { body: string } ) => {
+		console.log("WS Notification received");
+
+		await queryClient.invalidateQueries('directMessagings');
+		const body: Notification = JSON.parse(message.body);
+
+		showSnackbar(body.content, "info");
+		dispatch(NotificationAction.postNotificationData(body, body.receiverId!));
+	}, [dispatch, queryClient, showSnackbar]);
+
+	const onUserOnlineStatusChange = useCallback(async ( data: { body: string } ) => {
+		const body = JSON.parse(data.body);
+
+		await queryClient.invalidateQueries('friends');
+
+		const [id, friendUsername, status]: string = body.split(':');
+		_id !== id && dispatch(setFriendStatus({ id, username: friendUsername, status }));
+
+	}, [_id, dispatch, queryClient]);
+
+	const onConnected = useCallback(() => {
 		console.log("WS Notifications connected successfully");
-		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
-	};
 
-	const onError = () => {
-		console.error("Could not connect to WS Notifications. Please refresh this page and try again!");
-	};
+		webSocketService.subscribe(`/notifications/${ _id }`, onUserNotificationReceive);
+		webSocketService.subscribe('/notifications/onlineStatus', onUserOnlineStatusChange);
+
+		webSocketService.send('/notifications/onlineStatus', {}, `${ _id }:${ username }:online`);
+
+		mutatePostNotification({
+			userId: _id,
+			notification: { notificationType: NotificationType.USER_STATUS_CHANGED, content: UserStatus.ONLINE }
+		});
+		dispatch(setUserStatus(UserStatus.ONLINE));
+	}, [_id, dispatch, mutatePostNotification, onUserNotificationReceive, onUserOnlineStatusChange, username]);
+
 
 	useEffect(() => {
-		webSocketService.connect(onConnected, onError);
+		const establishConnection = async () => {
+			await webSocketService.connect(onConnected);
+		};
 
-		return () => webSocketService.disconnect();
-	}, []);
+		try {
+			establishConnection().then();
+		} catch (e) {
+			window.location.reload();
+			console.log(e);
+		}
 
-	return <></>;
+		// return () => {
+		// 	webSocketService.disconnect();
+		// };
+	}, [onConnected]);
+
+	return <Fragment/>;
 };
 
 export default WSNotifications;

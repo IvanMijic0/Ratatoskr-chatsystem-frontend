@@ -1,50 +1,43 @@
 import { Box, Button, CircularProgress, Container } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { useParams } from "react-router-dom";
+import { FormEvent } from "react";
 
-import { selectCurrentChannelClusterId, selectCurrentServerId } from "../../../../Store";
+import { useCreateChannel, useInput, useSnackbar } from "../../../../hooks";
 import { channelTextField, errorChannelTextField } from "../FormInputs";
-import axiosInstance from "../../../../Configuration/axios-instance.ts";
-import { useAppSelector, useInput } from "../../../../hooks";
+import { AddChannelDialogProps } from "../../../../types";
 import { CustomButton, CustomDialog } from "../../../UI";
-import { channelNameRegex } from "../../../../Regex";
+import { channelNameRegex } from "../../../../regex";
 import classes from "./AddChannelDialog.module.css";
 
-const AddChannelDialog = ( props: {
-	open: boolean,
-	onClose: () => void,
-} ) => {
+const AddChannelDialog = ( { clusterId, open, onClose }: AddChannelDialogProps ) => {
+	const { mutate: mutateCreateChannel, isLoading } = useCreateChannel();
 	const channelNameValidation = useInput(channelNameRegex);
-	const currentServerId = useAppSelector(selectCurrentServerId);
-	const currentChannelClusterId = useAppSelector(selectCurrentChannelClusterId);
-
-	const [isLoading, setIsLoading] = useState(false);
+	const { showSnackbar } = useSnackbar();
+	const { serverId } = useParams();
 
 	let dialogFormIsValid = false;
 
-	if ( channelNameValidation.isValid ) {
-		dialogFormIsValid = true;
-	}
+	if ( channelNameValidation.isValid ) dialogFormIsValid = true;
 
 	const handleSubmit = async ( event: FormEvent<HTMLFormElement> ) => {
 		event.preventDefault();
-		setIsLoading(true);
 
-		try {
-			await axiosInstance.post('/server/channel', null, {
-				params: {
-					serverId: currentServerId,
-					channelClusterId: currentChannelClusterId,
-					channelName: channelNameValidation.value
-				}
-			});
-
-			props.onClose();
-		} catch (error) {
-			console.error('Error:', error);
-		} finally {
-			setIsLoading(false);
-			channelNameValidation.reset();
-		}
+		mutateCreateChannel({
+			serverId: serverId ?? '',
+			channelClusterId: clusterId,
+			channelName: channelNameValidation.value
+		}, {
+			onSuccess: () => {
+				showSnackbar('Channel created successfully.', 'success');
+			},
+			onError: ( error ) => {
+				error instanceof Error && showSnackbar(error.message, 'error');
+			},
+			onSettled: () => {
+				onClose();
+				channelNameValidation.reset();
+			}
+		});
 	};
 
 	const channelClustersDialogContent = <Container className={ classes['Form-content'] }>
@@ -68,12 +61,12 @@ const AddChannelDialog = ( props: {
 			className={ classes['action-button'] }>
 			{ isLoading ? <CircularProgress/> : "Add" }
 		</CustomButton>
-		<Button className={ classes['action-button'] } onClick={ props.onClose }>Cancel</Button>
+		<Button className={ classes['action-button'] } onClick={ onClose }>Cancel</Button>
 	</Box>;
 
 	return <CustomDialog
-		open={ props.open }
-		onClose={ props.onClose }
+		open={ open }
+		onClose={ onClose }
 		title="Enter Channel data:"
 		customActions={ channelClustersDialogActions }
 		customContent={ channelClustersDialogContent }

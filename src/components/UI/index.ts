@@ -1,6 +1,5 @@
 export { default as CustomAutoComplete } from './CustomAutocomplete/CustomAutoComplete.tsx';
 export { default as CustomDialog } from './CustomDialog/CustomDialog.tsx';
-export { default as CustomDialogContentText } from './CustomDialogContentText/CustomDialogContentText.tsx';
 export { default as TransitionBackground } from './Transition/TransitionBackground.tsx';
 export { default as FriendItem } from './FriendItem/FriendItem.tsx';
 export { default as theme } from './Theme/theme.ts';
@@ -11,3 +10,4 @@ export { default as CustomCircularProgressBar } from './CustomCircularProgressBa
 export { default as CustomMenu } from './CustomMenu.tsx';
 export { default as CustomTextField } from './CustomTextField.tsx';
 export { default as CustomTooltip } from './CustomTooltip.tsx';
+export { default as FriendMenuButton } from './FriendMenuButton/FriendMenuButton.tsx';

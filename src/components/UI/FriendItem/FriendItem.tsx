@@ -1,27 +1,44 @@
-import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
+import { Avatar, Badge, Box, Divider, IconButton, Typography } from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import ChatIcon from '@mui/icons-material/Chat';
+import { FC, useState } from "react";
 
-import classes from "./FriendItem.module.css";
-import { FC } from "react";
-import webSocketService from "../../../Services/WebSocketService.ts";
-import { FriendItemProps } from "../../../Types";
+import { CustomTooltip, FriendMenuButton } from "../index.ts";
+import { NotificationAction, UserAction } from "../../../store";
+import { ChatMessage, FriendItemProps, Notification } from "../../../types";
+import { webSocketService } from "../../../services";
+import { MessageType, NotificationType, UserStatus } from "../../../enums";
+import { useAppDispatch, useCreateDirectMessagings, useSnackbar } from "../../../hooks";
 import { stringAvatar } from "../../../utils";
+import classes from "./FriendItem.module.css";
 
 const FriendItem: FC<FriendItemProps>
 	= ( {
+			currentUserUsername,
 			currentUserId,
 			friendId,
 			friendUsername,
 			friendAvatarIconUrl,
-			hasAction,
+			actionType,
+			description,
+			status: friendStatus,
 		} ) => {
+	const [statusChangeText, setStatusChangeText] = useState('');
 
-	const addFriendHandler = () => {
-		const notification = {
-			notificationType: 'FRIEND_REQUEST',
+	const { mutate } = useCreateDirectMessagings();
+	const dispatch = useAppDispatch();
+	const { showSnackbar } = useSnackbar();
+
+	// TODO - Do not forget to secure ws
+	const addFriendHandler = async () => {
+		const notification: Notification = {
+			notificationType: NotificationType.FRIEND_REQUEST,
 			date: new Date().toISOString(),
-			senderId: 'user123',
-			content: 'Friend request content',
+			senderId: currentUserId,
+			receiverId: friendId,
+			content: `${ currentUserUsername } sent you a friend request!`,
 		};
 
 		webSocketService.send(
@@ -29,26 +46,109 @@ const FriendItem: FC<FriendItemProps>
 			{},
 			notification
 		);
+
+		setStatusChangeText('sent');
+
+		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 	};
 
+	const confirmFriendRequestHandler = async () => {
+		dispatch(UserAction.addFriend(friendId!));
+		showSnackbar("Friend added successfully!", "success");
+	};
+
+	const clearFriendRequestHandler = async () => {
+		dispatch(NotificationAction.clearNotificationData());
+	};
+
+	const startConversationHandler = async () => {
+		const notification: Notification = {
+			notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
+			date: new Date().toISOString(),
+			senderId: currentUserId,
+			receiverId: friendId,
+			content: `${ currentUserUsername } started direct-messaging you!`,
+		};
+
+		webSocketService.send(
+			`/app/notifications/${ friendId }/friendRequest.send`,
+			{},
+			notification
+		);
+
+		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
+
+		setStatusChangeText('direct-messaging started');
+
+		const directMessage: ChatMessage[] = [{
+			senderId: currentUserId ?? '',
+			senderName: currentUserUsername ?? '',
+			receiverName: friendUsername ?? '',
+			content: `${ currentUserUsername } started this direct-message!`,
+			date: new Date().toISOString(),
+			type: MessageType.JOIN,
+		}];
+
+		friendId && mutate({ friendId, directMessage });
+	};
+
+	const actions = () => {
+		switch (actionType) {
+			case 0: {
+				return <IconButton className={ classes["friend-button"] } onClick={ addFriendHandler }>
+					<PersonAddIcon className={ classes["friend-button-icon"] }/>
+				</IconButton>;
+			}
+			case 1: {
+				return <Box className={ classes['request-button-container'] }>
+					<IconButton className={ classes["approve-button"] } onClick={ confirmFriendRequestHandler }>
+						<CustomTooltip title="approve" placement="left-start">
+							<CheckIcon className={ classes["approve-icon"] }/>
+						</CustomTooltip>
+					</IconButton>
+					<IconButton className={ classes["clear-button"] } onClick={ clearFriendRequestHandler }>
+						<CustomTooltip title="decline" placement="right-start">
+							<ClearIcon className={ classes["clear-icon"] }/>
+						</CustomTooltip>
+					</IconButton>
+				</Box>;
+			}
+			case 2: {
+				return <Box className={ classes['friend-button-container'] }>
+					<IconButton className={ classes["friend-button"] } onClick={ startConversationHandler }>
+						<CustomTooltip title="start convo" placement="left-start">
+							<ChatIcon className={ classes["friend-button-icon"] }/>
+						</CustomTooltip>
+					</IconButton>
+					<FriendMenuButton friendId={ friendId ?? '' }/>
+				</Box>;
+			}
+			default:
+				return null;
+		}
+	};
 
 	return <>
 		<Box className={ classes["friend-button-container"] }>
-			<Avatar
-				{ ...stringAvatar(friendUsername) }
-				alt={ friendUsername }
-				src={ friendAvatarIconUrl }
-			/>
+			<Badge
+				color={ friendStatus ? "success" : "error" }
+				variant="dot"
+				invisible={ friendStatus !== UserStatus.ONLINE }>
+				<Avatar
+					{ ...stringAvatar(friendUsername ?? '') }
+					alt={ friendUsername }
+					src={ friendAvatarIconUrl }
+				/>
+			</Badge>
+
 			<Typography className={ classes["friend-username"] }>
-				{ friendUsername }
+				{ `${ friendUsername } ${ description || '' }` }
 			</Typography>
-			{ hasAction
-				&& <Button
-                className={ classes["add-friend-button"] }>
-                <PersonAddIcon className={ classes["add-friend-button-icon"] }
-                               onClick={ addFriendHandler }/>
-              </Button>
-			}
+			<Box className={ classes['action-container'] }>
+				{ statusChangeText !== ''
+					? <Typography className={ classes.text }>{ statusChangeText }</Typography>
+					: actions() }
+			</Box>
 		</Box>
 		<Divider className={ classes.divider } variant="middle" flexItem/>
 	</>;

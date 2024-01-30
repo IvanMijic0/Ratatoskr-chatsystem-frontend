@@ -1,5 +1,5 @@
 import { LoaderFunction } from "react-router-dom";
-import axiosInstance from "../../../Configuration/axios-instance.ts";
+import { axiosInstance } from "../../../configuration";
 
 const serverLoader: LoaderFunction | undefined = async () => {
 	try {

@@ -2,7 +2,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 97%;
+    white-space: nowrap;
+    margin-left: 1rem;
+    width: 95%;
 }
 
 .friend-username {
@@ -17,10 +19,45 @@
     margin-bottom: .5rem;
 }
 
-.add-friend-button {
+.friend-button {
     margin-left: auto;
 }
 
-.add-friend-button-icon {
+.friend-button:hover {
+    color: #494e50;
+}
+
+.friend-button-icon {
     color: whitesmoke;
+}
+
+.approve-button:hover {
+    color: #13a113;
+}
+
+.clear-button:hover {
+    color: #c40000;
+}
+
+.approve-icon {
+    color: #13a113;
+}
+
+.clear-icon {
+    color: #c40000;
+}
+
+.request-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+}
+
+.action-container {
+    margin-left: auto;
+}
+
+.text {
+    color: #a4a4a4;
 }

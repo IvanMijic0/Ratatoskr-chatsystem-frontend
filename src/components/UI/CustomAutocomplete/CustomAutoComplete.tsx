@@ -3,7 +3,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { FC } from "react";
 
-import { CustomAutocompleteProps } from "../../../Types";
+import { CustomAutocompleteProps } from "../../../types";
 
 const CustomAutoComplete: FC<CustomAutocompleteProps>
 	= ( {
