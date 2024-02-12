@@ -6,33 +6,28 @@ import SockJS from 'sockjs-client/dist/sockjs';
 class WebSocketService {
 	private stompClient: Stomp.Client | null = null;
 
-	constructor( private serverUrl: string ) {
+	constructor(private serverUrl: string) {
 	}
 
-	connect( onConnect: () => void = () => {
-	}, onError: () => void = () => {
-	} ): Promise<void> {
-		return new Promise<void>(( resolve, reject ) => {
-			if ( this.stompClient && this.stompClient.connected ) {
+	connect(onConnect: () => void = () => { }, onError: () => void = () => { }): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			if (this.stompClient && this.stompClient.connected) {
 				resolve();
 			} else {
 				const socket = new SockJS(this.serverUrl);
-
 				this.stompClient = Stomp.over(socket);
-
-				this.stompClient.debug = () => {
-				};
+				this.stompClient.debug = () => { };
 
 				this.stompClient.connect(
 					{},
 					() => {
 						console.log('WebSocket connected!');
-						onConnect(); // Call onConnect callback
+						onConnect();
 						resolve();
 					},
-					( error: any ) => {
+					(error: any) => {
 						console.error('WebSocket connection failed:', error);
-						onError(); // Call onError callback
+						onError();
 						reject(error);
 					}
 				);
@@ -41,27 +36,29 @@ class WebSocketService {
 	}
 
 	disconnect(): void {
-		if ( this.stompClient ) {
+		if (this.stompClient) {
 			this.stompClient.disconnect(() => console.log('WebSocket disconnected!'));
 			this.stompClient = null;
 		}
 	}
 
-	public subscribe( channel: string, callback: ( message: Stomp.Message ) => void ): void {
-		if ( this.stompClient && this.stompClient.connected ) {
+	public subscribe(channel: string, callback: (message: Stomp.Message) => void = (message: Stomp.Message) => {
+		console.log('Received message from channel', channel, ':', message.body);
+	}): void {
+		if (this.stompClient && this.stompClient.connected) {
 			console.log('Subscribing to channel:', channel);
 			this.stompClient.subscribe(channel, callback);
 		}
 	}
 
-	public unsubscribe( channel: string ): void {
-		if ( this.stompClient && this.stompClient.connected ) {
+	public unsubscribe(channel: string): void {
+		if (this.stompClient && this.stompClient.connected) {
 			this.stompClient.unsubscribe(channel);
 		}
 	}
 
-	public send( destination: string, headers: Stomp.Headers, body: any ): void {
-		if ( this.stompClient && this.stompClient.connected ) {
+	public send(destination: string, headers: Stomp.Headers, body: any): void {
+		if (this.stompClient && this.stompClient.connected) {
 			this.stompClient.send(destination, headers, JSON.stringify(body));
 		}
 	}

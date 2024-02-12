@@ -1,10 +1,11 @@
-import { setTokens } from "../store";
+import { setIsAuthenticated, setTokens } from "../store";
 
 import { axiosInstance } from "../configuration";
 import { ThunkDispatch } from "redux-thunk";
 import { RootState, UserInfo } from "../types";
 import { AnyAction } from "redux";
 import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 const validateToken = async () => {
 	try {
@@ -24,7 +25,7 @@ const setAuthData = async (
 		const {
 			data: { token, refreshToken },
 		} = await axios.post(
-			`http://localhost:8080/api/v1/auth/${ loginData != undefined ? 'login' : 'loginWithGoogle' }`,
+			`http://localhost:8080/api/v1/auth/${loginData != undefined ? 'login' : 'loginWithGoogle'}`,
 			loginData != undefined ? loginData : googleLoginData
 		);
 
@@ -38,12 +39,12 @@ const setAuthData = async (
 	}
 };
 
-const metaMaskLogin = async ( metaMaskAddress: string, dispatch: ThunkDispatch<RootState, unknown, AnyAction> ) => {
+const metaMaskLogin = async (metaMaskAddress: string, dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
 	try {
 		const {
 			data: { token, refreshToken },
 		} = await axios.post(
-			`http://localhost:8080/api/v1/auth/meta-mask-login/${ metaMaskAddress }`,
+			`http://localhost:8080/api/v1/auth/meta-mask-login/${metaMaskAddress}`,
 		);
 
 		dispatch(setTokens({ token, refreshToken }));
@@ -56,7 +57,7 @@ const metaMaskLogin = async ( metaMaskAddress: string, dispatch: ThunkDispatch<R
 	}
 };
 
-const register = async ( registerData: UserInfo ) => {
+const register = async (registerData: UserInfo) => {
 	try {
 		await axiosInstance.post('/auth/register', {
 			username: registerData.username,
@@ -72,8 +73,20 @@ const register = async ( registerData: UserInfo ) => {
 	}
 };
 
+const logout = async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>, navigate: NavigateFunction) => {
+	try {
+		await axiosInstance.post('/auth/logout');
+		dispatch(setTokens({ token: '', refreshToken: '' }));
+		dispatch(setIsAuthenticated(false));
+		navigate("/guest")
+	} catch (error) {
+		console.error('Logout Error:', error);
+		throw error;
+	}
+}
+
 const triggerReload = () => {
 	window.location.reload();
 };
 
-export default { validateToken, setAuthData, register, metaMaskLogin };
+export default { validateToken, setAuthData, register, logout, metaMaskLogin };

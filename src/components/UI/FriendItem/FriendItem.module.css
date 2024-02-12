@@ -61,3 +61,12 @@
 .text {
     color: #a4a4a4;
 }
+
+.icon-button {
+    margin-left: auto;
+    color: #9d9c9c;
+}
+
+.icon {
+    font-size: 1.2rem;
+}
