@@ -1,6 +1,5 @@
 import { axiosInstance } from "../configuration";
 import {
-	Channel,
 	ChannelCluster,
 	ChannelClusterServiceProps,
 	ChannelServiceProps,

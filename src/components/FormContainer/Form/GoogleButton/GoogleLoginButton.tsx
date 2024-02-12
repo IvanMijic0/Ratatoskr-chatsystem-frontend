@@ -29,8 +29,8 @@ const GoogleLoginButton = () => {
 
 	let registerFormIsValid: boolean = false;
 
-	if ( registerPasswordValidation.isValid &&
-		registerConfirmPasswordValidation.isValid ) {
+	if (registerPasswordValidation.isValid &&
+		registerConfirmPasswordValidation.isValid) {
 		registerFormIsValid = true;
 	}
 
@@ -45,19 +45,19 @@ const GoogleLoginButton = () => {
 				googleLogin();
 				const accessToken = userToken?.access_token;
 
-				if ( accessToken === null ) {
+				if (accessToken === null) {
 					return;
 				}
 				const { data: googleUserData } = await GoogleService.fetchGoogleUserInfo(accessToken);
 
 				setUser(googleUserData);
 
-				const userExistsResponse = await axios.post('http://localhost:8080/api/v1/user/checkIfExists', {
+				const userExistsResponse = await axios.post(`${import.meta.env.BASE_URL}/user/checkIfExists`, {
 					email: googleUserData.email
 				});
 
 				// I could probably add a better check
-				if ( userExistsResponse.status === 200 ) {
+				if (userExistsResponse.status === 200) {
 					dispatch(AuthAction.setAuthData(undefined, {
 						email: googleUserData.email,
 						firstName: googleUserData.given_name,
@@ -74,7 +74,7 @@ const GoogleLoginButton = () => {
 				console.error('Google login failed:', error);
 			}
 		};
-		if ( userToken && user === null ) {
+		if (userToken && user === null) {
 			fetchUser().then();
 		}
 
@@ -84,26 +84,26 @@ const GoogleLoginButton = () => {
 	return <>
 		<Box>
 			<CustomButton
-				onClick={ () => googleLogin() }
+				onClick={() => googleLogin()}
 				showTooltip
 				tooltipTitle="Login with your google account."
 				tooltipPlacement="bottom">
-				<GoogleIcon className={ classes['google-button-icon'] }/>
+				<GoogleIcon className={classes['google-button-icon']} />
 			</CustomButton>
 		</Box>
 		<FormDialog
-			open={ openDialogForm }
-			setOpen={ setOpenDialogForm }
-			userData={ user }
-			passwordChangeHandler={ registerPasswordValidation.valueChangeHandler }
-			passwordBlurHandler={ registerPasswordValidation.inputBlurHandler }
-			enteredPassword={ registerPasswordValidation.value }
-			passwordHasError={ registerPasswordValidation.hasError }
-			confirmPasswordChangeHandler={ registerConfirmPasswordValidation.valueChangeHandler }
-			confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
-			enteredConfirmPassword={ registerConfirmPasswordValidation.value }
-			confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
-			formIsValid={ registerFormIsValid }
+			open={openDialogForm}
+			setOpen={setOpenDialogForm}
+			userData={user}
+			passwordChangeHandler={registerPasswordValidation.valueChangeHandler}
+			passwordBlurHandler={registerPasswordValidation.inputBlurHandler}
+			enteredPassword={registerPasswordValidation.value}
+			passwordHasError={registerPasswordValidation.hasError}
+			confirmPasswordChangeHandler={registerConfirmPasswordValidation.valueChangeHandler}
+			confirmPasswordBlurHandler={registerConfirmPasswordValidation.inputBlurHandler}
+			enteredConfirmPassword={registerConfirmPasswordValidation.value}
+			confirmPasswordHasError={registerConfirmPasswordValidation.hasError}
+			formIsValid={registerFormIsValid}
 		/>
 	</>;
 };
