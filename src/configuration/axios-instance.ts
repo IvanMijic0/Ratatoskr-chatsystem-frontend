@@ -55,7 +55,7 @@ instance.interceptors.response.use(
 							token: newToken,
 							refreshToken: newRefreshToken
 						}
-					} = await axios.post(`${import.meta.env.BASE_URL}/auth/refreshToken`, { refreshToken });
+					} = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/auth/refreshToken`, { refreshToken });
 
 					store.dispatch(setTokens({ token: newToken, refreshToken: newRefreshToken }));
 				} catch (error) {

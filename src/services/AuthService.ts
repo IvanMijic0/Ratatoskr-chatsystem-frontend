@@ -25,7 +25,7 @@ const setAuthData = async (
 		const {
 			data: { token, refreshToken },
 		} = await axios.post(
-			`${import.meta.env.BASE_URL}/api/v1/auth/${loginData != undefined ? 'login' : 'loginWithGoogle'}`,
+			`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/api/v1/auth/${loginData != undefined ? 'login' : 'loginWithGoogle'}`,
 			loginData != undefined ? loginData : googleLoginData
 		);
 
@@ -44,7 +44,7 @@ const metaMaskLogin = async (metaMaskAddress: string, dispatch: ThunkDispatch<Ro
 		const {
 			data: { token, refreshToken },
 		} = await axios.post(
-			`${import.meta.env.BASE_URL}/auth/meta-mask-login/${metaMaskAddress}`,
+			`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/auth/meta-mask-login/${metaMaskAddress}`,
 		);
 
 		dispatch(setTokens({ token, refreshToken }));

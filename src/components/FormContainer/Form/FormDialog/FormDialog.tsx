@@ -38,7 +38,7 @@ const FormDialog: FC<FormDialogProps> = (props) => {
 	};
 
 	const registerWithGoogleHandler = async () => {
-		const googleRegisterResponse = await axios.post(`${import.meta.env.BASE_URL}/auth/registerWithGoogle`, {
+		const googleRegisterResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/auth/registerWithGoogle`, {
 			email: props.userData?.email,
 			firstName: props.userData?.given_name,
 			lastName: props.userData?.family_name,
