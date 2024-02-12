@@ -60,8 +60,12 @@ export const ChannelContent = ({ id }: { id: string }) => {
 
 		queryClient.invalidateQueries(['friends']);
 
-		const [id, friendUsername, status]: string = body.split(':');
-		_id !== id && dispatch(setFriendStatus({ id, username: friendUsername, status }));
+		if (body) {
+			const [id, friendUsername, status]: string = body.split(':');
+			_id !== id && dispatch(setFriendStatus({ id, username: friendUsername, status }));
+		} else {
+			console.error('Body is null');
+		}
 
 	}, [_id, dispatch, queryClient]);
 
