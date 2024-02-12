@@ -17,9 +17,9 @@ function VerifyEmail() {
 
 	useEffect(() => {
 		const verifyEmail = async () => {
-			const response = await axios.get(`/auth/verifyEmailToken?code=${ code }`);
+			const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/auth/verifyEmailToken?code=${code}`);
 
-			if ( response.data === 'Successful verification!' ) {
+			if (response.data === 'Successful verification!') {
 				setVerificationStatus('Email verified successfully!');
 				setTimeout(() => {
 					setVerificationStatus("Redirecting to login?");
@@ -43,11 +43,11 @@ function VerifyEmail() {
 	};
 
 	return <TransitionBackground>
-		<Paper className={ classes['text-container'] }>
-			<Typography className={ classes.text } variant="h4">Ratatoskr mailing service</Typography>
-			<Typography className={ classes.text } variant="h5">{ verificationStatus }</Typography>
-			{ isRedirect &&
-              <CustomButton className={ classes.button } onClick={ loginButtonHandler }>Login</CustomButton> }
+		<Paper className={classes['text-container']}>
+			<Typography className={classes.text} variant="h4">Ratatoskr mailing service</Typography>
+			<Typography className={classes.text} variant="h5">{verificationStatus}</Typography>
+			{isRedirect &&
+				<CustomButton className={classes.button} onClick={loginButtonHandler}>Login</CustomButton>}
 		</Paper>
 	</TransitionBackground>;
 }
