@@ -19,9 +19,9 @@ export const Setup = () => {
 	}, [dispatch]);
 
 	return <>
-		{ SnackbarComponent }
-		{ isAuthenticated && user && <WSNotifications/> }
-		{ isAuthenticated && user && <UnloadConfig/> }
+		{SnackbarComponent}
+		{isAuthenticated && user && <WSNotifications />}
+		{isAuthenticated && user && <UnloadConfig />}
 	</>;
 };
 

@@ -15,143 +15,142 @@ import { stringAvatar } from "../../../utils";
 import classes from "./FriendItem.module.css";
 
 const FriendItem: FC<FriendItemProps>
-	= ( {
-			currentUserUsername,
-			currentUserId,
-			friendId,
-			friendUsername,
-			friendAvatarIconUrl,
-			actionType,
-			description,
-			status: friendStatus,
-		} ) => {
-	const [statusChangeText, setStatusChangeText] = useState('');
+	= ({
+		currentUserUsername,
+		currentUserId,
+		friendId,
+		friendUsername,
+		friendAvatarIconUrl,
+		actionType,
+		description,
+		status: friendStatus,
+	}) => {
+		const [statusChangeText, setStatusChangeText] = useState('');
 
-	const { mutate } = useCreateDirectMessagings();
-	const dispatch = useAppDispatch();
-	const { showSnackbar } = useSnackbar();
+		const { mutate } = useCreateDirectMessagings();
+		const { showSnackbar } = useSnackbar();
+		const dispatch = useAppDispatch();
 
-	// TODO - Do not forget to secure ws
-	const addFriendHandler = async () => {
-		const notification: Notification = {
-			notificationType: NotificationType.FRIEND_REQUEST,
-			date: new Date().toISOString(),
-			senderId: currentUserId,
-			receiverId: friendId,
-			content: `${ currentUserUsername } sent you a friend request!`,
+		const addFriendHandler = async () => {
+			const notification: Notification = {
+				notificationType: NotificationType.FRIEND_REQUEST,
+				date: new Date().toISOString(),
+				senderId: currentUserId,
+				receiverId: friendId,
+				content: `${currentUserUsername} sent you a friend request!`,
+			};
+
+			webSocketService.send(
+				`/app/notifications/${friendId}/friendRequest.send`,
+				{},
+				notification
+			);
+
+			setStatusChangeText('sent');
+
+			friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
 		};
 
-		webSocketService.send(
-			`/app/notifications/${ friendId }/friendRequest.send`,
-			{},
-			notification
-		);
-
-		setStatusChangeText('sent');
-
-		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
-	};
-
-	const confirmFriendRequestHandler = async () => {
-		dispatch(UserAction.addFriend(friendId!));
-		showSnackbar("Friend added successfully!", "success");
-	};
-
-	const clearFriendRequestHandler = async () => {
-		dispatch(NotificationAction.clearNotificationData());
-	};
-
-	const startConversationHandler = async () => {
-		const notification: Notification = {
-			notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
-			date: new Date().toISOString(),
-			senderId: currentUserId,
-			receiverId: friendId,
-			content: `${ currentUserUsername } started direct-messaging you!`,
+		const confirmFriendRequestHandler = async () => {
+			dispatch(UserAction.addFriend(friendId!));
+			showSnackbar("Friend added successfully!", "success");
 		};
 
-		webSocketService.send(
-			`/app/notifications/${ friendId }/friendRequest.send`,
-			{},
-			notification
-		);
+		const clearFriendRequestHandler = async () => {
+			dispatch(NotificationAction.clearNotificationData());
+		};
 
-		friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId!));
+		const startConversationHandler = async () => {
+			const notification: Notification = {
+				notificationType: NotificationType.DIRECT_MESSAGE_REQUEST,
+				date: new Date().toISOString(),
+				senderId: currentUserId,
+				receiverId: friendId,
+				content: `${currentUserUsername} started direct-messaging you!`,
+			};
 
-		setStatusChangeText('direct-messaging started');
+			webSocketService.send(
+				`/app/notifications/${friendId}/friendRequest.send`,
+				{},
+				notification
+			);
 
-		const directMessage: ChatMessage[] = [{
-			senderId: currentUserId ?? '',
-			senderName: currentUserUsername ?? '',
-			receiverName: friendUsername ?? '',
-			content: `${ currentUserUsername } started this direct-message!`,
-			date: new Date().toISOString(),
-			type: MessageType.JOIN,
-		}];
+			friendStatus === UserStatus.OFFLINE && dispatch(NotificationAction.postNotificationData(notification, friendId ?? ''));
 
-		friendId && mutate({ friendId, directMessage });
-	};
+			setStatusChangeText('direct-messaging started');
 
-	const actions = () => {
-		switch (actionType) {
-			case 0: {
-				return <IconButton className={ classes["friend-button"] } onClick={ addFriendHandler }>
-					<PersonAddIcon className={ classes["friend-button-icon"] }/>
-				</IconButton>;
+			const directMessage: ChatMessage[] = [{
+				senderId: currentUserId ?? '',
+				senderName: currentUserUsername ?? '',
+				receiverName: friendUsername ?? '',
+				content: `${currentUserUsername} started this direct-message!`,
+				date: new Date().toISOString(),
+				type: MessageType.JOIN,
+			}];
+
+			friendId && mutate({ friendId, directMessage });
+		};
+
+		const actions = () => {
+			switch (actionType) {
+				case 0: {
+					return <IconButton className={classes["friend-button"]} onClick={addFriendHandler}>
+						<PersonAddIcon className={classes["friend-button-icon"]} />
+					</IconButton>;
+				}
+				case 1: {
+					return <Box className={classes['request-button-container']}>
+						<IconButton className={classes["approve-button"]} onClick={confirmFriendRequestHandler}>
+							<CustomTooltip title="approve" placement="left-start">
+								<CheckIcon className={classes["approve-icon"]} />
+							</CustomTooltip>
+						</IconButton>
+						<IconButton className={classes["clear-button"]} onClick={clearFriendRequestHandler}>
+							<CustomTooltip title="decline" placement="right-start">
+								<ClearIcon className={classes["clear-icon"]} />
+							</CustomTooltip>
+						</IconButton>
+					</Box>;
+				}
+				case 2: {
+					return <Box className={classes['friend-button-container']}>
+						<IconButton className={classes["friend-button"]} onClick={startConversationHandler}>
+							<CustomTooltip title="start convo" placement="left-start">
+								<ChatIcon className={classes["friend-button-icon"]} />
+							</CustomTooltip>
+						</IconButton>
+						<FriendMenuButton friendId={friendId ?? ''} />
+					</Box>;
+				}
+				default:
+					return null;
 			}
-			case 1: {
-				return <Box className={ classes['request-button-container'] }>
-					<IconButton className={ classes["approve-button"] } onClick={ confirmFriendRequestHandler }>
-						<CustomTooltip title="approve" placement="left-start">
-							<CheckIcon className={ classes["approve-icon"] }/>
-						</CustomTooltip>
-					</IconButton>
-					<IconButton className={ classes["clear-button"] } onClick={ clearFriendRequestHandler }>
-						<CustomTooltip title="decline" placement="right-start">
-							<ClearIcon className={ classes["clear-icon"] }/>
-						</CustomTooltip>
-					</IconButton>
-				</Box>;
-			}
-			case 2: {
-				return <Box className={ classes['friend-button-container'] }>
-					<IconButton className={ classes["friend-button"] } onClick={ startConversationHandler }>
-						<CustomTooltip title="start convo" placement="left-start">
-							<ChatIcon className={ classes["friend-button-icon"] }/>
-						</CustomTooltip>
-					</IconButton>
-					<FriendMenuButton friendId={ friendId ?? '' }/>
-				</Box>;
-			}
-			default:
-				return null;
-		}
-	};
+		};
 
-	return <>
-		<Box className={ classes["friend-button-container"] }>
-			<Badge
-				color={ friendStatus ? "success" : "error" }
-				variant="dot"
-				invisible={ friendStatus !== UserStatus.ONLINE }>
-				<Avatar
-					{ ...stringAvatar(friendUsername ?? '') }
-					alt={ friendUsername }
-					src={ friendAvatarIconUrl }
-				/>
-			</Badge>
+		return <>
+			<Box className={classes["friend-button-container"]}>
+				<Badge
+					color={friendStatus ? "success" : "error"}
+					variant="dot"
+					invisible={friendStatus !== UserStatus.ONLINE}>
+					<Avatar
+						{...stringAvatar(friendUsername ?? '')}
+						alt={friendUsername}
+						src={friendAvatarIconUrl}
+					/>
+				</Badge>
 
-			<Typography className={ classes["friend-username"] }>
-				{ `${ friendUsername } ${ description || '' }` }
-			</Typography>
-			<Box className={ classes['action-container'] }>
-				{ statusChangeText !== ''
-					? <Typography className={ classes.text }>{ statusChangeText }</Typography>
-					: actions() }
+				<Typography className={classes["friend-username"]}>
+					{`${friendUsername} ${description || ''}`}
+				</Typography>
+				<Box className={classes['action-container']}>
+					{statusChangeText !== ''
+						? <Typography className={classes.text}>{statusChangeText}</Typography>
+						: actions()}
+				</Box>
 			</Box>
-		</Box>
-		<Divider className={ classes.divider } variant="middle" flexItem/>
-	</>;
-};
+			<Divider className={classes.divider} variant="middle" flexItem />
+		</>;
+	};
 
 export default FriendItem;

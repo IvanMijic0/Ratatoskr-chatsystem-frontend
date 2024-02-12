@@ -3,7 +3,7 @@ import { UserService } from "../services";
 
 const useDirectMessagingsSummary = () => {
 	return useQuery(
-		'directMessagingsSummary',
+		['directMessagingsSummary'],
 		() => UserService.getDirectMessagingsSummary()
 	);
 };

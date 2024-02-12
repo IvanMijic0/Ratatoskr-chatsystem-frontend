@@ -10,7 +10,7 @@ import { FormStatus } from "../../../enums";
 import classes from "./Form.module.css";
 import { AuthAction } from "../../../store";
 
-const Form: FC<FormProps> = ( { isLogin } ) => {
+const Form: FC<FormProps> = ({ isLogin }) => {
 	const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -30,26 +30,27 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 	let loginFormIsValid: boolean = false;
 	let registerFormIsValid: boolean = false;
 
-	if ( loginEmailValidation.isValid && loginPasswordValidation.isValid ) loginFormIsValid = true;
+	if (loginEmailValidation.isValid && loginPasswordValidation.isValid) loginFormIsValid = true;
 
-	if ( registerUsernameValidation.isValid &&
+	if (registerUsernameValidation.isValid &&
 		registerEmailValidation.isValid &&
 		registerPasswordValidation.isValid &&
-		registerConfirmPasswordValidation.isValid ) registerFormIsValid = true;
+		registerConfirmPasswordValidation.isValid) registerFormIsValid = true;
 
 	const loginHandler = async () => {
 		try {
-			dispatch(AuthAction.setAuthData({
-				usernameOrEmail: loginEmailValidation?.value,
-				password: loginPasswordValidation?.value
-			}, undefined));
+			setTimeout(
+				() => dispatch(AuthAction.setAuthData({
+					usernameOrEmail: loginEmailValidation?.value,
+					password: loginPasswordValidation?.value
+				}, undefined)
+				), 1000);
 
 			return Promise.resolve();
 		} catch (error: any) {
 			console.error('Authentication Error:', error);
 			const errorMessage = error.response?.data?.statusText || 'Authentication failed.';
 			return Promise.reject(errorMessage);
-
 		}
 	};
 
@@ -70,9 +71,9 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 		}
 	};
 
-	const formSubmissionHandler = async ( event: {
+	const formSubmissionHandler = async (event: {
 		preventDefault: () => void;
-	} ) => {
+	}) => {
 		event.preventDefault();
 		setIsLoading(true);
 
@@ -86,11 +87,11 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 			&& !registerPasswordValidation.isValid
 			&& !registerConfirmPasswordValidation.isValid;
 
-		if ( isLogin === FormStatus.LOGIN ) {
-			if ( isLoginNotValid ) return;
+		if (isLogin === FormStatus.LOGIN) {
+			if (isLoginNotValid) return;
 			await loginHandler();
-		} else if ( isLogin === FormStatus.REGISTER ) {
-			if ( isRegisterNotValid ) return;
+		} else if (isLogin === FormStatus.REGISTER) {
+			if (isRegisterNotValid) return;
 			await registerHandler();
 		}
 		setIsLoading(false);
@@ -98,44 +99,44 @@ const Form: FC<FormProps> = ( { isLogin } ) => {
 
 	return <>
 		<Typography component="h1" variant="h5">
-			{ isLogin === FormStatus.LOGIN ? "Login" : "Register" }
+			{isLogin === FormStatus.LOGIN ? "Login" : "Register"}
 		</Typography>
-		<Box className={ classes.form } component="form" sx={ { mt: 4 } } onSubmit={ formSubmissionHandler }>
-			{ isLogin === FormStatus.LOGIN
+		<Box className={classes.form} component="form" sx={{ mt: 4 }} onSubmit={formSubmissionHandler}>
+			{isLogin === FormStatus.LOGIN
 				? <LoginFormInputs
-					formIsValid={ loginFormIsValid }
-					emailChangeHandler={ loginEmailValidation.valueChangeHandler }
-					emailBlurHandler={ loginEmailValidation.inputBlurHandler }
-					enteredEmail={ loginEmailValidation.value }
-					emailHasError={ loginEmailValidation.hasError }
-					passwordChangeHandler={ loginPasswordValidation.valueChangeHandler }
-					passwordBlurHandler={ loginPasswordValidation.inputBlurHandler }
-					enteredPassword={ loginPasswordValidation.value }
-					passwordHasError={ loginPasswordValidation.hasError }
+					formIsValid={loginFormIsValid}
+					emailChangeHandler={loginEmailValidation.valueChangeHandler}
+					emailBlurHandler={loginEmailValidation.inputBlurHandler}
+					enteredEmail={loginEmailValidation.value}
+					emailHasError={loginEmailValidation.hasError}
+					passwordChangeHandler={loginPasswordValidation.valueChangeHandler}
+					passwordBlurHandler={loginPasswordValidation.inputBlurHandler}
+					enteredPassword={loginPasswordValidation.value}
+					passwordHasError={loginPasswordValidation.hasError}
 					helperText="Please enter valid username or email."
-					isLoading={ isLoading }
+					isLoading={isLoading}
 				/>
 				: <RegisterFormInputs
-					isEmailVerificationTokenSent={ isEmailVerificationSent }
-					formIsValid={ registerFormIsValid }
-					usernameChangeHandler={ registerUsernameValidation.valueChangeHandler }
-					usernameBlurHandler={ registerUsernameValidation.inputBlurHandler }
-					enteredUsername={ registerUsernameValidation.value }
-					usernameHasError={ registerUsernameValidation.hasError }
-					emailChangeHandler={ registerEmailValidation.valueChangeHandler }
-					emailBlurHandler={ registerEmailValidation.inputBlurHandler }
-					enteredEmail={ registerEmailValidation.value }
-					emailHasError={ registerEmailValidation.hasError }
-					passwordChangeHandler={ registerPasswordValidation.valueChangeHandler }
-					passwordBlurHandler={ registerPasswordValidation.inputBlurHandler }
-					enteredPassword={ registerPasswordValidation.value }
-					passwordHasError={ registerPasswordValidation.hasError }
-					confirmPasswordChangeHandler={ registerConfirmPasswordValidation.valueChangeHandler }
-					confirmPasswordBlurHandler={ registerConfirmPasswordValidation.inputBlurHandler }
-					enteredConfirmPassword={ registerConfirmPasswordValidation.value }
-					confirmPasswordHasError={ registerConfirmPasswordValidation.hasError }
+					isEmailVerificationTokenSent={isEmailVerificationSent}
+					formIsValid={registerFormIsValid}
+					usernameChangeHandler={registerUsernameValidation.valueChangeHandler}
+					usernameBlurHandler={registerUsernameValidation.inputBlurHandler}
+					enteredUsername={registerUsernameValidation.value}
+					usernameHasError={registerUsernameValidation.hasError}
+					emailChangeHandler={registerEmailValidation.valueChangeHandler}
+					emailBlurHandler={registerEmailValidation.inputBlurHandler}
+					enteredEmail={registerEmailValidation.value}
+					emailHasError={registerEmailValidation.hasError}
+					passwordChangeHandler={registerPasswordValidation.valueChangeHandler}
+					passwordBlurHandler={registerPasswordValidation.inputBlurHandler}
+					enteredPassword={registerPasswordValidation.value}
+					passwordHasError={registerPasswordValidation.hasError}
+					confirmPasswordChangeHandler={registerConfirmPasswordValidation.valueChangeHandler}
+					confirmPasswordBlurHandler={registerConfirmPasswordValidation.inputBlurHandler}
+					enteredConfirmPassword={registerConfirmPasswordValidation.value}
+					confirmPasswordHasError={registerConfirmPasswordValidation.hasError}
 					helperText="Please enter valid email."
-					isLoading={ isLoading }
+					isLoading={isLoading}
 				/>
 			}
 		</Box>

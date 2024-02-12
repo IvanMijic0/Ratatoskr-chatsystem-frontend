@@ -43,7 +43,7 @@ const AddFriendContent: FC = () => {
 
 	return <Box className={ classes["add-friend-container"] }>
 		<CustomAutoComplete
-			placeHolder="Search all users..."
+			placeholder="Search all users..."
 			className={ classes.search }
 			options={ filteredUsers }
 			label="Search all users..."

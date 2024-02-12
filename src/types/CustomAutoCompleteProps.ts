@@ -3,7 +3,7 @@ import UserInfo from "./UserInfo.ts";
 type CustomAutoCompleteProps = {
 	onInputChange: any;
 	value: string;
-	placeHolder?: string;
+	placeholder?: string;
 	className?: string;
 	disablePortal?: boolean;
 	id?: string;
