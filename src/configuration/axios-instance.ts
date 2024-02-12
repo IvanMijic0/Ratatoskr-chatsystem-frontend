@@ -6,7 +6,7 @@ const instance = axios.create({
 	baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL
 });
 
-const isTokenExpired = ( token: string ): boolean => {
+const isTokenExpired = (token: string): boolean => {
 	try {
 		const decodedToken: JwtPayload = jwtDecode(token);
 
@@ -18,36 +18,34 @@ const isTokenExpired = ( token: string ): boolean => {
 };
 
 instance.interceptors.request.use(
-	( config ) => {
+	(config) => {
 		const token = store.getState().auth.token;
 		const refreshToken = store.getState().auth.refreshToken;
 
 		token
-			? config.headers['Authorization'] = `Bearer ${ token }`
+			? config.headers['Authorization'] = `Bearer ${token}`
 			: delete config.headers['Authorization'];
 		refreshToken
-			? ( config.headers['Refresh-Token'] = refreshToken )
+			? (config.headers['Refresh-Token'] = refreshToken)
 			: delete config.headers['Refresh-Token'];
 
 		return config;
 	},
-	( error ) => {
+	(error) => {
 		return Promise.reject(error);
 	}
 );
 
 instance.interceptors.response.use(
-	( response ) => response,
-	async ( error ) => {
+	(response) => response,
+	async (error) => {
 		const { response } = error;
-		if ( response ) {
+		if (response) {
 			const isAuthenticated = store.getState().auth.isAuthenticated;
 			const refreshToken = store.getState().auth.refreshToken;
 			const token = store.getState().auth.token;
 
-			// TODO figure out when to logout user
-
-			if ( isAuthenticated && isTokenExpired(token) && !isTokenExpired(refreshToken) ) {
+			if (isAuthenticated && isTokenExpired(token) && !isTokenExpired(refreshToken)) {
 				try {
 					store.dispatch({ type: "aut/PURGE" });
 					console.log("Refreshing token");
@@ -57,7 +55,7 @@ instance.interceptors.response.use(
 							token: newToken,
 							refreshToken: newRefreshToken
 						}
-					} = await axios.post('http://localhost:8080/api/v1/auth/refreshToken', { refreshToken });
+					} = await axios.post(`${import.meta.env.BASE_URL}/auth/refreshToken`, { refreshToken });
 
 					store.dispatch(setTokens({ token: newToken, refreshToken: newRefreshToken }));
 				} catch (error) {
