@@ -52,7 +52,7 @@ const GoogleLoginButton = () => {
 
 				setUser(googleUserData);
 
-				const userExistsResponse = await axios.post(`${import.meta.env.BASE_URL}/user/checkIfExists`, {
+				const userExistsResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/user/checkIfExists`, {
 					email: googleUserData.email
 				});
 

@@ -167,7 +167,7 @@ const removeDirectMessagings = async (friendId: string, directMessagingId: strin
 
 const checkIfMetaMaskAddressExists = async (metaMaskAddress: string): Promise<boolean> => {
 	try {
-		return (await axios.get(`${import.meta.env.BASE_URL}/user/exists/${metaMaskAddress}`)).data;
+		return (await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/user/exists/${metaMaskAddress}`)).data;
 	} catch (error) {
 		console.error('Error checking if MetaMask address exists:', error);
 		throw error;
