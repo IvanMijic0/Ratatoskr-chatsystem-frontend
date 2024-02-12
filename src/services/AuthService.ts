@@ -25,7 +25,7 @@ const setAuthData = async (
 		const {
 			data: { token, refreshToken },
 		} = await axios.post(
-			`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/api/v1/auth/${loginData != undefined ? 'login' : 'loginWithGoogle'}`,
+			`${import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL}/auth/${loginData != undefined ? 'login' : 'loginWithGoogle'}`,
 			loginData != undefined ? loginData : googleLoginData
 		);
 
