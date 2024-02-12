@@ -39,12 +39,10 @@ const Form: FC<FormProps> = ({ isLogin }) => {
 
 	const loginHandler = async () => {
 		try {
-			setTimeout(
-				() => dispatch(AuthAction.setAuthData({
-					usernameOrEmail: loginEmailValidation?.value,
-					password: loginPasswordValidation?.value
-				}, undefined)
-				), 1000);
+			dispatch(AuthAction.setAuthData({
+				usernameOrEmail: loginEmailValidation?.value,
+				password: loginPasswordValidation?.value
+			}, undefined))
 
 			return Promise.resolve();
 		} catch (error: any) {
